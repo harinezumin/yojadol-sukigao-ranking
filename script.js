@@ -198,7 +198,7 @@ const idols = [
 {
   name: "Stella",
   group: "Hearts2Hearts",
-  image: "IMG_0976.jpeg"
+  image: "IMG_0972.jpeg"
 },
    
 {
