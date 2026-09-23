@@ -165,6 +165,46 @@ const idols = [
   name: "Jiyeon",
   group: "tripleS",
   image: "IMG_970.jpeg"
+},
+   {
+  name: "Jiwoo",
+  group: "Hearts2Hearts",
+  image: "IMG_975.jpeg"
+},
+{
+  name: "Stella",
+  group: "Hearts2Hearts",
+  image: "IMG_976.jpeg"
+},
+{
+  name: "Ian",
+  group: "Hearts2Hearts",
+  image: "IMG_977.jpeg"
+},
+{
+  name: "Yuha",
+  group: "Hearts2Hearts",
+  image: "IMG_978.jpeg"
+},
+{
+  name: "Juun",
+  group: "Hearts2Hearts",
+  image: "IMG_979.jpeg"
+},
+{
+  name: "Carmen",
+  group: "Hearts2Hearts",
+  image: "IMG_980.jpeg"
+},
+{
+  name: "Ana",
+  group: "Hearts2Hearts",
+  image: "IMG_981.jpeg"
+},
+{
+  name: "Yeon",
+  group: "Hearts2Hearts",
+  image: "IMG_982.jpeg"
 }
 
 ];
