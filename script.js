@@ -28,6 +28,11 @@ const idols = [
     group: "IVE",
     image: "IMG_0939.jpeg"
   },
+    {
+    name: "Leeseo",
+    group: "IVE",
+    image: "IMG_0943.jpeg"
+  },
 ];
 
 
