@@ -28,13 +28,13 @@ const idols = [
   {
     name: "Wonyoung",
     group: "IVE",
-    image: "IMG_0942.jpeg"
+    image: "images/IMG_0942.jpeg"
   },
 
   {
     name: "Karina",
     group: "aespa",
-    image: "IMG_0939.jpeg"
+    image: "images/IMG_0939.jpeg"
   },
 
   {
