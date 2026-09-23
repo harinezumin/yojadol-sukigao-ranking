@@ -304,12 +304,12 @@ const idols = [
 {
   name: "Michi",
   group: "Atheart",
-  image: "IMG_0999.jpeg"
+  image: "IMG_0998.jpeg"
 },
 {
   name: "Arin",
   group: "Atheart",
-  image: "IMG_1000.jpeg"
+  image: "IMG_0999.jpeg"
 },
 {
   name: "Katelyn",
