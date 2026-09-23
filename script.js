@@ -33,7 +33,7 @@ const idols = [
     {
     name: "Rei",
     group: "IVE",
-    image: "images/rei.jpg"
+    image: "IMG_0939.jpeg"
   },
 ];
 
