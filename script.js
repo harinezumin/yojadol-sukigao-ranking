@@ -28,7 +28,7 @@ const idols = [
   {
     name: "Wonyoung",
     group: "IVE",
-    image: "images/wonyoung.jpg"
+    image: "IMG_0941.jpeg"
   },
     {
     name: "Rei",
