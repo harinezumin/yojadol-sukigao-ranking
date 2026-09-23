@@ -239,37 +239,37 @@ const idols = [
    {
   name: "Jia",
   group: "tuide",
-  image: "IMG_0983.jpeg"
+  image: "IMG_0984.jpeg"
 },
 {
   name: "Seoyeon",
   group: "tuide",
-  image: "IMG_0985.jpeg"
+  image: "IMG_0986.jpeg"
 },
 {
   name: "Seohee",
   group: "tuide",
-  image: "IMG_0984.jpeg"
+  image: "IMG_0985.jpeg"
 },
 {
   name: "Elena",
   group: "tuide",
-  image: "IMG_0986.jpeg"
+  image: "IMG_0987.jpeg"
 },
 {
   name: "Saki",
   group: "tuide",
-  image: "IMG_0987.jpeg"
+  image: "IMG_0988.jpeg"
 },
 {
   name: "Seah",
   group: "tuide",
-  image: "IMG_0988.jpeg"
+  image: "IMG_0989.jpeg"
 },
 {
   name: "Yi Hani",
   group: "tuide",
-  image: "IMG_0989.jpeg"
+  image: "IMG_0990.jpeg"
 }
 
 ];
