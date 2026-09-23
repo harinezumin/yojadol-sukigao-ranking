@@ -43,6 +43,12 @@ const idols = [
     name: "Yujin",
     group: "IVE",
     image: "IMG_0946.jpeg"
+  },
+   
+  {
+    name: "Seoyeon",
+    group: "tripleS",
+    image: "IMG_0947.jpeg"
   }
 
 ];
