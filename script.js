@@ -49,7 +49,123 @@ const idols = [
     name: "Seoyeon",
     group: "tripleS",
     image: "IMG_0947.jpeg"
-  }
+  },
+
+   {
+  name: "Hyerin",
+  group: "tripleS",
+  image: "images/IMG_948.jpeg"
+},
+{
+  name: "Jiwoo",
+  group: "tripleS",
+  image: "images/IMG_949.jpeg"
+},
+{
+  name: "Chaeyeon",
+  group: "tripleS",
+  image: "images/IMG_950.jpeg"
+},
+{
+  name: "Yooyeon",
+  group: "tripleS",
+  image: "images/IMG_951.jpeg"
+},
+{
+  name: "Soomin",
+  group: "tripleS",
+  image: "images/IMG_952.jpeg"
+},
+{
+  name: "Nakyoung",
+  group: "tripleS",
+  image: "images/IMG_953.jpeg"
+},
+{
+  name: "Yubin",
+  group: "tripleS",
+  image: "images/IMG_954.jpeg"
+},
+{
+  name: "Kaede",
+  group: "tripleS",
+  image: "images/IMG_955.jpeg"
+},
+{
+  name: "Dahyun",
+  group: "tripleS",
+  image: "images/IMG_956.jpeg"
+},
+{
+  name: "Kotone",
+  group: "tripleS",
+  image: "images/IMG_957.jpeg"
+},
+{
+  name: "Yeonji",
+  group: "tripleS",
+  image: "images/IMG_958.jpeg"
+},
+{
+  name: "Nien",
+  group: "tripleS",
+  image: "images/IMG_959.jpeg"
+},
+{
+  name: "Sohyun",
+  group: "tripleS",
+  image: "images/IMG_960.jpeg"
+},
+{
+  name: "Xinyu",
+  group: "tripleS",
+  image: "images/IMG_961.jpeg"
+},
+{
+  name: "Mayu",
+  group: "tripleS",
+  image: "images/IMG_962.jpeg"
+},
+{
+  name: "Lynn",
+  group: "tripleS",
+  image: "images/IMG_963.jpeg"
+},
+{
+  name: "Joobin",
+  group: "tripleS",
+  image: "images/IMG_964.jpeg"
+},
+{
+  name: "Hayeon",
+  group: "tripleS",
+  image: "images/IMG_965.jpeg"
+},
+{
+  name: "Shion",
+  group: "tripleS",
+  image: "images/IMG_966.jpeg"
+},
+{
+  name: "Chaewon",
+  group: "tripleS",
+  image: "images/IMG_967.jpeg"
+},
+{
+  name: "Sullin",
+  group: "tripleS",
+  image: "images/IMG_968.jpeg"
+},
+{
+  name: "Seoah",
+  group: "tripleS",
+  image: "images/IMG_969.jpeg"
+},
+{
+  name: "Jiyeon",
+  group: "tripleS",
+  image: "images/IMG_970.jpeg"
+}
 
 ];
 
