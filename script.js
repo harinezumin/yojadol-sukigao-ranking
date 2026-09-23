@@ -12,37 +12,37 @@ const idols = [
   {
     name: "Wonyoung",
     group: "IVE",
-    image: "images/IMG_0942.jpeg"
+    image: ""
   },
 
   {
     name: "Rei",
     group: "IVE",
-    image: "images/IMG_0939.jpeg"
+    image: ""
   },
 
   {
     name: "Leeseo",
     group: "IVE",
-    image: "images/IMG_0943.jpeg"
+    image: ""
   },
 
   {
     name: "Gaeul",
     group: "IVE",
-    image: "images/IMG_0944.jpeg"
+    image: ""
   },
 
   {
     name: "Liz",
     group: "IVE",
-    image: "images/IMG_0945.jpeg"
+    image: ""
   },
 
   {
     name: "Yujin",
     group: "IVE",
-    image: "images/IMG_0946.jpeg"
+    image: ""
   }
 
 ];
