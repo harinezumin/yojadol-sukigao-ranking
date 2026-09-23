@@ -304,37 +304,37 @@ const idols = [
 {
   name: "Michi",
   group: "Atheart",
-  image: "IMG_0998.jpeg"
+  image: "IMG_0999.jpeg"
 },
 {
   name: "Arin",
   group: "Atheart",
-  image: "IMG_0999.jpeg"
+  image: "IMG_1000.jpeg"
 },
 {
   name: "Katelyn",
   group: "Atheart",
-  image: "IMG_1000.jpeg"
+  image: "IMG_1001.jpeg"
 },
 {
   name: "Bome",
   group: "Atheart",
-  image: "IMG_1001.jpeg"
+  image: "IMG_1002.jpeg"
 },
 {
   name: "Seohyeon",
   group: "Atheart",
-  image: "IMG_1002.jpeg"
+  image: "IMG_1003.jpeg"
 },
 {
   name: "Aurora",
   group: "Atheart",
-  image: "IMG_1003.jpeg"
+  image: "IMG_1004.jpeg"
 },
 {
   name: "Nahyun",
   group: "Atheart",
-  image: "IMG_1004.jpeg"
+  image: "IMG_1005.jpeg"
 }
 
 ];
