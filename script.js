@@ -235,6 +235,41 @@ const idols = [
   name: "Yeon",
   group: "Hearts2Hearts",
   image: "IMG_0982.jpeg"
+},
+   {
+  name: "Jia",
+  group: "tuide",
+  image: "IMG_0983.jpeg"
+},
+{
+  name: "Seoyeon",
+  group: "tuide",
+  image: "IMG_0985.jpeg"
+},
+{
+  name: "Seohee",
+  group: "tuide",
+  image: "IMG_0984.jpeg"
+},
+{
+  name: "Elena",
+  group: "tuide",
+  image: "IMG_0986.jpeg"
+},
+{
+  name: "Saki",
+  group: "tuide",
+  image: "IMG_0987.jpeg"
+},
+{
+  name: "Seah",
+  group: "tuide",
+  image: "IMG_0988.jpeg"
+},
+{
+  name: "Yi Hani",
+  group: "tuide",
+  image: "IMG_0989.jpeg"
 }
 
 ];
