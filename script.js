@@ -18,7 +18,7 @@
    {
      name: "Wonyoung",
      group: "IVE",
-     image: "images/wonyoung.jpg"
+     image: "IMG_0942.jpeg"
    }
 
 ================================================== */
@@ -28,7 +28,7 @@ const idols = [
   {
     name: "Wonyoung",
     group: "IVE",
-    image: "IMG_0941.jpeg"
+    image: "IMG_0942.jpeg"
   },
     {
     name: "Rei",
