@@ -1,0 +1,1 @@
+# yojadol-sukigao-ranking
