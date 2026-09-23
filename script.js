@@ -1,102 +1,783 @@
-const IDOLS = [
-  { name: "Wonyoung", group: "IVE", image: "images/wonyoung.jpg" },
-  { name: "Rei", group: "IVE", image: "images/rei.jpg" },
-  { name: "Karina", group: "aespa", image: "images/karina.jpg" },
-  { name: "Winter", group: "aespa", image: "images/winter.jpg" },
-  { name: "Sullyoon", group: "NMIXX", image: "images/sullyoon.jpg" },
-  { name: "Haewon", group: "NMIXX", image: "images/haewon.jpg" },
-  { name: "Sana", group: "TWICE", image: "images/sana.jpg" },
-  { name: "Tzuyu", group: "TWICE", image: "images/tzuyu.jpg" },
-  { name: "Minji", group: "NewJeans", image: "images/minji.jpg" },
-  { name: "Danielle", group: "NewJeans", image: "images/danielle.jpg" },
-  { name: "Jennie", group: "BLACKPINK", image: "images/jennie.jpg" },
-  { name: "Jisoo", group: "BLACKPINK", image: "images/jisoo.jpg" },
-  { name: "Stella", group: "Hearts2Hearts", image: "images/stella.jpg" },
-  { name: "Jiwoo", group: "Hearts2Hearts", image: "images/jiwoo.jpg" },
-  { name: "Soa", group: "tripleS", image: "images/soa.jpg" },
-  { name: "HaYeon", group: "tripleS", image: "images/hayeon.jpg" },
-  { name: "Rescene member", group: "RESCENE", image: "images/rescene.jpg" },
-  { name: "Yujin", group: "IVE", image: "images/yujin.jpg" },
-  { name: "Liz", group: "IVE", image: "images/liz.jpg" },
-  { name: "Chaewon", group: "LE SSERAFIM", image: "images/chaewon.jpg" }
+/* ==================================================
+   ♡ ヨジャドル好き顔メーカー
+   ================================================== */
+
+
+/* ==================================================
+   ① アイドル登録
+   ==================================================
+
+   アイドルを追加するときは、ここに追加するだけ！
+
+   name  = アイドルの名前
+   group = グループ名
+   image = imagesフォルダ内の写真の名前
+
+   例：
+
+   {
+     name: "Wonyoung",
+     group: "IVE",
+     image: "images/wonyoung.jpg"
+   }
+
+================================================== */
+
+const idols = [
+
+  {
+    name: "Wonyoung",
+    group: "IVE",
+    image: "images/wonyoung.jpg"
+  },
+
+  {
+    name: "Karina",
+    group: "aespa",
+    image: "images/karina.jpg"
+  },
+
+  {
+    name: "Winter",
+    group: "aespa",
+    image: "images/winter.jpg"
+  },
+
+  {
+    name: "Sana",
+    group: "TWICE",
+    image: "images/sana.jpg"
+  },
+
+  {
+    name: "Tzuyu",
+    group: "TWICE",
+    image: "images/tzuyu.jpg"
+  },
+
+  {
+    name: "Yujin",
+    group: "IVE",
+    image: "images/yujin.jpg"
+  },
+
+  {
+    name: "Ningning",
+    group: "aespa",
+    image: "images/ningning.jpg"
+  },
+
+  {
+    name: "Minji",
+    group: "NewJeans",
+    image: "images/minji.jpg"
+  },
+
+  {
+    name: "Hanni",
+    group: "NewJeans",
+    image: "images/hanni.jpg"
+  },
+
+  {
+    name: "Haerin",
+    group: "NewJeans",
+    image: "images/haerin.jpg"
+  },
+
+  {
+    name: "Danielle",
+    group: "NewJeans",
+    image: "images/danielle.jpg"
+  },
+
+  {
+    name: "Hyein",
+    group: "NewJeans",
+    image: "images/hyein.jpg"
+  }
+
 ];
 
-const state = { round: 0, maxRounds: 20, wins: {}, seenPairs: new Set(), current: [] };
 
-const $ = id => document.getElementById(id);
-function show(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  $(id).classList.add("active");
+/* ==================================================
+   基本設定
+================================================== */
+
+const startScreen = document.getElementById("start-screen");
+const matchScreen = document.getElementById("match-screen");
+const resultScreen = document.getElementById("result-screen");
+
+const startButton = document.getElementById("start-button");
+
+const cardLeft = document.getElementById("card-left");
+const cardRight = document.getElementById("card-right");
+
+const imageLeft = document.getElementById("image-left");
+const imageRight = document.getElementById("image-right");
+
+const nameLeft = document.getElementById("name-left");
+const nameRight = document.getElementById("name-right");
+
+const groupLeft = document.getElementById("group-left");
+const groupRight = document.getElementById("group-right");
+
+const roundText = document.getElementById("round-text");
+const matchText = document.getElementById("match-text");
+
+const top9Grid = document.getElementById("top9-grid");
+
+const shareButton = document.getElementById("share-button");
+const saveButton = document.getElementById("save-button");
+const retryButton = document.getElementById("retry-button");
+
+const canvas = document.getElementById("share-canvas");
+
+let currentRound = [];
+let nextRound = [];
+
+let currentMatchIndex = 0;
+
+let currentLeft = null;
+let currentRight = null;
+
+let roundNumber = 1;
+
+let eliminated = [];
+
+
+/* ==================================================
+   画面切り替え
+================================================== */
+
+function showScreen(screen) {
+
+  document.querySelectorAll(".screen").forEach(element => {
+    element.classList.remove("active");
+  });
+
+  screen.classList.add("active");
 }
-function pairKey(a,b) { return [a.name,b.name].sort().join("___"); }
 
-function randomPair() {
-  const possible = [];
-  for (let i=0;i<IDOLS.length;i++) for (let j=i+1;j<IDOLS.length;j++) {
-    const key = pairKey(IDOLS[i], IDOLS[j]);
-    if (!state.seenPairs.has(key)) possible.push([IDOLS[i], IDOLS[j]]);
+
+/* ==================================================
+   シャッフル
+================================================== */
+
+function shuffle(array) {
+
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [result[i], result[j]] =
+      [result[j], result[i]];
   }
-  if (!possible.length) state.seenPairs.clear();
-  const list = possible.length ? possible : IDOLS.flatMap((a,i) =>
-    IDOLS.slice(i+1).map(b => [a,b]));
-  return list[Math.floor(Math.random()*list.length)];
+
+  return result;
 }
 
-function renderChoice(button, idol) {
-  button.querySelector("img").src = idol.image;
-  button.querySelector("img").alt = idol.name;
-  button.querySelector(".name").textContent = idol.name;
-  button.querySelector(".group").textContent = idol.group;
-  button.onclick = () => choose(idol);
-}
 
-function nextQuestion() {
-  if (state.round >= state.maxRounds) return finish();
-  const [a,b] = randomPair();
-  state.current = [a,b];
-  state.seenPairs.add(pairKey(a,b));
-  $("progress").textContent = `${state.round + 1} / ${state.maxRounds}`;
-  renderChoice($("choiceA"), a);
-  renderChoice($("choiceB"), b);
-}
+/* ==================================================
+   START
+================================================== */
 
-function choose(winner) {
-  state.wins[winner.name] = (state.wins[winner.name] || 0) + 1;
-  state.round++;
-  nextQuestion();
-}
+startButton.addEventListener("click", startGame);
 
-function finish() {
-  const ranking = [...IDOLS].sort((a,b) =>
-    (state.wins[b.name] || 0) - (state.wins[a.name] || 0)
-  ).slice(0,9);
-  $("resultList").innerHTML = ranking.map((idol,i) => `
-    <div class="result-item">
-      <div class="rank">${String(i+1).padStart(2,"0")}</div>
-      <img src="${idol.image}" alt="${idol.name}">
-      <div><div class="result-name">${idol.name}</div><span class="result-group">${idol.group}</span></div>
-      <div class="score">${state.wins[idol.name] || 0}♡</div>
-    </div>
-  `).join("");
-  $("copyMessage").textContent = "";
-  state.ranking = ranking;
-  show("result");
-}
 
-function start() {
-  state.round = 0; state.wins = {}; state.seenPairs.clear();
-  show("quiz"); nextQuestion();
-}
+function startGame() {
 
-$("startBtn").onclick = start;
-$("retryBtn").onclick = start;
-$("copyBtn").onclick = async () => {
-  const text = "♡ ヨジャドル好き顔ランキング ♡\n" +
-    state.ranking.map((x,i)=>`${i+1}. ${x.name}（${x.group}）`).join("\n");
-  try {
-    await navigator.clipboard.writeText(text);
-    $("copyMessage").textContent = "結果をコピーしたよ ♡";
-  } catch {
-    $("copyMessage").textContent = text;
+  if (idols.length < 2) {
+
+    alert("アイドルを2人以上登録してください♡");
+
+    return;
   }
-};
+
+  const shuffled = shuffle(idols);
+
+  currentRound = shuffled;
+
+  nextRound = [];
+
+  eliminated = [];
+
+  roundNumber = 1;
+
+  currentMatchIndex = 0;
+
+  showScreen(matchScreen);
+
+  prepareRound();
+}
+
+
+/* ==================================================
+   ラウンド準備
+================================================== */
+
+function prepareRound() {
+
+  currentMatchIndex = 0;
+
+  nextRound = [];
+
+  currentRound = shuffle(currentRound);
+
+  /*
+    奇数の場合は1人を自動的に次ラウンドへ。
+  */
+
+  if (currentRound.length % 2 === 1) {
+
+    const bye =
+      currentRound[currentRound.length - 1];
+
+    nextRound.push(bye);
+
+    currentRound =
+      currentRound.slice(0, -1);
+  }
+
+  showNextMatch();
+}
+
+
+/* ==================================================
+   次の対戦
+================================================== */
+
+function showNextMatch() {
+
+  if (currentMatchIndex >= currentRound.length) {
+
+    finishRound();
+
+    return;
+  }
+
+  currentLeft =
+    currentRound[currentMatchIndex];
+
+  currentRight =
+    currentRound[currentMatchIndex + 1];
+
+  imageLeft.src = currentLeft.image;
+  imageRight.src = currentRight.image;
+
+  imageLeft.alt = currentLeft.name;
+  imageRight.alt = currentRight.name;
+
+  nameLeft.textContent =
+    currentLeft.name;
+
+  nameRight.textContent =
+    currentRight.name;
+
+  groupLeft.textContent =
+    currentLeft.group;
+
+  groupRight.textContent =
+    currentRight.group;
+
+  const totalMatches =
+    Math.ceil(currentRound.length / 2);
+
+  const currentMatch =
+    Math.floor(currentMatchIndex / 2) + 1;
+
+  roundText.textContent =
+    `ROUND ${roundNumber}`;
+
+  matchText.textContent =
+    `${currentMatch} / ${totalMatches}`;
+}
+
+
+/* ==================================================
+   左を選択
+================================================== */
+
+cardLeft.addEventListener("click", () => {
+
+  chooseWinner(currentLeft, currentRight);
+
+});
+
+
+/* ==================================================
+   右を選択
+================================================== */
+
+cardRight.addEventListener("click", () => {
+
+  chooseWinner(currentRight, currentLeft);
+
+});
+
+
+/* ==================================================
+   勝者決定
+================================================== */
+
+function chooseWinner(winner, loser) {
+
+  nextRound.push(winner);
+
+  eliminated.push(loser);
+
+  currentMatchIndex += 2;
+
+  showNextMatch();
+}
+
+
+/* ==================================================
+   ラウンド終了
+================================================== */
+
+function finishRound() {
+
+  /*
+    1人だけになったら優勝者。
+  */
+
+  if (nextRound.length === 1) {
+
+    const champion = nextRound[0];
+
+    createFinalRanking(champion);
+
+    return;
+  }
+
+  currentRound = nextRound;
+
+  roundNumber++;
+
+  prepareRound();
+}
+
+
+/* ==================================================
+   TOP9作成
+================================================== */
+
+function createFinalRanking(champion) {
+
+  /*
+    完全な順位付けをするため、
+    ここでは勝ち上がった順を基本にして
+    敗退したアイドルも含めて順位候補を作る。
+
+    championを1位にして、
+    その後は各アイドルが何回勝ったかを計算。
+  */
+
+  const winCount = new Map();
+
+  idols.forEach(idol => {
+    winCount.set(idol.name, 0);
+  });
+
+  /*
+    eliminated配列は敗退順なので、
+    後に敗退した人ほど上位候補になる。
+  */
+
+  let rankCandidates = [
+    champion,
+    ...eliminated.reverse()
+  ];
+
+  /*
+    重複削除
+  */
+
+  const unique = [];
+
+  rankCandidates.forEach(idol => {
+
+    if (!unique.some(x => x.name === idol.name)) {
+      unique.push(idol);
+    }
+
+  });
+
+  /*
+    9人に満たない場合
+  */
+
+  idols.forEach(idol => {
+
+    if (
+      unique.length < 9 &&
+      !unique.some(x => x.name === idol.name)
+    ) {
+
+      unique.push(idol);
+
+    }
+
+  });
+
+  const top9 = unique.slice(0, 9);
+
+  showResult(top9);
+}
+
+
+/* ==================================================
+   結果表示
+================================================== */
+
+function showResult(top9) {
+
+  showScreen(resultScreen);
+
+  top9Grid.innerHTML = "";
+
+  top9.forEach((idol, index) => {
+
+    const item =
+      document.createElement("div");
+
+    item.className = "top9-item";
+
+    const image =
+      document.createElement("img");
+
+    image.src = idol.image;
+
+    image.alt = idol.name;
+
+    const rank =
+      document.createElement("div");
+
+    rank.className = "rank";
+
+    rank.textContent =
+      `#${index + 1}`;
+
+    item.appendChild(image);
+
+    item.appendChild(rank);
+
+    top9Grid.appendChild(item);
+
+  });
+
+  window.currentTop9 = top9;
+}
+
+
+/* ==================================================
+   結果画像を作成
+================================================== */
+
+async function createShareImage() {
+
+  const top9 = window.currentTop9;
+
+  if (!top9 || top9.length === 0) {
+    return null;
+  }
+
+  const size = 1200;
+
+  canvas.width = size;
+  canvas.height = size;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  ctx.fillStyle = "#fff7fb";
+
+  ctx.fillRect(
+    0,
+    0,
+    size,
+    size
+  );
+
+  const cellSize =
+    390;
+
+  const gap = 10;
+
+  const startX = 15;
+
+  const startY = 15;
+
+  for (let i = 0; i < 9; i++) {
+
+    const idol = top9[i];
+
+    const row =
+      Math.floor(i / 3);
+
+    const col =
+      i % 3;
+
+    const x =
+      startX +
+      col * (cellSize + gap);
+
+    const y =
+      startY +
+      row * (cellSize + gap);
+
+    const image =
+      await loadImage(idol.image);
+
+    drawCoverImage(
+      ctx,
+      image,
+      x,
+      y,
+      cellSize,
+      cellSize
+    );
+
+    /*
+      白い順位バッジ
+    */
+
+    ctx.fillStyle =
+      "rgba(255,255,255,0.9)";
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x + 42,
+      y + 42,
+      27,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.fillStyle = "#6d5961";
+
+    ctx.font =
+      "bold 22px sans-serif";
+
+    ctx.textAlign = "center";
+
+    ctx.textBaseline = "middle";
+
+    ctx.fillText(
+      `${i + 1}`,
+      x + 42,
+      y + 42
+    );
+  }
+
+  return canvas.toDataURL(
+    "image/png"
+  );
+}
+
+
+/* ==================================================
+   画像読み込み
+================================================== */
+
+function loadImage(src) {
+
+  return new Promise((resolve, reject) => {
+
+    const img =
+      new Image();
+
+    img.crossOrigin = "anonymous";
+
+    img.onload = () => resolve(img);
+
+    img.onerror = reject;
+
+    img.src = src;
+
+  });
+
+}
+
+
+/* ==================================================
+   正方形トリミング
+================================================== */
+
+function drawCoverImage(
+  ctx,
+  image,
+  x,
+  y,
+  width,
+  height
+) {
+
+  const imageRatio =
+    image.width / image.height;
+
+  const boxRatio =
+    width / height;
+
+  let sourceWidth =
+    image.width;
+
+  let sourceHeight =
+    image.height;
+
+  let sourceX = 0;
+
+  let sourceY = 0;
+
+  if (imageRatio > boxRatio) {
+
+    sourceWidth =
+      image.height * boxRatio;
+
+    sourceX =
+      (image.width - sourceWidth) / 2;
+
+  } else {
+
+    sourceHeight =
+      image.width / boxRatio;
+
+    sourceY =
+      (image.height - sourceHeight) / 2;
+  }
+
+  ctx.drawImage(
+    image,
+    sourceX,
+    sourceY,
+    sourceWidth,
+    sourceHeight,
+    x,
+    y,
+    width,
+    height
+  );
+}
+
+
+/* ==================================================
+   シェア
+================================================== */
+
+shareButton.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      const dataUrl =
+        await createShareImage();
+
+      if (!dataUrl) return;
+
+      /*
+        Web Share API対応端末
+      */
+
+      const response =
+        await fetch(dataUrl);
+
+      const blob =
+        await response.blob();
+
+      const file =
+        new File(
+          [blob],
+          "yojadol-top9.png",
+          {
+            type: "image/png"
+          }
+        );
+
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({
+          files: [file]
+        })
+      ) {
+
+        await navigator.share({
+          title:
+            "ヨジャドル好き顔メーカー ♡",
+
+          text:
+            "私のヨジャドル好き顔TOP9 ♡",
+
+          files: [file]
+        });
+
+      } else {
+
+        downloadImage(dataUrl);
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }
+);
+
+
+/* ==================================================
+   保存
+================================================== */
+
+saveButton.addEventListener(
+  "click",
+  async () => {
+
+    const dataUrl =
+      await createShareImage();
+
+    if (!dataUrl) return;
+
+    downloadImage(dataUrl);
+
+  }
+);
+
+
+function downloadImage(dataUrl) {
+
+  const link =
+    document.createElement("a");
+
+  link.download =
+    "yojadol-top9.png";
+
+  link.href =
+    dataUrl;
+
+  link.click();
+
+}
+
+
+/* ==================================================
+   もう一度
+================================================== */
+
+retryButton.addEventListener(
+  "click",
+  () => {
+
+    showScreen(startScreen);
+
+  }
+);
