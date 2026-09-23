@@ -54,187 +54,187 @@ const idols = [
    {
   name: "Hyerin",
   group: "tripleS",
-  image: "IMG_948.jpeg"
+  image: "IMG_0948.jpeg"
 },
    
 {
   name: "Jiwoo",
   group: "tripleS",
-  image: "IMG_949.jpeg"
+  image: "IMG_0949.jpeg"
 },
    
 {
   name: "Chaeyeon",
   group: "tripleS",
-  image: "IMG_950.jpeg"
+  image: "IMG_0950.jpeg"
 },
    
 {
   name: "Yooyeon",
   group: "tripleS",
-  image: "IMG_951.jpeg"
+  image: "IMG_0951.jpeg"
 },
    
 {
   name: "Soomin",
   group: "tripleS",
-  image: "IMG_952.jpeg"
+  image: "IMG_0952.jpeg"
 },
    
 {
   name: "Nakyoung",
   group: "tripleS",
-  image: "IMG_953.jpeg"
+  image: "IMG_0953.jpeg"
 },
    
 {
   name: "Yubin",
   group: "tripleS",
-  image: "IMG_954.jpeg"
+  image: "IMG_0954.jpeg"
 },
    
 {
   name: "Kaede",
   group: "tripleS",
-  image: "IMG_955.jpeg"
+  image: "IMG_0955.jpeg"
 },
    
 {
   name: "Dahyun",
   group: "tripleS",
-  image: "IMG_956.jpeg"
+  image: "IMG_0956.jpeg"
 },
    
 {
   name: "Kotone",
   group: "tripleS",
-  image: "IMG_957.jpeg"
+  image: "IMG_0957.jpeg"
 },
    
 {
   name: "Yeonji",
   group: "tripleS",
-  image: "IMG_958.jpeg"
+  image: "IMG_0958.jpeg"
 },
    
 {
   name: "Nien",
   group: "tripleS",
-  image: "IMG_959.jpeg"
+  image: "IMG_0959.jpeg"
 },
    
 {
   name: "Sohyun",
   group: "tripleS",
-  image: "IMG_960.jpeg"
+  image: "IMG_0960.jpeg"
 },
    
 {
   name: "Xinyu",
   group: "tripleS",
-  image: "IMG_961.jpeg"
+  image: "IMG_0961.jpeg"
 },
    
 {
   name: "Mayu",
   group: "tripleS",
-  image: "IMG_962.jpeg"
+  image: "IMG_0962.jpeg"
 },
    
 {
   name: "Lynn",
   group: "tripleS",
-  image: "IMG_963.jpeg"
+  image: "IMG_0963.jpeg"
 },
    
 {
   name: "Joobin",
   group: "tripleS",
-  image: "IMG_964.jpeg"
+  image: "IMG_0964.jpeg"
 },
    
 {
   name: "Hayeon",
   group: "tripleS",
-  image: "IMG_965.jpeg"
+  image: "IMG_0965.jpeg"
 },
    
 {
   name: "Shion",
   group: "tripleS",
-  image: "IMG_966.jpeg"
+  image: "IMG_0966.jpeg"
 },
    
 {
   name: "Chaewon",
   group: "tripleS",
-  image: "IMG_967.jpeg"
+  image: "IMG_0967.jpeg"
 },
    
 {
   name: "Sullin",
   group: "tripleS",
-  image: "IMG_968.jpeg"
+  image: "IMG_0968.jpeg"
 },
    
 {
   name: "Seoah",
   group: "tripleS",
-  image: "IMG_969.jpeg"
+  image: "IMG_0969.jpeg"
 },
    
 {
   name: "Jiyeon",
   group: "tripleS",
-  image: "IMG_970.jpeg"
+  image: "IMG_0970.jpeg"
 },
    
 {
   name: "Jiwoo",
   group: "Hearts2Hearts",
-  image: "IMG_975.jpeg"
+  image: "IMG_0975.jpeg"
 },
    
 {
   name: "Stella",
   group: "Hearts2Hearts",
-  image: "IMG_976.jpeg"
+  image: "IMG_0976.jpeg"
 },
    
 {
   name: "Ian",
   group: "Hearts2Hearts",
-  image: "IMG_977.jpeg"
+  image: "IMG_0977.jpeg"
 },
    
 {
   name: "Yuha",
   group: "Hearts2Hearts",
-  image: "IMG_978.jpeg"
+  image: "IMG_0978.jpeg"
 },
    
 {
   name: "Juun",
   group: "Hearts2Hearts",
-  image: "IMG_979.jpeg"
+  image: "IMG_0979.jpeg"
 },
    
 {
   name: "Carmen",
   group: "Hearts2Hearts",
-  image: "IMG_980.jpeg"
+  image: "IMG_0980.jpeg"
 },
    
 {
   name: "Ana",
   group: "Hearts2Hearts",
-  image: "IMG_981.jpeg"
+  image: "IMG_0981.jpeg"
 },
    
 {
   name: "Yeon",
   group: "Hearts2Hearts",
-  image: "IMG_982.jpeg"
+  image: "IMG_0982.jpeg"
 }
 
 ];
