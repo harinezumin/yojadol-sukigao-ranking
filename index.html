@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
   <title>ヨジャドル好き顔メーカー ♡</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
   <main class="app">
 
-    <!-- START -->
-    <section id="start-screen" class="screen active">
+
+    <!-- =========================
+         START画面
+    ========================== -->
+
+    <section
+      id="start-screen"
+      class="screen active"
+    >
+
       <div class="logo">♡</div>
 
-      <h1>ヨジャドル<br>好き顔メーカー</h1>
+      <h1>
+        ヨジャドル<br>
+        好き顔メーカー
+      </h1>
 
       <p class="subtitle">
         あなたの「好き♡」を<br>
@@ -23,87 +40,166 @@
       </p>
 
       <div class="info-box">
+
         <p>♡ 女性K-POPアイドル</p>
         <p>♡ 2人ずつ比較</p>
         <p>♡ トーナメント方式</p>
-        <p>♡ 最後にあなたのTOP9を発表</p>
+        <p>♡ 最後にランキング発表</p>
+
       </div>
 
-      <button id="start-button" class="main-button">
+      <button
+        id="start-button"
+        class="main-button"
+      >
         START ♡
       </button>
+
     </section>
 
 
-    <!-- MATCH -->
-    <section id="match-screen" class="screen">
+
+    <!-- =========================
+         対戦画面
+    ========================== -->
+
+    <section
+      id="match-screen"
+      class="screen"
+    >
 
       <div class="progress-area">
-        <span id="round-text">ROUND 1</span>
-        <span id="match-text">1 / 1</span>
+
+        <span id="round-text">
+          ROUND 1
+        </span>
+
+        <span id="match-text">
+          1 / 1
+        </span>
+
       </div>
 
-      <h2>どっちの顔が好き？</h2>
+
+      <h2>
+        どっちの顔が好き？
+      </h2>
+
 
       <div class="cards">
 
-        <button class="idol-card" id="card-left">
-          <img id="image-left" src="" alt="">
+
+        <!-- 左 -->
+
+        <button
+          id="card-left"
+          class="idol-card"
+          type="button"
+        >
+
+          <img
+            id="image-left"
+            src=""
+            alt=""
+          >
+
           <div class="idol-info">
-            <strong id="name-left"></strong>
-            <span id="group-left"></span>
+
+            <strong id="name-left">
+            </strong>
+
+            <span id="group-left">
+            </span>
+
           </div>
+
         </button>
 
-        <div class="vs">VS</div>
 
-        <button class="idol-card" id="card-right">
-          <img id="image-right" src="" alt="">
+        <div class="vs">
+          VS
+        </div>
+
+
+        <!-- 右 -->
+
+        <button
+          id="card-right"
+          class="idol-card"
+          type="button"
+        >
+
+          <img
+            id="image-right"
+            src=""
+            alt=""
+          >
+
           <div class="idol-info">
-            <strong id="name-right"></strong>
-            <span id="group-right"></span>
+
+            <strong id="name-right">
+            </strong>
+
+            <span id="group-right">
+            </span>
+
           </div>
+
         </button>
+
 
       </div>
 
     </section>
 
 
-    <!-- RESULT -->
-    <section id="result-screen" class="screen">
 
-      <p class="result-small">YOUR</p>
-      <h1 class="result-title">TOP 9</h1>
+    <!-- =========================
+         結果画面
+    ========================== -->
 
-      <div id="top9-grid" class="top9-grid"></div>
+    <section
+      id="result-screen"
+      class="screen"
+    >
+
+      <p class="result-small">
+        YOUR
+      </p>
+
+      <h1 class="result-title">
+        RANKING
+      </h1>
+
+
+      <div
+        id="top9-grid"
+        class="top9-grid"
+      >
+      </div>
+
 
       <p class="result-message">
         My favorite faces ♡
       </p>
 
-      <div class="result-buttons">
-        <button id="share-button" class="main-button">
-          ♡ 結果をシェア
-        </button>
 
-        <button id="save-button" class="sub-button">
-          画像を保存
-        </button>
-
-        <button id="retry-button" class="sub-button">
-          もう一度遊ぶ
-        </button>
-      </div>
+      <button
+        id="retry-button"
+        class="main-button"
+        type="button"
+      >
+        もう一度遊ぶ
+      </button>
 
     </section>
 
+
   </main>
 
-  <canvas id="share-canvas"></canvas>
 
-  <script src="script.js?v=2
-    "></script>
+  <script src="script.js"></script>
 
 </body>
+
 </html>
