@@ -33,6 +33,22 @@ const idols = [
     group: "IVE",
     image: "IMG_0943.jpeg"
   },
+    {
+    name: "Gaeul,
+    group: "IVE",
+    image: "IMG_0944.jpeg"
+  },
+    {
+    name: "Liz",
+    group: "IVE",
+    image: "IMG_0945.jpeg"
+  },
+    {
+    name: "Yujin",
+    group: "IVE",
+    image: "IMG_0946.jpeg"
+  }
+
 ];
 
 
