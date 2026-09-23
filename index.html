@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffd7e8">
+  <title>♡ ヨジャドル好き顔ランキング ♡</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section id="home" class="screen active">
+      <div class="sparkles">✦ ˚｡⋆</div>
+      <p class="eyebrow">K-POP GIRLS FACE TYPE</p>
+      <h1>♡ ヨジャドル<br>好き顔ランキング ♡</h1>
+      <p class="lead">直感で「好き♡」と思う方を選んでね。</p>
+      <button id="startBtn" class="main-btn">START ♡</button>
+      <p class="small">まずは試作版です。メンバーは後から追加できます。</p>
+    </section>
+
+    <section id="quiz" class="screen">
+      <div class="topbar">
+        <span>♡ 好き顔ランキング</span>
+        <span id="progress">1 / 20</span>
+      </div>
+      <div class="question">
+        <p class="eyebrow">WHICH ONE DO YOU LIKE?</p>
+        <h2>どっちの顔が好き？</h2>
+      </div>
+      <div class="choices">
+        <button class="idol-card" id="choiceA">
+          <img alt="">
+          <span class="name"></span>
+          <small class="group"></small>
+        </button>
+        <div class="vs">VS</div>
+        <button class="idol-card" id="choiceB">
+          <img alt="">
+          <span class="name"></span>
+          <small class="group"></small>
+        </button>
+      </div>
+      <p class="hint">写真をタップすると次へ ♡</p>
+    </section>
+
+    <section id="result" class="screen">
+      <p class="eyebrow">YOUR RESULT</p>
+      <h2>♡ あなたの好き顔TOP 9 ♡</h2>
+      <div id="resultList" class="result-list"></div>
+      <div class="result-actions">
+        <button id="retryBtn" class="main-btn">もう一度診断 ♡</button>
+        <button id="copyBtn" class="sub-btn">結果をコピー</button>
+      </div>
+      <p id="copyMessage" class="small"></p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
