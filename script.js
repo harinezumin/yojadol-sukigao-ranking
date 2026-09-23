@@ -56,151 +56,181 @@ const idols = [
   group: "tripleS",
   image: "IMG_948.jpeg"
 },
+   
 {
   name: "Jiwoo",
   group: "tripleS",
   image: "IMG_949.jpeg"
 },
+   
 {
   name: "Chaeyeon",
   group: "tripleS",
   image: "IMG_950.jpeg"
 },
+   
 {
   name: "Yooyeon",
   group: "tripleS",
   image: "IMG_951.jpeg"
 },
+   
 {
   name: "Soomin",
   group: "tripleS",
   image: "IMG_952.jpeg"
 },
+   
 {
   name: "Nakyoung",
   group: "tripleS",
   image: "IMG_953.jpeg"
 },
+   
 {
   name: "Yubin",
   group: "tripleS",
   image: "IMG_954.jpeg"
 },
+   
 {
   name: "Kaede",
   group: "tripleS",
   image: "IMG_955.jpeg"
 },
+   
 {
   name: "Dahyun",
   group: "tripleS",
   image: "IMG_956.jpeg"
 },
+   
 {
   name: "Kotone",
   group: "tripleS",
   image: "IMG_957.jpeg"
 },
+   
 {
   name: "Yeonji",
   group: "tripleS",
   image: "IMG_958.jpeg"
 },
+   
 {
   name: "Nien",
   group: "tripleS",
   image: "IMG_959.jpeg"
 },
+   
 {
   name: "Sohyun",
   group: "tripleS",
   image: "IMG_960.jpeg"
 },
+   
 {
   name: "Xinyu",
   group: "tripleS",
   image: "IMG_961.jpeg"
 },
+   
 {
   name: "Mayu",
   group: "tripleS",
   image: "IMG_962.jpeg"
 },
+   
 {
   name: "Lynn",
   group: "tripleS",
   image: "IMG_963.jpeg"
 },
+   
 {
   name: "Joobin",
   group: "tripleS",
   image: "IMG_964.jpeg"
 },
+   
 {
   name: "Hayeon",
   group: "tripleS",
   image: "IMG_965.jpeg"
 },
+   
 {
   name: "Shion",
   group: "tripleS",
   image: "IMG_966.jpeg"
 },
+   
 {
   name: "Chaewon",
   group: "tripleS",
   image: "IMG_967.jpeg"
 },
+   
 {
   name: "Sullin",
   group: "tripleS",
   image: "IMG_968.jpeg"
 },
+   
 {
   name: "Seoah",
   group: "tripleS",
   image: "IMG_969.jpeg"
 },
+   
 {
   name: "Jiyeon",
   group: "tripleS",
   image: "IMG_970.jpeg"
 },
-   {
+   
+{
   name: "Jiwoo",
   group: "Hearts2Hearts",
   image: "IMG_975.jpeg"
 },
+   
 {
   name: "Stella",
   group: "Hearts2Hearts",
   image: "IMG_976.jpeg"
 },
+   
 {
   name: "Ian",
   group: "Hearts2Hearts",
   image: "IMG_977.jpeg"
 },
+   
 {
   name: "Yuha",
   group: "Hearts2Hearts",
   image: "IMG_978.jpeg"
 },
+   
 {
   name: "Juun",
   group: "Hearts2Hearts",
   image: "IMG_979.jpeg"
 },
+   
 {
   name: "Carmen",
   group: "Hearts2Hearts",
   image: "IMG_980.jpeg"
 },
+   
 {
   name: "Ana",
   group: "Hearts2Hearts",
   image: "IMG_981.jpeg"
 },
+   
 {
   name: "Yeon",
   group: "Hearts2Hearts",
