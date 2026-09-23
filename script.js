@@ -28,73 +28,73 @@ const idols = [
   {
     name: "Wonyoung",
     group: "IVE",
-    image: "images/wonyoung.jpg"
+    image: ""
   },
 
   {
     name: "Karina",
     group: "aespa",
-    image: "images/karina.jpg"
+    image: ""
   },
 
   {
     name: "Winter",
     group: "aespa",
-    image: "images/winter.jpg"
+    image: ""
   },
 
   {
     name: "Sana",
     group: "TWICE",
-    image: "images/sana.jpg"
+    image: ""
   },
 
   {
     name: "Tzuyu",
     group: "TWICE",
-    image: "images/tzuyu.jpg"
+    image: ""
   },
 
   {
     name: "Yujin",
     group: "IVE",
-    image: "images/yujin.jpg"
+    image: ""
   },
 
   {
     name: "Ningning",
     group: "aespa",
-    image: "images/ningning.jpg"
+    image: ""
   },
 
   {
     name: "Minji",
     group: "NewJeans",
-    image: "images/minji.jpg"
+    image: ""
   },
 
   {
     name: "Hanni",
     group: "NewJeans",
-    image: "images/hanni.jpg"
+    image: ""
   },
 
   {
     name: "Haerin",
     group: "NewJeans",
-    image: "images/haerin.jpg"
+    image: ""
   },
 
   {
     name: "Danielle",
     group: "NewJeans",
-    image: "images/danielle.jpg"
+    image: ""
   },
 
   {
     name: "Hyein",
     group: "NewJeans",
-    image: "images/hyein.jpg"
+    image: ""
   }
 
 ];
