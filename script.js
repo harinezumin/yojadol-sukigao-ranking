@@ -4,24 +4,8 @@
 
 
 /* ==================================================
-   ① アイドル登録
-   ==================================================
-
-   アイドルを追加するときは、ここに追加するだけ！
-
-   name  = アイドルの名前
-   group = グループ名
-   image = imagesフォルダ内の写真の名前
-
-   例：
-
-   {
-     name: "Wonyoung",
-     group: "IVE",
-     image: "images/wonyoung.jpg"
-   }
-
-================================================== */
+   アイドル登録
+   ================================================== */
 
 const idols = [
 
@@ -32,752 +16,655 @@ const idols = [
   },
 
   {
-    name: "Karina",
-    group: "aespa",
+    name: "Rei",
+    group: "IVE",
     image: "images/IMG_0939.jpeg"
   },
 
   {
-    name: "Winter",
-    group: "aespa",
-    image: ""
+    name: "Leeseo",
+    group: "IVE",
+    image: "images/IMG_0943.jpeg"
   },
 
   {
-    name: "Sana",
-    group: "TWICE",
-    image: ""
+    name: "Gaeul",
+    group: "IVE",
+    image: "images/IMG_0944.jpeg"
   },
 
   {
-    name: "Tzuyu",
-    group: "TWICE",
-    image: ""
+    name: "Liz",
+    group: "IVE",
+    image: "images/IMG_0945.jpeg"
   },
 
   {
     name: "Yujin",
     group: "IVE",
-    image: ""
-  },
-
-  {
-    name: "Ningning",
-    group: "aespa",
-    image: ""
-  },
-
-  {
-    name: "Minji",
-    group: "NewJeans",
-    image: ""
-  },
-
-  {
-    name: "Hanni",
-    group: "NewJeans",
-    image: ""
-  },
-
-  {
-    name: "Haerin",
-    group: "NewJeans",
-    image: ""
-  },
-
-  {
-    name: "Danielle",
-    group: "NewJeans",
-    image: ""
-  },
-
-  {
-    name: "Hyein",
-    group: "NewJeans",
-    image: ""
+    image: "images/IMG_0946.jpeg"
   }
 
 ];
 
 
 /* ==================================================
-   基本設定
-================================================== */
+   HTMLを読み込んでからゲームを開始
+   ================================================== */
 
-const startScreen = document.getElementById("start-screen");
-const matchScreen = document.getElementById("match-screen");
-const resultScreen = document.getElementById("result-screen");
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
 
-const startButton = document.getElementById("start-button");
 
-const cardLeft = document.getElementById("card-left");
-const cardRight = document.getElementById("card-right");
+    /* =========================
+       HTML要素
+    ========================== */
 
-const imageLeft = document.getElementById("image-left");
-const imageRight = document.getElementById("image-right");
+    const startScreen =
+      document.getElementById(
+        "start-screen"
+      );
 
-const nameLeft = document.getElementById("name-left");
-const nameRight = document.getElementById("name-right");
+    const matchScreen =
+      document.getElementById(
+        "match-screen"
+      );
 
-const groupLeft = document.getElementById("group-left");
-const groupRight = document.getElementById("group-right");
+    const resultScreen =
+      document.getElementById(
+        "result-screen"
+      );
 
-const roundText = document.getElementById("round-text");
-const matchText = document.getElementById("match-text");
 
-const top9Grid = document.getElementById("top9-grid");
+    const startButton =
+      document.getElementById(
+        "start-button"
+      );
 
-const shareButton = document.getElementById("share-button");
-const saveButton = document.getElementById("save-button");
-const retryButton = document.getElementById("retry-button");
 
-const canvas = document.getElementById("share-canvas");
+    const cardLeft =
+      document.getElementById(
+        "card-left"
+      );
 
-let currentRound = [];
-let nextRound = [];
+    const cardRight =
+      document.getElementById(
+        "card-right"
+      );
 
-let currentMatchIndex = 0;
 
-let currentLeft = null;
-let currentRight = null;
+    const imageLeft =
+      document.getElementById(
+        "image-left"
+      );
 
-let roundNumber = 1;
+    const imageRight =
+      document.getElementById(
+        "image-right"
+      );
 
-let eliminated = [];
 
+    const nameLeft =
+      document.getElementById(
+        "name-left"
+      );
 
-/* ==================================================
-   画面切り替え
-================================================== */
+    const nameRight =
+      document.getElementById(
+        "name-right"
+      );
 
-function showScreen(screen) {
 
-  document.querySelectorAll(".screen").forEach(element => {
-    element.classList.remove("active");
-  });
+    const groupLeft =
+      document.getElementById(
+        "group-left"
+      );
 
-  screen.classList.add("active");
-}
+    const groupRight =
+      document.getElementById(
+        "group-right"
+      );
 
 
-/* ==================================================
-   シャッフル
-================================================== */
+    const roundText =
+      document.getElementById(
+        "round-text"
+      );
 
-function shuffle(array) {
+    const matchText =
+      document.getElementById(
+        "match-text"
+      );
 
-  const result = [...array];
 
-  for (let i = result.length - 1; i > 0; i--) {
+    const top9Grid =
+      document.getElementById(
+        "top9-grid"
+      );
 
-    const j = Math.floor(Math.random() * (i + 1));
 
-    [result[i], result[j]] =
-      [result[j], result[i]];
-  }
+    const retryButton =
+      document.getElementById(
+        "retry-button"
+      );
 
-  return result;
-}
 
+    /* =========================
+       ゲーム変数
+    ========================== */
 
-/* ==================================================
-   START
-================================================== */
+    let currentRound = [];
 
-startButton.addEventListener("click", startGame);
+    let nextRound = [];
 
+    let currentIndex = 0;
 
-function startGame() {
+    let roundNumber = 1;
 
-  if (idols.length < 2) {
+    let leftIdol = null;
 
-    alert("アイドルを2人以上登録してください♡");
+    let rightIdol = null;
 
-    return;
-  }
+    let ranking = [];
 
-  const shuffled = shuffle(idols);
 
-  currentRound = shuffled;
+    /* =========================
+       画面切り替え
+    ========================== */
 
-  nextRound = [];
+    function showScreen(screen) {
 
-  eliminated = [];
+      startScreen.classList.remove(
+        "active"
+      );
 
-  roundNumber = 1;
+      matchScreen.classList.remove(
+        "active"
+      );
 
-  currentMatchIndex = 0;
+      resultScreen.classList.remove(
+        "active"
+      );
 
-  showScreen(matchScreen);
-
-  prepareRound();
-}
-
-
-/* ==================================================
-   ラウンド準備
-================================================== */
-
-function prepareRound() {
-
-  currentMatchIndex = 0;
-
-  nextRound = [];
-
-  currentRound = shuffle(currentRound);
-
-  /*
-    奇数の場合は1人を自動的に次ラウンドへ。
-  */
-
-  if (currentRound.length % 2 === 1) {
-
-    const bye =
-      currentRound[currentRound.length - 1];
-
-    nextRound.push(bye);
-
-    currentRound =
-      currentRound.slice(0, -1);
-  }
-
-  showNextMatch();
-}
-
-
-/* ==================================================
-   次の対戦
-================================================== */
-
-function showNextMatch() {
-
-  if (currentMatchIndex >= currentRound.length) {
-
-    finishRound();
-
-    return;
-  }
-
-  currentLeft =
-    currentRound[currentMatchIndex];
-
-  currentRight =
-    currentRound[currentMatchIndex + 1];
-
-  imageLeft.src = currentLeft.image;
-  imageRight.src = currentRight.image;
-
-  imageLeft.alt = currentLeft.name;
-  imageRight.alt = currentRight.name;
-
-  nameLeft.textContent =
-    currentLeft.name;
-
-  nameRight.textContent =
-    currentRight.name;
-
-  groupLeft.textContent =
-    currentLeft.group;
-
-  groupRight.textContent =
-    currentRight.group;
-
-  const totalMatches =
-    Math.ceil(currentRound.length / 2);
-
-  const currentMatch =
-    Math.floor(currentMatchIndex / 2) + 1;
-
-  roundText.textContent =
-    `ROUND ${roundNumber}`;
-
-  matchText.textContent =
-    `${currentMatch} / ${totalMatches}`;
-}
-
-
-/* ==================================================
-   左を選択
-================================================== */
-
-cardLeft.addEventListener("click", () => {
-
-  chooseWinner(currentLeft, currentRight);
-
-});
-
-
-/* ==================================================
-   右を選択
-================================================== */
-
-cardRight.addEventListener("click", () => {
-
-  chooseWinner(currentRight, currentLeft);
-
-});
-
-
-/* ==================================================
-   勝者決定
-================================================== */
-
-function chooseWinner(winner, loser) {
-
-  nextRound.push(winner);
-
-  eliminated.push(loser);
-
-  currentMatchIndex += 2;
-
-  showNextMatch();
-}
-
-
-/* ==================================================
-   ラウンド終了
-================================================== */
-
-function finishRound() {
-
-  /*
-    1人だけになったら優勝者。
-  */
-
-  if (nextRound.length === 1) {
-
-    const champion = nextRound[0];
-
-    createFinalRanking(champion);
-
-    return;
-  }
-
-  currentRound = nextRound;
-
-  roundNumber++;
-
-  prepareRound();
-}
-
-
-/* ==================================================
-   TOP9作成
-================================================== */
-
-function createFinalRanking(champion) {
-
-  /*
-    完全な順位付けをするため、
-    ここでは勝ち上がった順を基本にして
-    敗退したアイドルも含めて順位候補を作る。
-
-    championを1位にして、
-    その後は各アイドルが何回勝ったかを計算。
-  */
-
-  const winCount = new Map();
-
-  idols.forEach(idol => {
-    winCount.set(idol.name, 0);
-  });
-
-  /*
-    eliminated配列は敗退順なので、
-    後に敗退した人ほど上位候補になる。
-  */
-
-  let rankCandidates = [
-    champion,
-    ...eliminated.reverse()
-  ];
-
-  /*
-    重複削除
-  */
-
-  const unique = [];
-
-  rankCandidates.forEach(idol => {
-
-    if (!unique.some(x => x.name === idol.name)) {
-      unique.push(idol);
+      screen.classList.add(
+        "active"
+      );
     }
 
-  });
 
-  /*
-    9人に満たない場合
-  */
+    /* =========================
+       シャッフル
+    ========================== */
 
-  idols.forEach(idol => {
+    function shuffle(array) {
 
-    if (
-      unique.length < 9 &&
-      !unique.some(x => x.name === idol.name)
-    ) {
+      const result =
+        [...array];
 
-      unique.push(idol);
 
-    }
-
-  });
-
-  const top9 = unique.slice(0, 9);
-
-  showResult(top9);
-}
-
-
-/* ==================================================
-   結果表示
-================================================== */
-
-function showResult(top9) {
-
-  showScreen(resultScreen);
-
-  top9Grid.innerHTML = "";
-
-  top9.forEach((idol, index) => {
-
-    const item =
-      document.createElement("div");
-
-    item.className = "top9-item";
-
-    const image =
-      document.createElement("img");
-
-    image.src = idol.image;
-
-    image.alt = idol.name;
-
-    const rank =
-      document.createElement("div");
-
-    rank.className = "rank";
-
-    rank.textContent =
-      `#${index + 1}`;
-
-    item.appendChild(image);
-
-    item.appendChild(rank);
-
-    top9Grid.appendChild(item);
-
-  });
-
-  window.currentTop9 = top9;
-}
-
-
-/* ==================================================
-   結果画像を作成
-================================================== */
-
-async function createShareImage() {
-
-  const top9 = window.currentTop9;
-
-  if (!top9 || top9.length === 0) {
-    return null;
-  }
-
-  const size = 1200;
-
-  canvas.width = size;
-  canvas.height = size;
-
-  const ctx =
-    canvas.getContext("2d");
-
-  ctx.fillStyle = "#fff7fb";
-
-  ctx.fillRect(
-    0,
-    0,
-    size,
-    size
-  );
-
-  const cellSize =
-    390;
-
-  const gap = 10;
-
-  const startX = 15;
-
-  const startY = 15;
-
-  for (let i = 0; i < 9; i++) {
-
-    const idol = top9[i];
-
-    const row =
-      Math.floor(i / 3);
-
-    const col =
-      i % 3;
-
-    const x =
-      startX +
-      col * (cellSize + gap);
-
-    const y =
-      startY +
-      row * (cellSize + gap);
-
-    const image =
-      await loadImage(idol.image);
-
-    drawCoverImage(
-      ctx,
-      image,
-      x,
-      y,
-      cellSize,
-      cellSize
-    );
-
-    /*
-      白い順位バッジ
-    */
-
-    ctx.fillStyle =
-      "rgba(255,255,255,0.9)";
-
-    ctx.beginPath();
-
-    ctx.arc(
-      x + 42,
-      y + 42,
-      27,
-      0,
-      Math.PI * 2
-    );
-
-    ctx.fill();
-
-    ctx.fillStyle = "#6d5961";
-
-    ctx.font =
-      "bold 22px sans-serif";
-
-    ctx.textAlign = "center";
-
-    ctx.textBaseline = "middle";
-
-    ctx.fillText(
-      `${i + 1}`,
-      x + 42,
-      y + 42
-    );
-  }
-
-  return canvas.toDataURL(
-    "image/png"
-  );
-}
-
-
-/* ==================================================
-   画像読み込み
-================================================== */
-
-function loadImage(src) {
-
-  return new Promise((resolve, reject) => {
-
-    const img =
-      new Image();
-
-    img.crossOrigin = "anonymous";
-
-    img.onload = () => resolve(img);
-
-    img.onerror = reject;
-
-    img.src = src;
-
-  });
-
-}
-
-
-/* ==================================================
-   正方形トリミング
-================================================== */
-
-function drawCoverImage(
-  ctx,
-  image,
-  x,
-  y,
-  width,
-  height
-) {
-
-  const imageRatio =
-    image.width / image.height;
-
-  const boxRatio =
-    width / height;
-
-  let sourceWidth =
-    image.width;
-
-  let sourceHeight =
-    image.height;
-
-  let sourceX = 0;
-
-  let sourceY = 0;
-
-  if (imageRatio > boxRatio) {
-
-    sourceWidth =
-      image.height * boxRatio;
-
-    sourceX =
-      (image.width - sourceWidth) / 2;
-
-  } else {
-
-    sourceHeight =
-      image.width / boxRatio;
-
-    sourceY =
-      (image.height - sourceHeight) / 2;
-  }
-
-  ctx.drawImage(
-    image,
-    sourceX,
-    sourceY,
-    sourceWidth,
-    sourceHeight,
-    x,
-    y,
-    width,
-    height
-  );
-}
-
-
-/* ==================================================
-   シェア
-================================================== */
-
-shareButton.addEventListener(
-  "click",
-  async () => {
-
-    try {
-
-      const dataUrl =
-        await createShareImage();
-
-      if (!dataUrl) return;
-
-      /*
-        Web Share API対応端末
-      */
-
-      const response =
-        await fetch(dataUrl);
-
-      const blob =
-        await response.blob();
-
-      const file =
-        new File(
-          [blob],
-          "yojadol-top9.png",
-          {
-            type: "image/png"
-          }
-        );
-
-      if (
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({
-          files: [file]
-        })
+      for (
+        let i = result.length - 1;
+        i > 0;
+        i--
       ) {
 
-        await navigator.share({
-          title:
-            "ヨジャドル好き顔メーカー ♡",
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
 
-          text:
-            "私のヨジャドル好き顔TOP9 ♡",
 
-          files: [file]
-        });
-
-      } else {
-
-        downloadImage(dataUrl);
+        [
+          result[i],
+          result[j]
+        ] =
+        [
+          result[j],
+          result[i]
+        ];
 
       }
 
-    } catch (error) {
 
-      console.log(error);
+      return result;
+    }
+
+
+    /* =========================
+       START
+    ========================== */
+
+    startButton.addEventListener(
+      "click",
+      function () {
+
+        currentRound =
+          shuffle(idols);
+
+        nextRound = [];
+
+        currentIndex = 0;
+
+        roundNumber = 1;
+
+        ranking = [];
+
+        showScreen(
+          matchScreen
+        );
+
+        prepareRound();
+
+      }
+    );
+
+
+    /* =========================
+       ラウンド準備
+    ========================== */
+
+    function prepareRound() {
+
+      currentIndex = 0;
+
+      nextRound = [];
+
+      currentRound =
+        shuffle(currentRound);
+
+
+      showNextMatch();
 
     }
 
-  }
-);
+
+    /* =========================
+       次の対戦
+    ========================== */
+
+    function showNextMatch() {
 
 
-/* ==================================================
-   保存
-================================================== */
+      /* ラウンド終了 */
 
-saveButton.addEventListener(
-  "click",
-  async () => {
+      if (
+        currentIndex >=
+        currentRound.length
+      ) {
 
-    const dataUrl =
-      await createShareImage();
+        finishRound();
 
-    if (!dataUrl) return;
-
-    downloadImage(dataUrl);
-
-  }
-);
+        return;
+      }
 
 
-function downloadImage(dataUrl) {
+      /* 奇数なら最後の1人は不戦勝 */
 
-  const link =
-    document.createElement("a");
+      if (
+        currentIndex ===
+        currentRound.length - 1
+      ) {
 
-  link.download =
-    "yojadol-top9.png";
+        nextRound.push(
+          currentRound[
+            currentIndex
+          ]
+        );
 
-  link.href =
-    dataUrl;
+        currentIndex++;
 
-  link.click();
+        showNextMatch();
 
-}
+        return;
+      }
 
 
-/* ==================================================
-   もう一度
-================================================== */
+      /* 対戦相手 */
 
-retryButton.addEventListener(
-  "click",
-  () => {
+      leftIdol =
+        currentRound[
+          currentIndex
+        ];
 
-    showScreen(startScreen);
+      rightIdol =
+        currentRound[
+          currentIndex + 1
+        ];
+
+
+      /* 写真 */
+
+      imageLeft.src =
+        leftIdol.image;
+
+      imageRight.src =
+        rightIdol.image;
+
+
+      /* 名前 */
+
+      nameLeft.textContent =
+        leftIdol.name;
+
+      nameRight.textContent =
+        rightIdol.name;
+
+
+      /* グループ */
+
+      groupLeft.textContent =
+        leftIdol.group;
+
+      groupRight.textContent =
+        rightIdol.group;
+
+
+      /* ラウンド */
+
+      roundText.textContent =
+        "ROUND " +
+        roundNumber;
+
+
+      /* 試合番号 */
+
+      const totalMatches =
+        Math.ceil(
+          currentRound.length / 2
+        );
+
+
+      const currentMatch =
+        Math.floor(
+          currentIndex / 2
+        ) + 1;
+
+
+      matchText.textContent =
+        currentMatch +
+        " / " +
+        totalMatches;
+
+    }
+
+
+    /* =========================
+       左を選択
+    ========================== */
+
+    cardLeft.addEventListener(
+      "click",
+      function () {
+
+        chooseWinner(
+          leftIdol,
+          rightIdol
+        );
+
+      }
+    );
+
+
+    /* =========================
+       右を選択
+    ========================== */
+
+    cardRight.addEventListener(
+      "click",
+      function () {
+
+        chooseWinner(
+          rightIdol,
+          leftIdol
+        );
+
+      }
+    );
+
+
+    /* =========================
+       勝者決定
+    ========================== */
+
+    function chooseWinner(
+      winner,
+      loser
+    ) {
+
+      /* 勝者を次のラウンドへ */
+
+      nextRound.push(
+        winner
+      );
+
+
+      /*
+        敗者はランキング候補として
+        記録しておく
+      */
+
+      ranking.push(
+        loser
+      );
+
+
+      currentIndex += 2;
+
+
+      showNextMatch();
+
+    }
+
+
+    /* =========================
+       ラウンド終了
+    ========================== */
+
+    function finishRound() {
+
+
+      /* 優勝者決定 */
+
+      if (
+        nextRound.length === 1
+      ) {
+
+        const champion =
+          nextRound[0];
+
+
+        /*
+          優勝者を1位にする
+        */
+
+        const finalRanking =
+          [
+            champion,
+            ...ranking.reverse()
+          ];
+
+
+        /*
+          重複を削除
+        */
+
+        const unique = [];
+
+
+        finalRanking.forEach(
+          function (idol) {
+
+            const already =
+              unique.some(
+                function (item) {
+
+                  return (
+                    item.name ===
+                    idol.name
+                  );
+
+                }
+              );
+
+
+            if (!already) {
+
+              unique.push(idol);
+
+            }
+
+          }
+        );
+
+
+        /*
+          足りなければ残りを追加
+        */
+
+        idols.forEach(
+          function (idol) {
+
+            if (
+              unique.length < 9
+              &&
+              !unique.some(
+                function (item) {
+
+                  return (
+                    item.name ===
+                    idol.name
+                  );
+
+                }
+              )
+            ) {
+
+              unique.push(
+                idol
+              );
+
+            }
+
+          }
+        );
+
+
+        showResult(
+          unique.slice(0, 9)
+        );
+
+
+        return;
+
+      }
+
+
+      /* 次のラウンド */
+
+      currentRound =
+        nextRound;
+
+      roundNumber++;
+
+      prepareRound();
+
+    }
+
+
+    /* =========================
+       結果表示
+    ========================== */
+
+    function showResult(
+      top9
+    ) {
+
+      showScreen(
+        resultScreen
+      );
+
+
+      top9Grid.innerHTML =
+        "";
+
+
+      top9.forEach(
+        function (idol, index) {
+
+
+          const item =
+            document.createElement(
+              "div"
+            );
+
+
+          item.className =
+            "top9-item";
+
+
+          const image =
+            document.createElement(
+              "img"
+            );
+
+
+          image.src =
+            idol.image;
+
+          image.alt =
+            idol.name;
+
+
+          const rank =
+            document.createElement(
+              "div"
+            );
+
+
+          rank.className =
+            "rank";
+
+
+          rank.textContent =
+            "#" +
+            (index + 1);
+
+
+          item.appendChild(
+            image
+          );
+
+          item.appendChild(
+            rank
+          );
+
+
+          top9Grid.appendChild(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================
+       もう一度遊ぶ
+    ========================== */
+
+    retryButton.addEventListener(
+      "click",
+      function () {
+
+        showScreen(
+          startScreen
+        );
+
+      }
+    );
+
 
   }
 );
