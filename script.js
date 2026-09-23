@@ -13,19 +13,12 @@
    group = グループ名
    image = imagesフォルダ内の写真の名前
 
-   例：
-
-   {
-     name: "Wonyoung",
-     group: "IVE",
-     image: "IMG_0942.jpeg"
-   }
-
+   
 ================================================== */
 
 const idols = [
 
-  {
+    {
     name: "Wonyoung",
     group: "IVE",
     image: "IMG_0942.jpeg"
