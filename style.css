@@ -2,12 +2,14 @@
   box-sizing: border-box;
 }
 
+
 html,
 body {
   margin: 0;
   padding: 0;
   min-height: 100%;
 }
+
 
 body {
   font-family:
@@ -22,267 +24,416 @@ body {
   color: #3b3036;
 }
 
+
 button {
   font-family: inherit;
 }
+
+
+/* =========================
+   全体
+========================= */
 
 .app {
   width: 100%;
   max-width: 700px;
   min-height: 100vh;
+
   margin: 0 auto;
-  padding: 25px 18px 45px;
+
+  padding:
+    25px
+    18px
+    45px;
 }
+
+
+/* =========================
+   画面
+========================= */
 
 .screen {
   display: none;
-  min-height: calc(100vh - 70px);
+
+  min-height:
+    calc(100vh - 70px);
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
+
   text-align: center;
 }
+
 
 .screen.active {
   display: flex;
 }
 
 
-/* --------------------
+/* =========================
    START
--------------------- */
+========================= */
 
 .logo {
   width: 62px;
   height: 62px;
+
   border-radius: 50%;
-  background: #ffffff;
+
+  background: white;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 32px;
+
   margin-bottom: 18px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.06);
 }
+
 
 h1 {
   margin: 0;
+
   font-size: 38px;
+
   line-height: 1.2;
+
   letter-spacing: 0.03em;
 }
 
+
 .subtitle {
-  margin: 18px 0 25px;
+  margin:
+    18px
+    0
+    25px;
+
   line-height: 1.8;
+
   color: #8c7d84;
 }
 
+
 .info-box {
   width: 100%;
+
   max-width: 350px;
-  background: #ffffff;
+
+  background: white;
+
   border-radius: 22px;
-  padding: 17px 20px;
+
+  padding:
+    17px
+    20px;
+
   margin-bottom: 28px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, 0.05);
 }
+
 
 .info-box p {
   margin: 7px 0;
+
   font-size: 14px;
 }
 
 
 .main-button {
   border: none;
+
   background: #e9a8c5;
+
   color: white;
+
   font-size: 17px;
+
   font-weight: bold;
-  padding: 15px 55px;
+
+  padding:
+    15px
+    55px;
+
   border-radius: 999px;
+
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transition: transform 0.15s;
+
+  box-shadow:
+    0 8px 20px
+    rgba(0, 0, 0, 0.08);
 }
+
 
 .main-button:active {
   transform: scale(0.96);
 }
 
-.sub-button {
-  border: none;
-  background: white;
-  color: #8c707c;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 12px 25px;
-  border-radius: 999px;
-  cursor: pointer;
-}
 
-
-/* --------------------
-   MATCH
--------------------- */
+/* =========================
+   対戦画面
+========================= */
 
 #match-screen {
   justify-content: flex-start;
+
   padding-top: 20px;
 }
 
+
 .progress-area {
   width: 100%;
+
   display: flex;
+
   justify-content: space-between;
+
   color: #a58e98;
+
   font-size: 13px;
+
   margin-bottom: 25px;
 }
 
+
 #match-screen h2 {
   font-size: 24px;
-  margin: 0 0 28px;
+
+  margin:
+    0
+    0
+    28px;
 }
+
 
 .cards {
   width: 100%;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 10px;
 }
 
+
 .idol-card {
-  width: calc(50% - 20px);
+  width:
+    calc(50% - 20px);
+
   padding: 0;
+
   border: none;
+
   background: white;
+
   border-radius: 20px;
+
   overflow: hidden;
+
   cursor: pointer;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-  transition: transform 0.15s;
+
+  box-shadow:
+    0 8px 30px
+    rgba(0, 0, 0, 0.08);
 }
+
 
 .idol-card:active {
   transform: scale(0.97);
 }
 
+
 .idol-card img {
   width: 100%;
+
   aspect-ratio: 3 / 4;
+
   object-fit: cover;
+
   display: block;
+
+  background: #f2e9ed;
 }
 
+
 .idol-info {
-  padding: 12px 7px 15px;
+  padding:
+    12px
+    7px
+    15px;
 }
+
 
 .idol-info strong {
   display: block;
+
   font-size: 15px;
 }
 
+
 .idol-info span {
   display: block;
+
   margin-top: 4px;
+
   font-size: 11px;
+
   color: #a58e98;
 }
 
+
 .vs {
-  flex: 0 0 auto;
+  flex:
+    0 0 auto;
+
   width: 35px;
   height: 35px;
+
   border-radius: 50%;
-  background: #ffffff;
+
+  background: white;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 11px;
+
   font-weight: bold;
+
   color: #b88b9c;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+
+  box-shadow:
+    0 5px 15px
+    rgba(0, 0, 0, 0.06);
 }
 
 
-/* --------------------
-   RESULT
--------------------- */
+/* =========================
+   結果
+========================= */
 
 .result-small {
   margin: 0;
+
   font-size: 12px;
+
   letter-spacing: 0.3em;
+
   color: #a58e98;
 }
 
+
 .result-title {
-  margin: 3px 0 25px;
+  margin:
+    3px
+    0
+    25px;
+
   font-size: 42px;
 }
 
+
 .top9-grid {
-  width: min(92vw, 560px);
-  aspect-ratio: 1 / 1;
+  width:
+    min(92vw, 560px);
+
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 4px;
+
   background: white;
-  padding: 3px;
+
+  padding: 4px;
+
   border-radius: 8px;
+
   overflow: hidden;
 }
 
+
 .top9-item {
   position: relative;
+
+  aspect-ratio: 1 / 1;
+
   overflow: hidden;
+
   background: #eee;
 }
+
 
 .top9-item img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
   display: block;
 }
 
+
 .rank {
   position: absolute;
+
   top: 6px;
   left: 6px;
+
   min-width: 25px;
   height: 25px;
-  padding: 0 6px;
+
+  padding:
+    0
+    6px;
+
   border-radius: 999px;
-  background: rgba(255,255,255,0.9);
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 11px;
+
   font-weight: bold;
 }
 
+
 .result-message {
-  margin: 18px 0;
+  margin:
+    18px
+    0;
+
   font-size: 14px;
+
   color: #8c7d84;
 }
 
-.result-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
 
-
-/* --------------------
-   MOBILE
--------------------- */
+/* =========================
+   スマホ
+========================= */
 
 @media (max-width: 500px) {
 
@@ -291,38 +442,53 @@ h1 {
     padding-right: 12px;
   }
 
+
   h1 {
     font-size: 32px;
   }
+
 
   #match-screen h2 {
     font-size: 21px;
   }
 
+
   .cards {
     gap: 6px;
   }
 
+
   .idol-card {
-    width: calc(50% - 16px);
+    width:
+      calc(50% - 16px);
+
     border-radius: 16px;
   }
 
+
   .idol-info {
-    padding: 10px 4px 12px;
+    padding:
+      10px
+      4px
+      12px;
   }
+
 
   .idol-info strong {
     font-size: 13px;
   }
 
+
   .idol-info span {
     font-size: 10px;
   }
 
+
   .vs {
     width: 30px;
     height: 30px;
+
     font-size: 9px;
   }
+
 }
