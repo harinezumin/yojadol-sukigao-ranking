@@ -1,2358 +1,1938 @@
 /* ==================================================
-   ♡ ヨジャドル好き顔メーカー
-   ♡ グループ選抜 → トーナメント版
-   ================================================== */
-
-
-/* ==================================================
-   アイドル登録
-   ※画像番号は現在のものをそのまま使用
-   ================================================== */
+♡ ヨジャドル好き顔メーカー
+♡ グループ選抜
+♡ 人数に応じたトーナメント
+♡ 最終・全員総当たり
+================================================== */
 
 const idols = [
+
 {
-  name: "Mai",
-  group: "izna",
-  image: "IMG_1031.jpeg"
-},
-{
-  name: "Jeemin",
-  group: "izna",
-  image: "IMG_1032.jpeg"
+name: "Mai",
+group: "izna",
+image: "IMG_1031.jpeg"
 },
 {
-  name: "Koko",
-  group: "izna",
-  image: "IMG_1033.jpeg"
+name: "Jeemin",
+group: "izna",
+image: "IMG_1032.jpeg"
 },
 {
-  name: "Sarang",
-  group: "izna",
-  image: "IMG_1034.jpeg"
+name: "Koko",
+group: "izna",
+image: "IMG_1033.jpeg"
 },
 {
-  name: "Jungeun",
-  group: "izna",
-  image: "IMG_1035.jpeg"
+name: "Sarang",
+group: "izna",
+image: "IMG_1034.jpeg"
 },
 {
-  name: "Saebi",
-  group: "izna",
-  image: "IMG_1036.jpeg"
-},
-   {
-  name: "Leeseol",
-  group: "KiiiKiii",
-  image: "IMG_1026.jpeg"
+name: "Jungeun",
+group: "izna",
+image: "IMG_1035.jpeg"
 },
 {
-  name: "Sui",
-  group: "KiiiKiii",
-  image: "IMG_1027.jpeg"
+name: "Saebi",
+group: "izna",
+image: "IMG_1036.jpeg"
+},
+
+{
+name: "Leeseol",
+group: "KiiiKiii",
+image: "IMG_1026.jpeg"
 },
 {
-  name: "Jiyu",
-  group: "KiiiKiii",
-  image: "IMG_1028.jpeg"
+name: "Sui",
+group: "KiiiKiii",
+image: "IMG_1027.jpeg"
 },
 {
-  name: "Haum",
-  group: "KiiiKiii",
-  image: "IMG_1029.jpeg"
+name: "Jiyu",
+group: "KiiiKiii",
+image: "IMG_1028.jpeg"
 },
 {
-  name: "Kya",
-  group: "KiiiKiii",
-  image: "IMG_1030.jpeg"
+name: "Haum",
+group: "KiiiKiii",
+image: "IMG_1029.jpeg"
+},
+{
+name: "Kya",
+group: "KiiiKiii",
+image: "IMG_1030.jpeg"
 },
 
-  {
-    name: "Wonyoung",
-    group: "IVE",
-    image: "IMG_0942.jpeg"
-  },
-
-  {
-    name: "Rei",
-    group: "IVE",
-    image: "IMG_0939.jpeg"
-  },
-
-  {
-    name: "Leeseo",
-    group: "IVE",
-    image: "IMG_0943.jpeg"
-  },
-
-  {
-    name: "Gaeul",
-    group: "IVE",
-    image: "IMG_0944.jpeg"
-  },
-
-  {
-    name: "Liz",
-    group: "IVE",
-    image: "IMG_0945.jpeg"
-  },
-
-  {
-    name: "Yujin",
-    group: "IVE",
-    image: "IMG_0946.jpeg"
-  },
-
-  {
-    name: "Seoyeon",
-    group: "tripleS",
-    image: "IMG_0947.jpeg"
-  },
-
-  {
-    name: "Hyerin",
-    group: "tripleS",
-    image: "IMG_0948.jpeg"
-  },
-
-  {
-    name: "Jiwoo",
-    group: "tripleS",
-    image: "IMG_0949.jpeg"
-  },
-
-  {
-    name: "Chaeyeon",
-    group: "tripleS",
-    image: "IMG_0950.jpeg"
-  },
-
-  {
-    name: "Yooyeon",
-    group: "tripleS",
-    image: "IMG_0951.jpeg"
-  },
-
-  {
-    name: "Soomin",
-    group: "tripleS",
-    image: "IMG_0952.jpeg"
-  },
-
-  {
-    name: "Nakyoung",
-    group: "tripleS",
-    image: "IMG_0953.jpeg"
-  },
-
-  {
-    name: "Yubin",
-    group: "tripleS",
-    image: "IMG_0954.jpeg"
-  },
-
-  {
-    name: "Kaede",
-    group: "tripleS",
-    image: "IMG_0955.jpeg"
-  },
-
-  {
-    name: "Dahyun",
-    group: "tripleS",
-    image: "IMG_0956.jpeg"
-  },
-
-  {
-    name: "Kotone",
-    group: "tripleS",
-    image: "IMG_0957.jpeg"
-  },
-
-  {
-    name: "Yeonji",
-    group: "tripleS",
-    image: "IMG_0958.jpeg"
-  },
-
-  {
-    name: "Nien",
-    group: "tripleS",
-    image: "IMG_0959.jpeg"
-  },
-
-  {
-    name: "Sohyun",
-    group: "tripleS",
-    image: "IMG_0960.jpeg"
-  },
-
-  {
-    name: "Xinyu",
-    group: "tripleS",
-    image: "IMG_0961.jpeg"
-  },
-
-  {
-    name: "Mayu",
-    group: "tripleS",
-    image: "IMG_0962.jpeg"
-  },
-
-  {
-    name: "Lynn",
-    group: "tripleS",
-    image: "IMG_0963.jpeg"
-  },
-
-  {
-    name: "Joobin",
-    group: "tripleS",
-    image: "IMG_0964.jpeg"
-  },
-
-  {
-    name: "Hayeon",
-    group: "tripleS",
-    image: "IMG_0965.jpeg"
-  },
-
-  {
-    name: "Shion",
-    group: "tripleS",
-    image: "IMG_0966.jpeg"
-  },
-
-  {
-    name: "Chaewon",
-    group: "tripleS",
-    image: "IMG_0967.jpeg"
-  },
-
-  {
-    name: "Sullin",
-    group: "tripleS",
-    image: "IMG_0968.jpeg"
-  },
-
-  {
-    name: "Seoah",
-    group: "tripleS",
-    image: "IMG_0969.jpeg"
-  },
-
-  {
-    name: "Jiyeon",
-    group: "tripleS",
-    image: "IMG_0970.jpeg"
-  },
-
-  {
-    name: "Jiwoo",
-    group: "Hearts2Hearts",
-    image: "IMG_0975.jpeg"
-  },
-
-  {
-    name: "Stella",
-    group: "Hearts2Hearts",
-    image: "IMG_0972.jpeg"
-  },
-
-  {
-    name: "Ian",
-    group: "Hearts2Hearts",
-    image: "IMG_0977.jpeg"
-  },
-
-  {
-    name: "Yuha",
-    group: "Hearts2Hearts",
-    image: "IMG_0978.jpeg"
-  },
-
-  {
-    name: "Juun",
-    group: "Hearts2Hearts",
-    image: "IMG_0979.jpeg"
-  },
-
-  {
-    name: "Carmen",
-    group: "Hearts2Hearts",
-    image: "IMG_0980.jpeg"
-  },
-
-  {
-    name: "Ana",
-    group: "Hearts2Hearts",
-    image: "IMG_0981.jpeg"
-  },
-
-  {
-    name: "Yeon",
-    group: "Hearts2Hearts",
-    image: "IMG_0982.jpeg"
-  },
-
-  {
-    name: "Jia",
-    group: "tuide",
-    image: "IMG_0984.jpeg"
-  },
-
-  {
-    name: "Seoyeon",
-    group: "tuide",
-    image: "IMG_0986.jpeg"
-  },
-
-  {
-    name: "Seohee",
-    group: "tuide",
-    image: "IMG_0985.jpeg"
-  },
-
-  {
-    name: "Elena",
-    group: "tuide",
-    image: "IMG_0987.jpeg"
-  },
-
-  {
-    name: "Saki",
-    group: "tuide",
-    image: "IMG_0988.jpeg"
-  },
-
-  {
-    name: "Seah",
-    group: "tuide",
-    image: "IMG_0989.jpeg"
-  },
-
-  {
-    name: "Yi Hani",
-    group: "tuide",
-    image: "IMG_0990.jpeg"
-  },
-
-  {
-    name: "Yeeun",
-    group: "UNCHILD",
-    image: "IMG_0991.jpeg"
-  },
-
-  {
-    name: "Heekie",
-    group: "UNCHILD",
-    image: "IMG_0992.jpeg"
-  },
-
-  {
-    name: "Tina",
-    group: "UNCHILD",
-    image: "IMG_0995.jpeg"
-  },
-
-  {
-    name: "Ako",
-    group: "UNCHILD",
-    image: "IMG_0994.jpeg"
-  },
-
-  {
-    name: "Evon",
-    group: "UNCHILD",
-    image: "IMG_0996.jpeg"
-  },
-
-  {
-    name: "Haeun",
-    group: "UNCHILD",
-    image: "IMG_0997.jpeg"
-  },
-
-  {
-    name: "Michi",
-    group: "Atheart",
-    image: "IMG_0998.jpeg"
-  },
-
-  {
-    name: "Arin",
-    group: "Atheart",
-    image: "IMG_0999.jpeg"
-  },
-
-  {
-    name: "Katelyn",
-    group: "Atheart",
-    image: "IMG_1001.jpeg"
-  },
-
-  {
-    name: "Bome",
-    group: "Atheart",
-    image: "IMG_1002.jpeg"
-  },
-
-  {
-    name: "Seohyeon",
-    group: "Atheart",
-    image: "IMG_1003.jpeg"
-  },
-
-  {
-    name: "Aurora",
-    group: "Atheart",
-    image: "IMG_1004.jpeg"
-  },
-
-  {
-    name: "Nahyun",
-    group: "Atheart",
-    image: "IMG_1005.jpeg"
-  },
-
-  {
-    name: "Youngseo",
-    group: "ALL DAY PROJECT",
-    image: "IMG_1008.jpeg"
-  },
-
-  {
-    name: "Bailey",
-    group: "ALL DAY PROJECT",
-    image: "IMG_1009.jpeg"
-  },
-
-  {
-    name: "Annie",
-    group: "ALL DAY PROJECT",
-    image: "IMG_1010.jpeg"
-  },
-
-  {
-    name: "Yihyun",
-    group: "Baby Don't Cry",
-    image: "IMG_1011.jpeg"
-  },
-
-  {
-    name: "Kumi",
-    group: "Baby Don't Cry",
-    image: "IMG_1012.jpeg"
-  },
-
-  {
-    name: "Mia",
-    group: "Baby Don't Cry",
-    image: "IMG_1013.jpeg"
-  },
-
-  {
-    name: "Beni",
-    group: "Baby Don't Cry",
-    image: "IMG_1014.jpeg"
-  },
-
-  {
-    name: "Hyerin",
-    group: "Hitgs",
-    image: "IMG_1015.jpeg"
-  },
-
-  {
-    name: "Seohee",
-    group: "Hitgs",
-    image: "IMG_1016.jpeg"
-  },
-
-  {
-    name: "Iyoo",
-    group: "Hitgs",
-    image: "IMG_1017.jpeg"
-  },
-
-  {
-    name: "Seojin",
-    group: "Hitgs",
-    image: "IMG_1018.jpeg"
-  },
-
-  {
-    name: "VV",
-    group: "Hitgs",
-    image: "IMG_1019.jpeg"
-  },
-
-  {
-    name: "Hwayeon",
-    group: "ifeye",
-    image: "IMG_1020.jpeg"
-  },
-
-  {
-    name: "Taerin",
-    group: "ifeye",
-    image: "IMG_1021.jpeg"
-  },
-
-  {
-    name: "Rahee",
-    group: "ifeye",
-    image: "IMG_1022.jpeg"
-  },
-
-  {
-    name: "Kasia",
-    group: "ifeye",
-    image: "IMG_1023.jpeg"
-  },
-
-  {
-    name: "Meu",
-    group: "ifeye",
-    image: "IMG_1024.jpeg"
-  },
-
-  {
-    name: "Sasha",
-    group: "ifeye",
-    image: "IMG_1025.jpeg"
-  }
+{
+name: "Wonyoung",
+group: "IVE",
+image: "IMG_0942.jpeg"
+},
+{
+name: "Rei",
+group: "IVE",
+image: "IMG_0939.jpeg"
+},
+{
+name: "Leeseo",
+group: "IVE",
+image: "IMG_0943.jpeg"
+},
+{
+name: "Gaeul",
+group: "IVE",
+image: "IMG_0944.jpeg"
+},
+{
+name: "Liz",
+group: "IVE",
+image: "IMG_0945.jpeg"
+},
+{
+name: "Yujin",
+group: "IVE",
+image: "IMG_0946.jpeg"
+},
+
+{
+name: "Seoyeon",
+group: "tripleS",
+image: "IMG_0947.jpeg"
+},
+{
+name: "Hyerin",
+group: "tripleS",
+image: "IMG_0948.jpeg"
+},
+{
+name: "Jiwoo",
+group: "tripleS",
+image: "IMG_0949.jpeg"
+},
+{
+name: "Chaeyeon",
+group: "tripleS",
+image: "IMG_0950.jpeg"
+},
+{
+name: "Yooyeon",
+group: "tripleS",
+image: "IMG_0951.jpeg"
+},
+{
+name: "Soomin",
+group: "tripleS",
+image: "IMG_0952.jpeg"
+},
+{
+name: "Nakyoung",
+group: "tripleS",
+image: "IMG_0953.jpeg"
+},
+{
+name: "Yubin",
+group: "tripleS",
+image: "IMG_0954.jpeg"
+},
+{
+name: "Kaede",
+group: "tripleS",
+image: "IMG_0955.jpeg"
+},
+{
+name: "Dahyun",
+group: "tripleS",
+image: "IMG_0956.jpeg"
+},
+{
+name: "Kotone",
+group: "tripleS",
+image: "IMG_0957.jpeg"
+},
+{
+name: "Yeonji",
+group: "tripleS",
+image: "IMG_0958.jpeg"
+},
+{
+name: "Nien",
+group: "tripleS",
+image: "IMG_0959.jpeg"
+},
+{
+name: "Sohyun",
+group: "tripleS",
+image: "IMG_0960.jpeg"
+},
+{
+name: "Xinyu",
+group: "tripleS",
+image: "IMG_0961.jpeg"
+},
+{
+name: "Mayu",
+group: "tripleS",
+image: "IMG_0962.jpeg"
+},
+{
+name: "Lynn",
+group: "tripleS",
+image: "IMG_0963.jpeg"
+},
+{
+name: "Joobin",
+group: "tripleS",
+image: "IMG_0964.jpeg"
+},
+{
+name: "Hayeon",
+group: "tripleS",
+image: "IMG_0965.jpeg"
+},
+{
+name: "Shion",
+group: "tripleS",
+image: "IMG_0966.jpeg"
+},
+{
+name: "Chaewon",
+group: "tripleS",
+image: "IMG_0967.jpeg"
+},
+{
+name: "Sullin",
+group: "tripleS",
+image: "IMG_0968.jpeg"
+},
+{
+name: "Seoah",
+group: "tripleS",
+image: "IMG_0969.jpeg"
+},
+{
+name: "Jiyeon",
+group: "tripleS",
+image: "IMG_0970.jpeg"
+},
+
+{
+name: "Jiwoo",
+group: "Hearts2Hearts",
+image: "IMG_0975.jpeg"
+},
+{
+name: "Stella",
+group: "Hearts2Hearts",
+image: "IMG_0972.jpeg"
+},
+{
+name: "Ian",
+group: "Hearts2Hearts",
+image: "IMG_0977.jpeg"
+},
+{
+name: "Yuha",
+group: "Hearts2Hearts",
+image: "IMG_0978.jpeg"
+},
+{
+name: "Juun",
+group: "Hearts2Hearts",
+image: "IMG_0979.jpeg"
+},
+{
+name: "Carmen",
+group: "Hearts2Hearts",
+image: "IMG_0980.jpeg"
+},
+{
+name: "Ana",
+group: "Hearts2Hearts",
+image: "IMG_0981.jpeg"
+},
+{
+name: "Yeon",
+group: "Hearts2Hearts",
+image: "IMG_0982.jpeg"
+},
+
+{
+name: "Jia",
+group: "tuide",
+image: "IMG_0984.jpeg"
+},
+{
+name: "Seoyeon",
+group: "tuide",
+image: "IMG_0986.jpeg"
+},
+{
+name: "Seohee",
+group: "tuide",
+image: "IMG_0985.jpeg"
+},
+{
+name: "Elena",
+group: "tuide",
+image: "IMG_0987.jpeg"
+},
+{
+name: "Saki",
+group: "tuide",
+image: "IMG_0988.jpeg"
+},
+{
+name: "Seah",
+group: "tuide",
+image: "IMG_0989.jpeg"
+},
+{
+name: "Yi Hani",
+group: "tuide",
+image: "IMG_0990.jpeg"
+},
+
+{
+name: "Yeeun",
+group: "UNCHILD",
+image: "IMG_0991.jpeg"
+},
+{
+name: "Heekie",
+group: "UNCHILD",
+image: "IMG_0992.jpeg"
+},
+{
+name: "Tina",
+group: "UNCHILD",
+image: "IMG_0995.jpeg"
+},
+{
+name: "Ako",
+group: "UNCHILD",
+image: "IMG_0994.jpeg"
+},
+{
+name: "Evon",
+group: "UNCHILD",
+image: "IMG_0996.jpeg"
+},
+{
+name: "Haeun",
+group: "UNCHILD",
+image: "IMG_0997.jpeg"
+},
+
+{
+name: "Michi",
+group: "Atheart",
+image: "IMG_0998.jpeg"
+},
+{
+name: "Arin",
+group: "Atheart",
+image: "IMG_0999.jpeg"
+},
+{
+name: "Katelyn",
+group: "Atheart",
+image: "IMG_1001.jpeg"
+},
+{
+name: "Bome",
+group: "Atheart",
+image: "IMG_1002.jpeg"
+},
+{
+name: "Seohyeon",
+group: "Atheart",
+image: "IMG_1003.jpeg"
+},
+{
+name: "Aurora",
+group: "Atheart",
+image: "IMG_1004.jpeg"
+},
+{
+name: "Nahyun",
+group: "Atheart",
+image: "IMG_1005.jpeg"
+},
+
+{
+name: "Youngseo",
+group: "ALL DAY PROJECT",
+image: "IMG_1008.jpeg"
+},
+{
+name: "Bailey",
+group: "ALL DAY PROJECT",
+image: "IMG_1009.jpeg"
+},
+{
+name: "Annie",
+group: "ALL DAY PROJECT",
+image: "IMG_1010.jpeg"
+},
+
+{
+name: "Yihyun",
+group: "Baby Don't Cry",
+image: "IMG_1011.jpeg"
+},
+{
+name: "Kumi",
+group: "Baby Don't Cry",
+image: "IMG_1012.jpeg"
+},
+{
+name: "Mia",
+group: "Baby Don't Cry",
+image: "IMG_1013.jpeg"
+},
+{
+name: "Beni",
+group: "Baby Don't Cry",
+image: "IMG_1014.jpeg"
+},
+
+{
+name: "Hyerin",
+group: "Hitgs",
+image: "IMG_1015.jpeg"
+},
+{
+name: "Seohee",
+group: "Hitgs",
+image: "IMG_1016.jpeg"
+},
+{
+name: "Iyoo",
+group: "Hitgs",
+image: "IMG_1017.jpeg"
+},
+{
+name: "Seojin",
+group: "Hitgs",
+image: "IMG_1018.jpeg"
+},
+{
+name: "VV",
+group: "Hitgs",
+image: "IMG_1019.jpeg"
+},
+
+{
+name: "Hwayeon",
+group: "ifeye",
+image: "IMG_1020.jpeg"
+},
+{
+name: "Taerin",
+group: "ifeye",
+image: "IMG_1021.jpeg"
+},
+{
+name: "Rahee",
+group: "ifeye",
+image: "IMG_1022.jpeg"
+},
+{
+name: "Kasia",
+group: "ifeye",
+image: "IMG_1023.jpeg"
+},
+{
+name: "Meu",
+group: "ifeye",
+image: "IMG_1024.jpeg"
+},
+{
+name: "Sasha",
+group: "ifeye",
+image: "IMG_1025.jpeg"
+}
 
 ];
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  // =========================
-  // 画面・ボタン取得
-  // =========================
+const startScreen =
+document.getElementById("start-screen");
 
-  const startScreen = document.getElementById("start-screen");
-  const matchScreen = document.getElementById("match-screen");
-  const resultScreen = document.getElementById("result-screen");
+const matchScreen =
+document.getElementById("match-screen");
 
-  const startButton = document.getElementById("start-button");
-  const retryButton = document.getElementById("retry-button");
+const resultScreen =
+document.getElementById("result-screen");
 
-  const cardLeft = document.getElementById("card-left");
-  const cardRight = document.getElementById("card-right");
+const startButton =
+document.getElementById("start-button");
 
-  const imageLeft = document.getElementById("image-left");
-  const imageRight = document.getElementById("image-right");
+const retryButton =
+document.getElementById("retry-button");
 
-  const nameLeft = document.getElementById("name-left");
-  const nameRight = document.getElementById("name-right");
+const cardLeft =
+document.getElementById("card-left");
 
-  const groupLeft = document.getElementById("group-left");
-  const groupRight = document.getElementById("group-right");
+const cardRight =
+document.getElementById("card-right");
 
-  const roundText = document.getElementById("round-text");
-  const matchText = document.getElementById("match-text");
+const imageLeft =
+document.getElementById("image-left");
 
-  const top9Grid = document.getElementById("top9-grid");
+const imageRight =
+document.getElementById("image-right");
 
+const nameLeft =
+document.getElementById("name-left");
 
-  // =========================
-  // 画面切り替え
-  // =========================
+const nameRight =
+document.getElementById("name-right");
 
-  function showScreen(screen) {
+const groupLeft =
+document.getElementById("group-left");
 
-    [startScreen, matchScreen, resultScreen].forEach(s => {
-      if (s) s.classList.remove("active");
-    });
+const groupRight =
+document.getElementById("group-right");
 
-    if (screen) {
-      screen.classList.add("active");
-    }
-  }
+const roundText =
+document.getElementById("round-text");
 
+const matchText =
+document.getElementById("match-text");
 
-  // =========================
-  // 並び替え
-  // =========================
+const top9Grid =
+document.getElementById("top9-grid");
 
-  function shuffle(array) {
-    return [...array].sort(() => Math.random() - 0.5);
-  }
 
+function showScreen(screen) {
 
-  // =========================
-  // グループ一覧
-  // =========================
+[
+startScreen,
+matchScreen,
+resultScreen
+].forEach(s => {
 
-  const groups = [...new Set(idols.map(idol => idol.group))];
+if (s) {
+s.classList.remove("active");
+}
 
+});
 
-  // =========================
-  // 選択画面を作る
-  // =========================
+if (screen) {
+screen.classList.add("active");
+}
 
-  const originalStartChildren = [...startScreen.children];
+}
 
-  const originalStartDisplay = new Map();
 
-  originalStartChildren.forEach(child => {
-    originalStartDisplay.set(child, child.style.display);
-  });
+function shuffle(array) {
 
+return [...array].sort(
+() => Math.random() - 0.5
+);
 
-  const selectionRoot = document.createElement("div");
+}
 
-  selectionRoot.id = "idol-selection-root";
 
-  selectionRoot.style.display = "none";
-  selectionRoot.style.width = "100%";
-  selectionRoot.style.boxSizing = "border-box";
-  selectionRoot.style.padding = "20px";
-  selectionRoot.style.overflowY = "auto";
+const groups =
+[...new Set(
+idols.map(idol => idol.group)
+)];
 
 
-  startScreen.appendChild(selectionRoot);
+const originalStartChildren =
+[...startScreen.children];
 
+const originalStartDisplay =
+new Map();
 
-  // 選択画面用CSS
-
-  const selectionStyle = document.createElement("style");
-
-  selectionStyle.textContent = `
-
-    #idol-selection-root {
-      font-family: inherit;
-      text-align: center;
-    }
-
-    .idol-select-title {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .idol-select-subtitle {
-      font-size: 14px;
-      opacity: 0.7;
-      margin-bottom: 20px;
-    }
-
-    .idol-select-progress {
-      font-size: 13px;
-      margin-bottom: 15px;
-      opacity: 0.65;
-    }
-
-    .idol-select-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 14px;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto 24px;
-    }
-
-    .idol-select-card {
-      position: relative;
-      border: 2px solid #eeeeee;
-      border-radius: 18px;
-      padding: 8px;
-      background: white;
-      cursor: pointer;
-      transition: 0.2s;
-      box-sizing: border-box;
-    }
-
-    .idol-select-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .idol-select-card.selected {
-      border-color: #ff8fb1;
-      box-shadow: 0 0 0 3px rgba(255,143,177,0.15);
-      transform: translateY(-2px);
-    }
-
-    .idol-select-card img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 14px;
-      display: block;
-    }
-
-    .idol-select-name {
-      font-size: 14px;
-      font-weight: 600;
-      margin-top: 7px;
-    }
-
-    .idol-select-heart {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-    }
-
-    .idol-select-card.selected .idol-select-heart {
-      background: #ff8fb1;
-      color: white;
-    }
-
-    .idol-select-button {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 28px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #ff8fb1;
-      color: white;
-      margin: 4px;
-    }
-
-    .idol-select-button.secondary {
-      background: #eeeeee;
-      color: #555555;
-    }
-
-    .idol-summary-list {
-      max-width: 700px;
-      margin: 20px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 12px;
-    }
-
-    .idol-summary-item {
-      text-align: center;
-      font-size: 13px;
-    }
-
-    .idol-summary-item img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-      margin: 0 auto 5px;
-    }
-
-    .idol-empty {
-      margin: 30px 0;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-
-  `;
-
-  document.head.appendChild(selectionStyle);
 
-
-  // =========================
-  // 選択状態
-  // =========================
-
-  let selectedIdols = [];
-
-  let currentGroupIndex = 0;
-
+originalStartChildren.forEach(child => {
 
-  // =========================
-  // START
-  // =========================
+originalStartDisplay.set(
+child,
+child.style.display
+);
 
-  startButton.addEventListener("click", () => {
+});
 
-    selectedIdols = [];
-    currentGroupIndex = 0;
 
-    // 元のSTART画面を隠す
-    originalStartChildren.forEach(child => {
-      child.style.display = "none";
-    });
+const selectionRoot =
+document.createElement("div");
+
+selectionRoot.id =
+"idol-selection-root";
+
+selectionRoot.style.display =
+"none";
+
+selectionRoot.style.width =
+"100%";
+
+selectionRoot.style.boxSizing =
+"border-box";
+
+selectionRoot.style.padding =
+"20px";
+
+selectionRoot.style.overflowY =
+"auto";
+
+startScreen.appendChild(
+selectionRoot
+);
+
+
+const selectionStyle =
+document.createElement("style");
+
+
+selectionStyle.textContent = `
+
+#idol-selection-root {
+font-family: inherit;
+text-align: center;
+}
+
+.idol-select-title {
+font-size: 28px;
+font-weight: 700;
+margin-bottom: 8px;
+}
+
+.idol-select-subtitle {
+font-size: 14px;
+opacity: 0.7;
+margin-bottom: 20px;
+}
+
+.idol-select-progress {
+font-size: 13px;
+margin-bottom: 15px;
+opacity: 0.65;
+}
+
+.idol-select-grid {
+display: grid;
+grid-template-columns:
+repeat(auto-fit, minmax(130px, 1fr));
+gap: 14px;
+width: 100%;
+max-width: 800px;
+margin: 0 auto 24px;
+}
+
+.idol-select-card {
+position: relative;
+border: 2px solid #eeeeee;
+border-radius: 18px;
+padding: 8px;
+background: white;
+cursor: pointer;
+transition: 0.2s;
+box-sizing: border-box;
+}
+
+.idol-select-card:hover {
+transform: translateY(-2px);
+}
+
+.idol-select-card.selected {
+border-color: #ff8fb1;
+box-shadow:
+0 0 0 3px rgba(255,143,177,0.15);
+transform: translateY(-2px);
+}
+
+.idol-select-card img {
+width: 100%;
+aspect-ratio: 1 / 1;
+object-fit: cover;
+border-radius: 14px;
+display: block;
+}
+
+.idol-select-name {
+font-size: 14px;
+font-weight: 600;
+margin-top: 7px;
+}
+
+.idol-select-heart {
+position: absolute;
+right: 10px;
+top: 10px;
+width: 30px;
+height: 30px;
+border-radius: 50%;
+background: rgba(255,255,255,0.9);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 17px;
+}
 
-    selectionRoot.style.display = "block";
+.idol-select-card.selected
+.idol-select-heart {
+background: #ff8fb1;
+color: white;
+}
 
-    // 念のためスクロール可能にする
-    startScreen.style.overflow = "auto";
+.idol-select-button {
+border: none;
+border-radius: 999px;
+padding: 12px 28px;
+font-size: 15px;
+font-weight: 600;
+cursor: pointer;
+background: #ff8fb1;
+color: white;
+margin: 4px;
+}
 
-    showScreen(startScreen);
+.idol-select-button.secondary {
+background: #eeeeee;
+color: #555555;
+}
 
-    showGroupSelection();
+.idol-summary-list {
+max-width: 700px;
+margin: 20px auto;
+display: grid;
+grid-template-columns:
+repeat(auto-fit, minmax(100px, 1fr));
+gap: 12px;
+}
 
-  });
+.idol-summary-item {
+text-align: center;
+font-size: 13px;
+}
 
+.idol-summary-item img {
+width: 80px;
+height: 80px;
+object-fit: cover;
+border-radius: 50%;
+display: block;
+margin: 0 auto 5px;
+}
 
-  // =========================
-  // グループ選択画面
-  // =========================
+.idol-empty {
+margin: 30px 0;
+font-size: 14px;
+opacity: 0.7;
+}
 
-  function showGroupSelection() {
+`;
 
-    const groupName = groups[currentGroupIndex];
+document.head.appendChild(
+selectionStyle
+);
 
-    const members = idols.filter(
-      idol => idol.group === groupName
-    );
 
-    const selectedInThisGroup = new Set();
+let selectedIdols = [];
 
+let currentGroupIndex = 0;
 
-    selectionRoot.innerHTML = `
+let currentRound = [];
 
-      <div class="idol-select-title">
-        ${groupName}
-      </div>
+let nextRound = [];
 
-      <div class="idol-select-subtitle">
-        好きなメンバーを何人でも選んでね ♡
-      </div>
+let currentIndex = 0;
 
-      <div class="idol-select-progress">
-        ${currentGroupIndex + 1} / ${groups.length} グループ
-      </div>
+let leftIdol = null;
 
-      <div class="idol-select-grid" id="current-idol-grid"></div>
+let rightIdol = null;
 
-      <button
-        class="idol-select-button"
-        id="next-group-button"
-      >
-        次へ ♡
-      </button>
+let choosing = false;
 
-      <button
-        class="idol-select-button secondary"
-        id="skip-group-button"
-      >
-        スキップ
-      </button>
+let stage = "tournament";
 
-    `;
+let tournamentRoundsLeft = 0;
 
+let initialSelectedCount = 0;
 
-    const grid = document.getElementById("current-idol-grid");
+let finalMembers = [];
 
+let roundRobinPairs = [];
 
-    // メンバーカード作成
+let roundRobinIndex = 0;
 
-    members.forEach(idol => {
+let roundRobinWins =
+new Map();
 
-      const card = document.createElement("div");
+let roundRobinHistory = [];
 
-      card.className = "idol-select-card";
 
-      card.innerHTML = `
+startButton.addEventListener(
+"click",
+() => {
 
-        <img src="${idol.image}" alt="${idol.name}">
+selectedIdols = [];
 
-        <div class="idol-select-heart">
-          ♡
-        </div>
+currentGroupIndex = 0;
 
-        <div class="idol-select-name">
-          ${idol.name}
-        </div>
+originalStartChildren.forEach(
+child => {
 
-      `;
+child.style.display =
+"none";
 
+}
+);
 
-      card.addEventListener("click", () => {
+selectionRoot.style.display =
+"block";
 
-        if (selectedInThisGroup.has(idol)) {
+startScreen.style.overflow =
+"auto";
 
-          selectedInThisGroup.delete(idol);
-          card.classList.remove("selected");
+showScreen(startScreen);
 
-          card.querySelector(".idol-select-heart").textContent = "♡";
+showGroupSelection();
 
-        } else {
+}
+);
 
-          selectedInThisGroup.add(idol);
-          card.classList.add("selected");
 
-          card.querySelector(".idol-select-heart").textContent = "♥";
+function showGroupSelection() {
 
-        }
+const groupName =
+groups[currentGroupIndex];
 
-      });
+const members =
+idols.filter(
+idol => idol.group === groupName
+);
 
+const selectedInThisGroup =
+new Set();
 
-      grid.appendChild(card);
 
-    });
+selectionRoot.innerHTML = `
 
+<div class="idol-select-title">
+${groupName}
+</div>
 
-    // 次へ
+<div class="idol-select-subtitle">
+好きなメンバーを何人でも選んでね ♡
+</div>
 
-    document
-      .getElementById("next-group-button")
-      .addEventListener("click", () => {
+<div class="idol-select-progress">
+${currentGroupIndex + 1} / ${groups.length} グループ
+</div>
 
-        selectedInThisGroup.forEach(idol => {
+<div
+class="idol-select-grid"
+id="current-idol-grid"
+></div>
 
-          if (!selectedIdols.includes(idol)) {
-            selectedIdols.push(idol);
-          }
+<button
+class="idol-select-button"
+id="next-group-button"
+>
+次へ ♡
+</button>
 
-        });
+<button
+class="idol-select-button secondary"
+id="skip-group-button"
+>
+スキップ
+</button>
 
-        goToNextGroup();
+`;
 
-      });
 
+const grid =
+document.getElementById(
+"current-idol-grid"
+);
 
-    // スキップ
 
-    document
-      .getElementById("skip-group-button")
-      .addEventListener("click", () => {
+members.forEach(idol => {
 
-        goToNextGroup();
+const card =
+document.createElement("div");
 
-      });
+card.className =
+"idol-select-card";
 
-  }
+card.innerHTML = `
 
+<img
+src="${idol.image}"
+alt="${idol.name}"
+>
 
-  // =========================
-  // 次のグループ
-  // =========================
+<div class="idol-select-heart">
+♡
+</div>
 
-  function goToNextGroup() {
+<div class="idol-select-name">
+${idol.name}
+</div>
 
-    currentGroupIndex++;
+`;
 
-    if (currentGroupIndex < groups.length) {
 
-      showGroupSelection();
+card.addEventListener(
+"click",
+() => {
 
-    } else {
+if (
+selectedInThisGroup.has(idol)
+) {
 
-      showSelectionSummary();
+selectedInThisGroup.delete(
+idol
+);
 
-    }
+card.classList.remove(
+"selected"
+);
 
-  }
+card.querySelector(
+".idol-select-heart"
+).textContent = "♡";
 
+} else {
 
-  // =========================
-  // 選択メンバー確認
-  // =========================
+selectedInThisGroup.add(
+idol
+);
 
-  function showSelectionSummary() {
+card.classList.add(
+"selected"
+);
 
-    if (selectedIdols.length === 0) {
+card.querySelector(
+".idol-select-heart"
+).textContent = "♥";
 
-      selectionRoot.innerHTML = `
+}
 
-        <div class="idol-select-title">
-          まだ選んだメンバーがいないよ ♡
-        </div>
+}
+);
 
-        <div class="idol-empty">
-          少なくとも1人選んでからトーナメントを始めてね！
-        </div>
+grid.appendChild(card);
 
-        <button
-          class="idol-select-button"
-          id="back-to-selection"
-        >
-          もう一度選ぶ
-        </button>
+});
 
-      `;
 
+document
+.getElementById(
+"next-group-button"
+)
+.addEventListener(
+"click",
+() => {
 
-      document
-        .getElementById("back-to-selection")
-        .addEventListener("click", () => {
+selectedInThisGroup.forEach(
+idol => {
 
-          currentGroupIndex = 0;
-          selectedIdols = [];
+if (
+!selectedIdols.includes(idol)
+) {
 
-          showGroupSelection();
+selectedIdols.push(idol);
 
-        });
+}
 
-      return;
-    }
+}
+);
 
+goToNextGroup();
 
-    selectionRoot.innerHTML = `
+}
+);
 
-      <div class="idol-select-title">
-        選んだメンバー ♡
-      </div>
 
-      <div class="idol-select-subtitle">
-        ${selectedIdols.length}人がトーナメントに参加します
-      </div>
+document
+.getElementById(
+"skip-group-button"
+)
+.addEventListener(
+"click",
+() => {
 
-      <div class="idol-summary-list" id="idol-summary-list"></div>
+goToNextGroup();
 
-      <button
-        class="idol-select-button"
-        id="start-tournament-button"
-      >
-        トーナメント開始 ♡
-      </button>
+}
+);
 
-      <br>
+}
 
-      <button
-        class="idol-select-button secondary"
-        id="redo-selection-button"
-      >
-        選び直す
-      </button>
 
-    `;
+function goToNextGroup() {
 
+currentGroupIndex++;
 
-    const summaryList =
-      document.getElementById("idol-summary-list");
+if (
+currentGroupIndex <
+groups.length
+) {
 
+showGroupSelection();
 
-    selectedIdols.forEach(idol => {
+} else {
 
-      const item = document.createElement("div");
+showSelectionSummary();
 
-      item.className = "idol-summary-item";
+}
 
-      item.innerHTML = `
+}
 
-        <img src="${idol.image}" alt="${idol.name}">
 
-        <div>
-          ${idol.name}
-        </div>
+function showSelectionSummary() {
 
-      `;
+if (
+selectedIdols.length === 0
+) {
 
-      summaryList.appendChild(item);
+selectionRoot.innerHTML = `
 
-    });
+<div class="idol-select-title">
+まだ選んだメンバーがいないよ ♡
+</div>
 
+<div class="idol-empty">
+少なくとも1人選んでから
+スタートしてね！
+</div>
 
-    // トーナメント開始
+<button
+class="idol-select-button"
+id="back-to-selection"
+>
+もう一度選ぶ
+</button>
 
-    document
-      .getElementById("start-tournament-button")
-      .addEventListener("click", () => {
+`;
 
-        startTournament();
+document
+.getElementById(
+"back-to-selection"
+)
+.addEventListener(
+"click",
+() => {
 
-      });
+currentGroupIndex = 0;
 
+selectedIdols = [];
 
-    // 選び直す
+showGroupSelection();
 
-    document
-      .getElementById("redo-selection-button")
-      .addEventListener("click", () => {
+}
+);
 
-        selectedIdols = [];
-        currentGroupIndex = 0;
+return;
 
-        showGroupSelection();
+}
 
-      });
 
-  }
+selectionRoot.innerHTML = `
 
+<div class="idol-select-title">
+選んだメンバー ♡
+</div>
 
-  // ==================================================
-  // ♡ トーナメント
-  // ==================================================
+<div class="idol-select-subtitle">
+${selectedIdols.length}人が参加します
+</div>
 
-  let currentRound = [];
-  let nextRound = [];
-  let currentIndex = 0;
+<div
+class="idol-summary-list"
+id="idol-summary-list"
+></div>
 
-  let eliminated = [];
+<button
+class="idol-select-button"
+id="start-tournament-button"
+>
+スタート ♡
+</button>
 
-  let leftIdol = null;
-  let rightIdol = null;
+<br>
 
-  // 現在のステージ
-  let stage = "normal";
+<button
+class="idol-select-button secondary"
+id="redo-selection-button"
+>
+選び直す
+</button>
 
-  // 8人になった時点でのメンバー
-  let finalEight = [];
+`;
 
-  // 8人になるまでに負けたメンバー
-  let previousLosers = [];
 
-  // 8人から復活させたメンバー
-  let revivedFour = [];
+const summaryList =
+document.getElementById(
+"idol-summary-list"
+);
 
-  // 12人になった後の1回戦の勝者・敗者
-  let twelveWinners = [];
-  let twelveLosers = [];
 
-  // 12人→9人にするための復活メンバー
-  let revivedThree = [];
+selectedIdols.forEach(
+idol => {
 
-  // 最終9人
-  let finalNine = [];
+const item =
+document.createElement("div");
 
+item.className =
+"idol-summary-item";
 
-  // ==================================================
-  // ♡ トーナメント開始
-  // ==================================================
+item.innerHTML = `
 
-  function startTournament() {
+<img
+src="${idol.image}"
+alt="${idol.name}"
+>
 
-    selectionRoot.style.display = "none";
+<div>
+${idol.name}
+</div>
 
-    originalStartChildren.forEach(child => {
-      child.style.display =
-        originalStartDisplay.get(child) || "";
-    });
+`;
 
-    startScreen.style.overflow = "";
+summaryList.appendChild(
+item
+);
 
-    currentRound = shuffle(selectedIdols);
+}
+);
 
-    nextRound = [];
-    currentIndex = 0;
 
-    eliminated = [];
+document
+.getElementById(
+"start-tournament-button"
+)
+.addEventListener(
+"click",
+() => {
 
-    finalEight = [];
-    previousLosers = [];
+startTournament();
 
-    revivedFour = [];
+}
+);
 
-    twelveWinners = [];
-    twelveLosers = [];
 
-    revivedThree = [];
+document
+.getElementById(
+"redo-selection-button"
+)
+.addEventListener(
+"click",
+() => {
 
-    finalNine = [];
+selectedIdols = [];
 
-    leftIdol = null;
-    rightIdol = null;
+currentGroupIndex = 0;
 
-    stage = "normal";
+showGroupSelection();
 
-    showScreen(matchScreen);
+}
+);
 
-    prepareNormalRound();
+}
 
-  }
 
+function getTournamentRounds(count) {
 
-  // ==================================================
-  // ♡ 通常トーナメント
-  // 8人になるまで進める
-  // ==================================================
+if (count <= 16) {
+return 0;
+}
 
-  function prepareNormalRound() {
+if (count <= 32) {
+return 1;
+}
 
-    currentRound = shuffle(currentRound);
+if (count <= 64) {
+return 2;
+}
 
-    nextRound = [];
-    currentIndex = 0;
+if (count <= 128) {
+return 3;
+}
 
-    // ------------------------------------------
-    // 8人になったら敗者復活メンバー選択へ
-    // ------------------------------------------
+return 4;
 
-    if (currentRound.length === 8) {
+}
 
-      finalEight = [...currentRound];
 
-      stage = "revival-four";
+function startTournament() {
 
-      showRevivalFourSelection();
+selectionRoot.style.display =
+"none";
 
-      return;
-    }
+originalStartChildren.forEach(
+child => {
 
+child.style.display =
+originalStartDisplay.get(
+child
+) || "";
 
-    // ------------------------------------------
-    // 1人なら終了
-    // ------------------------------------------
+}
+);
 
-    if (currentRound.length === 1) {
+startScreen.style.overflow =
+"";
 
-      finalNine = [...currentRound];
+initialSelectedCount =
+selectedIdols.length;
 
-      showFinalRankingSelection();
+tournamentRoundsLeft =
+getTournamentRounds(
+initialSelectedCount
+);
 
-      return;
-    }
+currentRound =
+shuffle(selectedIdols);
 
+nextRound = [];
 
-    stage = "normal";
+currentIndex = 0;
 
-    if (roundText) {
-      roundText.textContent =
-        `トーナメント`;
-    }
+leftIdol = null;
 
-    showNextNormalMatch();
+rightIdol = null;
 
-  }
+choosing = false;
 
 
-  // ==================================================
-  // ♡ 通常対戦表示
-  // ==================================================
+if (
+tournamentRoundsLeft === 0
+) {
 
-  function showNextNormalMatch() {
+finalMembers =
+[...currentRound];
 
-    // 全試合終了
-    if (currentIndex >= currentRound.length) {
+startRoundRobin();
 
-      currentRound = [...nextRound];
+return;
 
-      prepareNormalRound();
+}
 
-      return;
-    }
 
+stage = "tournament";
 
-    // 奇数の場合
-    if (
-      currentIndex === currentRound.length - 1 &&
-      currentRound.length % 2 === 1
-    ) {
+showScreen(matchScreen);
 
-      nextRound.push(
-        currentRound[currentIndex]
-      );
+prepareTournamentRound();
 
-      currentIndex++;
+}
 
-      showNextNormalMatch();
 
-      return;
-    }
+function prepareTournamentRound() {
 
+currentRound =
+shuffle(currentRound);
 
-    leftIdol =
-      currentRound[currentIndex];
+nextRound = [];
 
-    rightIdol =
-      currentRound[currentIndex + 1];
+currentIndex = 0;
 
 
-    updateMatchDisplay(
-      leftIdol,
-      rightIdol
-    );
+if (
+tournamentRoundsLeft <= 0
+) {
 
+finalMembers =
+[...currentRound];
 
-    if (matchText) {
+startRoundRobin();
 
-      const matchNumber =
-        Math.floor(currentIndex / 2) + 1;
+return;
 
-      const totalMatches =
-        Math.floor(currentRound.length / 2);
+}
 
-      matchText.textContent =
-        `MATCH ${matchNumber} / ${totalMatches}`;
 
-    }
+const totalRounds =
+getTournamentRounds(
+initialSelectedCount
+);
 
-  }
+const currentRoundNumber =
+totalRounds -
+tournamentRoundsLeft +
+1;
 
 
-  // ==================================================
-  // ♡ 対戦カード表示
-  // ==================================================
+if (roundText) {
 
-  function updateMatchDisplay(left, right) {
+roundText.textContent =
+`トーナメント ${currentRoundNumber}回目`;
 
-    if (imageLeft) {
-      imageLeft.src = left.image;
-    }
+}
 
-    if (imageRight) {
-      imageRight.src = right.image;
-    }
 
-    if (nameLeft) {
-      nameLeft.textContent = left.name;
-    }
+showNextTournamentMatch();
 
-    if (nameRight) {
-      nameRight.textContent = right.name;
-    }
+}
 
-    if (groupLeft) {
-      groupLeft.textContent = left.group;
-    }
 
-    if (groupRight) {
-      groupRight.textContent = right.group;
-    }
+function showNextTournamentMatch() {
 
-  }
+if (
+currentIndex >=
+currentRound.length
+) {
 
+currentRound =
+[...nextRound];
 
-  // ==================================================
-  // ♡ 通常対戦の勝者
-  // ==================================================
+nextRound = [];
 
-  function chooseNormalWinner(winner, loser) {
+currentIndex = 0;
 
-    if (!leftIdol || !rightIdol) return;
+tournamentRoundsLeft--;
 
-    const savedWinner = winner;
-    const savedLoser = loser;
 
-    leftIdol = null;
-    rightIdol = null;
+if (
+tournamentRoundsLeft <= 0
+) {
 
-    nextRound.push(savedWinner);
+finalMembers =
+[...currentRound];
 
-    // 8人になるまでに負けた人を記録
-    previousLosers.push(savedLoser);
+startRoundRobin();
 
-    eliminated.push(savedLoser);
+return;
 
-    currentIndex += 2;
+}
 
 
-    setTimeout(() => {
+prepareTournamentRound();
 
-      showNextNormalMatch();
+return;
 
-    }, 150);
+}
 
-  }
 
+if (
+currentIndex ===
+currentRound.length - 1
+&&
+currentRound.length % 2 === 1
+) {
 
-  // ==================================================
-  // ♡ 8人時点
-  // 敗者復活4人を選択
-  // ==================================================
+nextRound.push(
+currentRound[currentIndex]
+);
 
-  function showRevivalFourSelection() {
+currentIndex++;
 
-    showScreen(startScreen);
+showNextTournamentMatch();
 
-    originalStartChildren.forEach(child => {
-      child.style.display = "none";
-    });
+return;
 
-    selectionRoot.style.display = "block";
-    selectionRoot.innerHTML = "";
+}
 
 
-    const availableLosers =
-      previousLosers.filter(
-        idol => !finalEight.includes(idol)
-      );
+leftIdol =
+currentRound[currentIndex];
 
+rightIdol =
+currentRound[
+currentIndex + 1
+];
 
-    selectionRoot.innerHTML = `
 
-      <div class="idol-select-title">
-        敗者復活戦 ♡
-      </div>
+updateMatchDisplay(
+leftIdol,
+rightIdol
+);
 
-      <div class="idol-select-subtitle">
-        8人まで勝ち残ったよ！
-        <br>
-        これまでに負けたメンバーから
-        復活させたい子を選んでね
-      </div>
 
-      <div class="idol-select-progress">
-        最大4人まで選択できます
-      </div>
+if (matchText) {
 
-      <div
-        class="idol-select-grid"
-        id="revival-four-grid"
-      ></div>
+const matchNumber =
+Math.floor(
+currentIndex / 2
+) + 1;
 
-      <button
-        class="idol-select-button"
-        id="revival-four-next"
-      >
-        選択完了 ♡
-      </button>
+const totalMatches =
+Math.floor(
+currentRound.length / 2
+);
 
-    `;
+matchText.textContent =
+`MATCH ${matchNumber} / ${totalMatches}`;
 
+}
 
-    const grid =
-      document.getElementById(
-        "revival-four-grid"
-      );
+}
 
 
-    const selected = new Set();
+function chooseTournamentWinner(
+winner,
+loser
+) {
 
+if (
+!leftIdol ||
+!rightIdol ||
+choosing
+) {
 
-    availableLosers.forEach(idol => {
+return;
 
-      const card =
-        document.createElement("div");
+}
 
-      card.className =
-        "idol-select-card";
+choosing = true;
 
+nextRound.push(
+winner
+);
 
-      card.innerHTML = `
+leftIdol = null;
 
-        <img
-          src="${idol.image}"
-          alt="${idol.name}"
-        >
+rightIdol = null;
 
-        <div class="idol-select-heart">
-          ♡
-        </div>
+currentIndex += 2;
 
-        <div class="idol-select-name">
-          ${idol.name}
-        </div>
 
-      `;
+setTimeout(
+() => {
 
+choosing = false;
 
-      card.addEventListener(
-        "click",
-        () => {
+showNextTournamentMatch();
 
-          // すでに選択している
-          if (selected.has(idol)) {
+},
+150
+);
 
-            selected.delete(idol);
+}
 
-            card.classList.remove(
-              "selected"
-            );
 
-            card.querySelector(
-              ".idol-select-heart"
-            ).textContent = "♡";
+function startRoundRobin() {
 
-            return;
-          }
+finalMembers =
+[...finalMembers];
 
+roundRobinWins =
+new Map();
 
-          // 4人以上は選べない
-          if (selected.size >= 4) {
 
-            return;
+finalMembers.forEach(
+idol => {
 
-          }
+roundRobinWins.set(
+idol,
+0
+);
 
+}
+);
 
-          selected.add(idol);
 
-          card.classList.add(
-            "selected"
-          );
+roundRobinPairs = [];
 
-          card.querySelector(
-            ".idol-select-heart"
-          ).textContent = "♥";
 
-        }
-      );
+for (
+let i = 0;
+i < finalMembers.length;
+i++
+) {
 
+for (
+let j = i + 1;
+j < finalMembers.length;
+j++
+) {
 
-      grid.appendChild(card);
+roundRobinPairs.push([
+finalMembers[i],
+finalMembers[j]
+]);
 
-    });
+}
 
+}
 
-    document
-      .getElementById(
-        "revival-four-next"
-      )
-      .addEventListener(
-        "click",
-        () => {
 
-          revivedFour =
-            [...selected];
+roundRobinPairs =
+shuffle(
+roundRobinPairs
+);
 
+roundRobinIndex = 0;
 
-          // --------------------------------
-          // 4人選べた場合
-          // 8 + 4 = 12人
-          // --------------------------------
+roundRobinHistory = [];
 
-          if (revivedFour.length === 4) {
+leftIdol = null;
 
-            currentRound = shuffle([
-              ...finalEight,
-              ...revivedFour
-            ]);
+rightIdol = null;
 
-            startTwelvePersonRound();
+choosing = false;
 
-            return;
-          }
+stage = "roundRobin";
 
 
-          // --------------------------------
-          // 4人未満
-          // → 8人のまま
-          // --------------------------------
+if (
+finalMembers.length <= 1
+) {
 
-          currentRound =
-            shuffle(finalEight);
+finishRoundRobin();
 
-          startEightPersonFinalRound();
+return;
 
-        }
-      );
+}
 
-  }
 
+showScreen(matchScreen);
 
-  // ==================================================
-  // ♡ 4人復活 → 12人
-  // ==================================================
 
-  function startTwelvePersonRound() {
+if (roundText) {
 
-    nextRound = [];
-    currentIndex = 0;
+roundText.textContent =
+"総当たり戦 ♡";
 
-    twelveWinners = [];
-    twelveLosers = [];
+}
 
-    stage = "twelve";
 
-    showScreen(matchScreen);
+showNextRoundRobinMatch();
 
-    if (roundText) {
-      roundText.textContent =
-        "敗者復活後・12人戦";
-    }
+}
 
-    showNextTwelveMatch();
 
-  }
+function showNextRoundRobinMatch() {
 
+if (
+roundRobinIndex >=
+roundRobinPairs.length
+) {
 
-  // ==================================================
-  // ♡ 12人戦
-  // 12 → 勝者6 / 敗者6
-  // ==================================================
+finishRoundRobin();
 
-  function showNextTwelveMatch() {
+return;
 
-    // 全試合終了
-    if (currentIndex >= currentRound.length) {
+}
 
-      // 6人勝者・6人敗者
-      startRevivalThreeSelection();
 
-      return;
-    }
+const pair =
+roundRobinPairs[
+roundRobinIndex
+];
 
 
-    leftIdol =
-      currentRound[currentIndex];
+leftIdol =
+pair[0];
 
-    rightIdol =
-      currentRound[currentIndex + 1];
+rightIdol =
+pair[1];
 
 
-    updateMatchDisplay(
-      leftIdol,
-      rightIdol
-    );
+updateMatchDisplay(
+leftIdol,
+rightIdol
+);
 
 
-    if (matchText) {
+if (matchText) {
 
-      const matchNumber =
-        Math.floor(currentIndex / 2) + 1;
+matchText.textContent =
+`MATCH ${
+roundRobinIndex + 1
+} / ${
+roundRobinPairs.length
+}`;
 
-      matchText.textContent =
-        `MATCH ${matchNumber} / 6`;
+}
 
-    }
+}
 
-  }
 
+function chooseRoundRobinWinner(
+winner,
+loser
+) {
 
-  // ==================================================
-  // ♡ 12人戦の勝者
-  // ==================================================
+if (
+!leftIdol ||
+!rightIdol ||
+choosing
+) {
 
-  function chooseTwelveWinner(
-    winner,
-    loser
-  ) {
+return;
 
-    if (!leftIdol || !rightIdol) return;
+}
 
-    twelveWinners.push(winner);
-    twelveLosers.push(loser);
+choosing = true;
 
-    eliminated.push(loser);
 
-    leftIdol = null;
-    rightIdol = null;
+roundRobinWins.set(
+winner,
+(
+roundRobinWins.get(
+winner
+) || 0
+) + 1
+);
 
-    currentIndex += 2;
 
+roundRobinHistory.push({
 
-    setTimeout(() => {
+winner: winner,
 
-      showNextTwelveMatch();
+loser: loser
 
-    }, 150);
+});
 
-  }
 
+leftIdol = null;
 
-  // ==================================================
-  // ♡ 6人の敗者から3人選択
-  // ==================================================
+rightIdol = null;
 
-  function startRevivalThreeSelection() {
+roundRobinIndex++;
 
-    stage = "revival-three";
 
-    showScreen(startScreen);
+setTimeout(
+() => {
 
-    originalStartChildren.forEach(child => {
-      child.style.display = "none";
-    });
+choosing = false;
 
-    selectionRoot.style.display = "block";
+showNextRoundRobinMatch();
 
-    selectionRoot.innerHTML = `
+},
+120
+);
 
-      <div class="idol-select-title">
-        もう一度、敗者復活戦 ♡
-      </div>
+}
 
-      <div class="idol-select-subtitle">
-        12人の対戦が終わったよ！
-        <br>
-        負けた6人の中から
-        3人を選んでね
-      </div>
 
-      <div class="idol-select-progress">
-        3人選択してください
-      </div>
+function updateMatchDisplay(
+left,
+right
+) {
 
-      <div
-        class="idol-select-grid"
-        id="revival-three-grid"
-      ></div>
+if (imageLeft) {
 
-      <button
-        class="idol-select-button"
-        id="revival-three-next"
-      >
-        9人を決定 ♡
-      </button>
+imageLeft.src =
+left.image;
 
-    `;
+}
 
+if (imageRight) {
 
-    const grid =
-      document.getElementById(
-        "revival-three-grid"
-      );
+imageRight.src =
+right.image;
 
+}
 
-    const selected =
-      new Set();
+if (nameLeft) {
 
+nameLeft.textContent =
+left.name;
 
-    twelveLosers.forEach(idol => {
+}
 
-      const card =
-        document.createElement("div");
+if (nameRight) {
 
-      card.className =
-        "idol-select-card";
+nameRight.textContent =
+right.name;
 
+}
 
-      card.innerHTML = `
+if (groupLeft) {
 
-        <img
-          src="${idol.image}"
-          alt="${idol.name}"
-        >
+groupLeft.textContent =
+left.group;
 
-        <div class="idol-select-heart">
-          ♡
-        </div>
+}
 
-        <div class="idol-select-name">
-          ${idol.name}
-        </div>
+if (groupRight) {
 
-      `;
+groupRight.textContent =
+right.group;
 
+}
 
-      card.addEventListener(
-        "click",
-        () => {
+}
 
-          if (selected.has(idol)) {
 
-            selected.delete(idol);
+function finishRoundRobin() {
 
-            card.classList.remove(
-              "selected"
-            );
+const ranking =
+[...finalMembers].sort(
+(a, b) => {
 
-            card.querySelector(
-              ".idol-select-heart"
-            ).textContent = "♡";
+const winsA =
+roundRobinWins.get(a) || 0;
 
-            return;
-          }
+const winsB =
+roundRobinWins.get(b) || 0;
 
+return winsB - winsA;
 
-          if (selected.size >= 3) {
+}
+);
 
-            return;
+showResult(ranking);
 
-          }
+}
 
 
-          selected.add(idol);
+function handleLeftChoice() {
 
-          card.classList.add(
-            "selected"
-          );
+if (
+!leftIdol ||
+!rightIdol ||
+choosing
+) {
 
-          card.querySelector(
-            ".idol-select-heart"
-          ).textContent = "♥";
+return;
 
-        }
-      );
+}
 
 
-      grid.appendChild(card);
+if (
+stage === "tournament"
+) {
 
-    });
+chooseTournamentWinner(
+leftIdol,
+rightIdol
+);
 
+return;
 
-    document
-      .getElementById(
-        "revival-three-next"
-      )
-      .addEventListener(
-        "click",
-        () => {
+}
 
-          if (selected.size !== 3) {
 
-            return;
+if (
+stage === "roundRobin"
+) {
 
-          }
+chooseRoundRobinWinner(
+leftIdol,
+rightIdol
+);
 
+return;
 
-          revivedThree =
-            [...selected];
+}
 
+}
 
-          finalNine = [
-            ...twelveWinners,
-            ...revivedThree
-          ];
 
+function handleRightChoice() {
 
-          showFinalRankingSelection();
+if (
+!leftIdol ||
+!rightIdol ||
+choosing
+) {
 
-        }
-      );
+return;
 
-  }
+}
 
 
-  // ==================================================
-  // ♡ 8人ルート
-  // ==================================================
+if (
+stage === "tournament"
+) {
 
-  function startEightPersonFinalRound() {
+chooseTournamentWinner(
+rightIdol,
+leftIdol
+);
 
-    finalNine =
-      [...finalEight];
+return;
 
-    showFinalRankingSelection();
+}
 
-  }
 
+if (
+stage === "roundRobin"
+) {
 
-  // ==================================================
-  // ♡ 最終9人
-  // 順番決定
-  // ==================================================
+chooseRoundRobinWinner(
+rightIdol,
+leftIdol
+);
 
-  function showFinalRankingSelection() {
+return;
 
-    /*
-      ここでは最終メンバーを確認して、
-      その後1位〜9位を決定する。
-    */
+}
 
-    showScreen(startScreen);
+}
 
-    originalStartChildren.forEach(child => {
-      child.style.display = "none";
-    });
 
-    selectionRoot.style.display = "block";
+if (cardLeft) {
 
+cardLeft.addEventListener(
+"click",
+handleLeftChoice
+);
 
-    selectionRoot.innerHTML = `
+}
 
-      <div class="idol-select-title">
-        最終メンバー決定 ♡
-      </div>
 
-      <div class="idol-select-subtitle">
-        ここから最終順位を決めるよ！
-      </div>
+if (cardRight) {
 
-      <div
-        class="idol-summary-list"
-        id="final-nine-list"
-      ></div>
+cardRight.addEventListener(
+"click",
+handleRightChoice
+);
 
-      <button
-        class="idol-select-button"
-        id="start-final-ranking"
-      >
-        順位決定スタート ♡
-      </button>
+}
 
-    `;
 
+/* ==================================================
+♡ 結果表示
+♡ 上位9人のみ・3×3
+================================================== */
 
-    const list =
-      document.getElementById(
-        "final-nine-list"
-      );
+function showResult(ranking) {
 
+showScreen(resultScreen);
 
-    finalNine.forEach(idol => {
 
-      const item =
-        document.createElement("div");
+if (!top9Grid) {
+return;
+}
 
-      item.className =
-        "idol-summary-item";
 
+top9Grid.innerHTML = "";
 
-      item.innerHTML = `
 
-        <img
-          src="${idol.image}"
-          alt="${idol.name}"
-        >
+/* ★ 上位9人だけ表示 */
 
-        <div>
-          ${idol.name}
-        </div>
+const top9 =
+ranking.slice(0, 9);
 
-        <div style="opacity:0.6;font-size:12px;">
-          ${idol.group}
-        </div>
 
-      `;
+top9.forEach(
+(idol, index) => {
 
+const item =
+document.createElement("div");
 
-      list.appendChild(item);
+item.className =
+"top9-item";
 
-    });
 
+const wins =
+roundRobinWins.get(
+idol
+) || 0;
 
-    document
-      .getElementById(
-        "start-final-ranking"
-      )
-      .addEventListener(
-        "click",
-        () => {
 
-          startFinalRanking();
+item.innerHTML = `
 
-        }
-      );
+<div class="rank">
+${index + 1}
+</div>
 
-  }
+<img
+src="${idol.image}"
+alt="${idol.name}"
+>
 
+<div class="name">
+${idol.name}
+</div>
 
-  // ==================================================
-  // ♡ 最終9人の順位決定
-  // ==================================================
+<div class="group">
+${idol.group}
+</div>
 
-  let rankingPool = [];
-  let rankingResult = [];
+<div style="
+margin-top:6px;
+font-size:12px;
+opacity:0.6;
+">
+${wins}勝
+</div>
 
+`;
 
-  function startFinalRanking() {
 
-    rankingPool =
-      shuffle(finalNine);
+top9Grid.appendChild(
+item
+);
 
-    rankingResult = [];
+}
+);
 
-    startRankingRound();
+}
 
-  }
 
+if (retryButton) {
 
-  // ==================================================
-  // ♡ 順位決定
-  // ==================================================
+retryButton.addEventListener(
+"click",
+() => {
 
-  function startRankingRound() {
+selectedIdols = [];
 
-    /*
-      1位から順番に決めていく。
+currentGroupIndex = 0;
 
-      残っているメンバーの中から
-      1人を選ぶトーナメントを行い、
-      勝者を順位として確定する。
+currentRound = [];
 
-      9人
-      ↓
-      1位決定
-      ↓
-      残り8人
-      ↓
-      2位決定
-      ↓
-      …
-    */
+nextRound = [];
 
-    if (rankingPool.length === 0) {
+currentIndex = 0;
 
-      showResult(rankingResult);
+tournamentRoundsLeft = 0;
 
-      return;
+initialSelectedCount = 0;
 
-    }
+finalMembers = [];
 
+roundRobinPairs = [];
 
-    // 1人だけならそのまま
-    if (rankingPool.length === 1) {
+roundRobinIndex = 0;
 
-      rankingResult.push(
-        rankingPool[0]
-      );
+roundRobinWins =
+new Map();
 
-      rankingPool = [];
+roundRobinHistory = [];
 
-      showResult(rankingResult);
+leftIdol = null;
 
-      return;
+rightIdol = null;
 
-    }
+choosing = false;
 
+stage = "tournament";
 
-    currentRound =
-      shuffle(rankingPool);
 
-    nextRound = [];
-    currentIndex = 0;
+selectionRoot.style.display =
+"none";
 
-    stage = "ranking";
 
+originalStartChildren.forEach(
+child => {
 
-    if (roundText) {
-      roundText.textContent =
-        `${rankingResult.length + 1}位決定戦`;
-    }
+child.style.display =
+originalStartDisplay.get(
+child
+) || "";
 
+}
+);
 
-    showNextRankingMatch();
 
-  }
+startScreen.style.overflow =
+"";
 
 
-  // ==================================================
-  // ♡ 順位決定用対戦
-  // ==================================================
+showScreen(
+startScreen
+);
 
-  function showNextRankingMatch() {
+}
+);
 
-    // ----------------------------------
-    // すべての試合終了
-    // ----------------------------------
-
-    if (currentIndex >= currentRound.length) {
-
-      // 1人になったら
-      // 今回の順位確定
-      if (nextRound.length === 1) {
-
-        const winner =
-          nextRound[0];
-
-
-        rankingResult.push(
-          winner
-        );
-
-
-        rankingPool =
-          rankingPool.filter(
-            idol => idol !== winner
-          );
-
-
-        setTimeout(() => {
-
-          startRankingRound();
-
-        }, 200);
-
-        return;
-
-      }
-
-
-      currentRound =
-        [...nextRound];
-
-      nextRound = [];
-      currentIndex = 0;
-
-      showNextRankingMatch();
-
-      return;
-
-    }
-
-
-    // ----------------------------------
-    // 奇数の場合
-    // ----------------------------------
-
-    if (
-      currentIndex ===
-      currentRound.length - 1 &&
-      currentRound.length % 2 === 1
-    ) {
-
-      nextRound.push(
-        currentRound[currentIndex]
-      );
-
-      currentIndex++;
-
-      showNextRankingMatch();
-
-      return;
-
-    }
-
-
-    leftIdol =
-      currentRound[currentIndex];
-
-    rightIdol =
-      currentRound[currentIndex + 1];
-
-
-    updateMatchDisplay(
-      leftIdol,
-      rightIdol
-    );
-
-
-    if (matchText) {
-
-      const matchNumber =
-        Math.floor(currentIndex / 2) + 1;
-
-      const totalMatches =
-        Math.floor(currentRound.length / 2);
-
-      matchText.textContent =
-        `MATCH ${matchNumber} / ${totalMatches}`;
-
-    }
-
-  }
-
-
-  // ==================================================
-  // ♡ 順位決定の勝者
-  // ==================================================
-
-  function chooseRankingWinner(
-    winner,
-    loser
-  ) {
-
-    if (!leftIdol || !rightIdol) return;
-
-    nextRound.push(winner);
-
-    leftIdol = null;
-    rightIdol = null;
-
-    currentIndex += 2;
-
-
-    setTimeout(() => {
-
-      showNextRankingMatch();
-
-    }, 150);
-
-  }
-
-
-  // ==================================================
-  // ♡ カードクリック
-  // ステージによって処理を分ける
-  // ==================================================
-
-  function handleLeftChoice() {
-
-    if (!leftIdol || !rightIdol) return;
-
-
-    if (stage === "normal") {
-
-      chooseNormalWinner(
-        leftIdol,
-        rightIdol
-      );
-
-      return;
-
-    }
-
-
-    if (stage === "twelve") {
-
-      chooseTwelveWinner(
-        leftIdol,
-        rightIdol
-      );
-
-      return;
-
-    }
-
-
-    if (stage === "ranking") {
-
-      chooseRankingWinner(
-        leftIdol,
-        rightIdol
-      );
-
-      return;
-
-    }
-
-  }
-
-
-  function handleRightChoice() {
-
-    if (!leftIdol || !rightIdol) return;
-
-
-    if (stage === "normal") {
-
-      chooseNormalWinner(
-        rightIdol,
-        leftIdol
-      );
-
-      return;
-
-    }
-
-
-    if (stage === "twelve") {
-
-      chooseTwelveWinner(
-        rightIdol,
-        leftIdol
-      );
-
-      return;
-
-    }
-
-
-    if (stage === "ranking") {
-
-      chooseRankingWinner(
-        rightIdol,
-        leftIdol
-      );
-
-      return;
-
-    }
-
-  }
-
-
-  // ==================================================
-  // ♡ カードクリックイベント
-  // ==================================================
-
-  if (cardLeft) {
-
-    cardLeft.addEventListener(
-      "click",
-      handleLeftChoice
-    );
-
-  }
-
-
-  if (cardRight) {
-
-    cardRight.addEventListener(
-      "click",
-      handleRightChoice
-    );
-
-  }
-
-
-  // ==================================================
-  // ♡ 結果表示
-  // ==================================================
-
-  function showResult(ranking) {
-
-    showScreen(resultScreen);
-
-    if (!top9Grid) return;
-
-    top9Grid.innerHTML = "";
-
-
-    ranking
-      .slice(0, 9)
-      .forEach((idol, index) => {
-
-        const item =
-          document.createElement("div");
-
-        item.className =
-          "top9-item";
-
-
-        item.innerHTML = `
-
-          <div class="rank">
-            ${index + 1}
-          </div>
-
-          <img
-            src="${idol.image}"
-            alt="${idol.name}"
-          >
-
-          <div class="name">
-            ${idol.name}
-          </div>
-
-          <div class="group">
-            ${idol.group}
-          </div>
-
-        `;
-
-
-        top9Grid.appendChild(item);
-
-      });
-
-  }
-
-
-  // ==================================================
-  // ♡ RETRY
-  // ==================================================
-
-  if (retryButton) {
-
-    retryButton.addEventListener(
-      "click",
-      () => {
-
-        selectedIdols = [];
-        currentGroupIndex = 0;
-
-        currentRound = [];
-        nextRound = [];
-        currentIndex = 0;
-
-        eliminated = [];
-
-        finalEight = [];
-        previousLosers = [];
-
-        revivedFour = [];
-
-        twelveWinners = [];
-        twelveLosers = [];
-
-        revivedThree = [];
-
-        finalNine = [];
-
-        rankingPool = [];
-        rankingResult = [];
-
-        leftIdol = null;
-        rightIdol = null;
-
-        stage = "normal";
-
-
-        selectionRoot.style.display =
-          "none";
-
-
-        originalStartChildren.forEach(
-          child => {
-
-            child.style.display =
-              originalStartDisplay.get(child)
-              || "";
-
-          }
-        );
-
-
-        startScreen.style.overflow = "";
-
-        showScreen(startScreen);
-
-      }
-    );
-
-  }
+}
 
 });
