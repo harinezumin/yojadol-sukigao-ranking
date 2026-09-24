@@ -350,6 +350,26 @@ const idols = [
   name: "Annie",
   group: "ALL DAY PROJECT",
   image: "IMG_1010.jpeg"
+},
+   {
+  name: "Yihyun",
+  group: "Baby Don't Cry",
+  image: "IMG_1015.jpeg"
+},
+{
+  name: "Kumi",
+  group: "Baby Don't Cry",
+  image: "IMG_1016.jpeg"
+},
+{
+  name: "Mia",
+  group: "Baby Don't Cry",
+  image: "IMG_1017.jpeg"
+},
+{
+  name: "Beni",
+  group: "Baby Don't Cry",
+  image: "IMG_1018.jpeg"
 }
 
 ];
