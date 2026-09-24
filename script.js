@@ -1055,6 +1055,28 @@ document.addEventListener("DOMContentLoaded", () => {
   let rightIdol = null;
 
 
+  // =========================
+  // 敗者復活戦用
+  // =========================
+
+  let quarterFinalWinners = [];
+  let quarterFinalLosers = [];
+
+  let revivalRound = [];
+  let revivalNextRound = [];
+  let revivalIndex = 0;
+
+  let revivalWinners = [];
+
+  let playInRound = [];
+  let playInNextRound = [];
+  let playInIndex = 0;
+
+
+  // =========================
+  // トーナメント開始
+  // =========================
+
   function startTournament() {
 
     // 選択画面を隠す
@@ -1076,6 +1098,23 @@ document.addEventListener("DOMContentLoaded", () => {
     roundNumber = 1;
     eliminated = [];
 
+    // 敗者復活関連もリセット
+    quarterFinalWinners = [];
+    quarterFinalLosers = [];
+
+    revivalRound = [];
+    revivalNextRound = [];
+    revivalIndex = 0;
+
+    revivalWinners = [];
+
+    playInRound = [];
+    playInNextRound = [];
+    playInIndex = 0;
+
+    leftIdol = null;
+    rightIdol = null;
+
     showScreen(matchScreen);
 
     prepareRound();
@@ -1084,7 +1123,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================
-  // ラウンド準備
+  // 通常ラウンド準備
   // =========================
 
   function prepareRound() {
@@ -1094,6 +1133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nextRound = [];
     currentIndex = 0;
 
+    // 1人になったら優勝
     if (currentRound.length === 1) {
 
       finishTournament(currentRound[0]);
@@ -1102,10 +1142,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    if (roundText) {
-      roundText.textContent =
-        `ROUND ${roundNumber}`;
+
+    // ---------------------------------
+    // 8人になったら「準々決勝」
+    // ---------------------------------
+
+    if (currentRound.length === 8) {
+
+      if (roundText) {
+        roundText.textContent = "準々決勝";
+      }
+
+    } else if (currentRound.length === 4) {
+
+      if (roundText) {
+        roundText.textContent = "準決勝";
+      }
+
+    } else if (currentRound.length === 2) {
+
+      if (roundText) {
+        roundText.textContent = "決勝";
+      }
+
+    } else {
+
+      if (roundText) {
+        roundText.textContent =
+          `ROUND ${roundNumber}`;
+      }
+
     }
+
 
     showNextMatch();
 
@@ -1113,13 +1181,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================
-  // 次の対戦
+  // 次の通常対戦
   // =========================
 
   function showNextMatch() {
 
+    // ---------------------------------
     // 全対戦終了
+    // ---------------------------------
+
     if (currentIndex >= currentRound.length) {
+
+      // ---------------------------------
+      // 8人 → 準々決勝終了
+      // ---------------------------------
+
+      if (currentRound.length === 8) {
+
+        quarterFinalWinners = [...nextRound];
+
+        startLosersRevival();
+
+        return;
+
+      }
+
+
+      // ---------------------------------
+      // 通常ラウンド終了
+      // ---------------------------------
 
       if (nextRound.length === 1) {
 
@@ -1128,6 +1218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
 
       }
+
 
       currentRound = nextRound;
 
@@ -1140,7 +1231,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    // ---------------------------------
     // 奇数の場合はシード
+    // ---------------------------------
+
     if (
       currentIndex === currentRound.length - 1 &&
       currentRound.length % 2 === 1
@@ -1161,6 +1255,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     leftIdol = currentRound[currentIndex];
     rightIdol = currentRound[currentIndex + 1];
+
 
     if (imageLeft) {
       imageLeft.src = leftIdol.image;
@@ -1186,6 +1281,7 @@ document.addEventListener("DOMContentLoaded", () => {
       groupRight.textContent = rightIdol.group;
     }
 
+
     if (matchText) {
 
       const matchNumber =
@@ -1203,7 +1299,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================
-  // 左右カードクリック
+  // 左カードクリック
   // =========================
 
   if (cardLeft) {
@@ -1219,6 +1315,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  // =========================
+  // 右カードクリック
+  // =========================
+
   if (cardRight) {
 
     cardRight.addEventListener("click", () => {
@@ -1233,7 +1333,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================
-  // 勝者決定
+  // 通常トーナメントの勝者決定
   // =========================
 
   function chooseWinner(winner, loser) {
@@ -1249,7 +1349,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     eliminated.push(savedLoser);
 
+    // 準々決勝の敗者を保存
+    if (currentRound.length === 8) {
+
+      quarterFinalLosers.push(savedLoser);
+
+    }
+
     currentIndex += 2;
+
 
     setTimeout(() => {
 
@@ -1260,13 +1368,498 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  // ==================================================
+  // ♡ 敗者復活戦
+  // ==================================================
+
+  function startLosersRevival() {
+
+    // 準々決勝敗者4人をシャッフル
+    revivalRound = shuffle(quarterFinalLosers);
+
+    revivalNextRound = [];
+    revivalIndex = 0;
+
+    if (roundText) {
+      roundText.textContent = "敗者復活戦 ♡";
+    }
+
+    showRevivalMatch();
+
+  }
+
+
   // =========================
-  // トーナメント終了
+  // 敗者復活戦の対戦表示
   // =========================
+
+  function showRevivalMatch() {
+
+    // 全対戦終了
+    if (revivalIndex >= revivalRound.length) {
+
+      // 2人残ったら次へ
+      if (revivalNextRound.length === 2) {
+
+        revivalWinners = [...revivalNextRound];
+
+        startPlayIn();
+
+        return;
+
+      }
+
+
+      // 念のため
+      if (revivalNextRound.length === 1) {
+
+        revivalWinners = [revivalNextRound[0]];
+
+        startPlayIn();
+
+        return;
+
+      }
+
+    }
+
+
+    // 奇数になった場合のシード
+    if (
+      revivalIndex === revivalRound.length - 1 &&
+      revivalRound.length % 2 === 1
+    ) {
+
+      revivalNextRound.push(
+        revivalRound[revivalIndex]
+      );
+
+      revivalIndex++;
+
+      showRevivalMatch();
+
+      return;
+
+    }
+
+
+    leftIdol = revivalRound[revivalIndex];
+    rightIdol = revivalRound[revivalIndex + 1];
+
+
+    if (imageLeft) {
+      imageLeft.src = leftIdol.image;
+    }
+
+    if (imageRight) {
+      imageRight.src = rightIdol.image;
+    }
+
+    if (nameLeft) {
+      nameLeft.textContent = leftIdol.name;
+    }
+
+    if (nameRight) {
+      nameRight.textContent = rightIdol.name;
+    }
+
+    if (groupLeft) {
+      groupLeft.textContent = leftIdol.group;
+    }
+
+    if (groupRight) {
+      groupRight.textContent = rightIdol.group;
+    }
+
+
+    if (matchText) {
+
+      const matchNumber =
+        Math.floor(revivalIndex / 2) + 1;
+
+      const totalMatches =
+        Math.floor(revivalRound.length / 2);
+
+      matchText.textContent =
+        `MATCH ${matchNumber} / ${totalMatches}`;
+
+    }
+
+  }
+
+
+  // =========================
+  // 敗者復活戦の勝者決定
+  // =========================
+
+  function chooseRevivalWinner(winner, loser) {
+
+    const savedWinner = winner;
+    const savedLoser = loser;
+
+    leftIdol = null;
+    rightIdol = null;
+
+    revivalNextRound.push(savedWinner);
+
+    // 敗者復活戦でも負けた人は脱落
+    eliminated.push(savedLoser);
+
+    revivalIndex += 2;
+
+
+    setTimeout(() => {
+
+      // 4人 → 2人になったら終了
+      if (
+        revivalIndex >= revivalRound.length &&
+        revivalNextRound.length === 2
+      ) {
+
+        revivalWinners = [...revivalNextRound];
+
+        startPlayIn();
+
+        return;
+
+      }
+
+      showRevivalMatch();
+
+    }, 150);
+
+  }
+
+
+  // ==================================================
+  // ♡ 準決勝進出決定戦
+  // ==================================================
+
+  function startPlayIn() {
+
+    /*
+      準々決勝勝者4人のうち2人
+      VS
+      敗者復活者2人
+
+      勝った2人が準決勝へ。
+
+      残りの準々決勝勝者2人は
+      そのまま準決勝へ進出。
+    */
+
+
+    const winners = shuffle(quarterFinalWinners);
+
+    const directSemifinalists = winners.slice(2, 4);
+
+    const challengedWinners = winners.slice(0, 2);
+
+
+    // 復活者と準々決勝勝者を1対1で組み合わせる
+    playInRound = [];
+
+    for (let i = 0; i < 2; i++) {
+
+      playInRound.push({
+        qfWinner: challengedWinners[i],
+        revivalWinner: revivalWinners[i]
+      });
+
+    }
+
+
+    // 準決勝へ直接進む2人を保存
+    playInNextRound = [...directSemifinalists];
+
+    playInIndex = 0;
+
+
+    if (roundText) {
+      roundText.textContent =
+        "準決勝進出決定戦";
+    }
+
+
+    showPlayInMatch();
+
+  }
+
+
+  // =========================
+  // 準決勝進出決定戦の表示
+  // =========================
+
+  function showPlayInMatch() {
+
+    // 全対戦終了
+    if (playInIndex >= playInRound.length) {
+
+      // 直接進出2人
+      // ＋
+      // 進出決定戦の勝者2人
+      // ＝4人
+      currentRound = [...playInNextRound];
+
+      roundNumber++;
+
+      prepareSemifinal();
+
+      return;
+
+    }
+
+
+    const match =
+      playInRound[playInIndex];
+
+
+    /*
+      左：準々決勝勝者
+      右：敗者復活戦勝者
+    */
+
+    leftIdol = match.qfWinner;
+    rightIdol = match.revivalWinner;
+
+
+    if (imageLeft) {
+      imageLeft.src = leftIdol.image;
+    }
+
+    if (imageRight) {
+      imageRight.src = rightIdol.image;
+    }
+
+    if (nameLeft) {
+      nameLeft.textContent = leftIdol.name;
+    }
+
+    if (nameRight) {
+      nameRight.textContent = rightIdol.name;
+    }
+
+    if (groupLeft) {
+      groupLeft.textContent = leftIdol.group;
+    }
+
+    if (groupRight) {
+      groupRight.textContent = rightIdol.group;
+    }
+
+
+    if (matchText) {
+
+      matchText.textContent =
+        `MATCH ${playInIndex + 1} / 2`;
+
+    }
+
+  }
+
+
+  // =========================
+  // 準決勝進出決定戦の勝者
+  // =========================
+
+  function choosePlayInWinner(winner, loser) {
+
+    const savedWinner = winner;
+    const savedLoser = loser;
+
+    leftIdol = null;
+    rightIdol = null;
+
+    playInNextRound.push(savedWinner);
+
+    eliminated.push(savedLoser);
+
+    playInIndex++;
+
+
+    setTimeout(() => {
+
+      showPlayInMatch();
+
+    }, 150);
+
+  }
+
+
+  // ==================================================
+  // ♡ 準決勝
+  // ==================================================
+
+  function prepareSemifinal() {
+
+    currentRound = shuffle(currentRound);
+
+    nextRound = [];
+    currentIndex = 0;
+
+    if (roundText) {
+      roundText.textContent = "準決勝";
+    }
+
+    showNextMatch();
+
+  }
+
+
+  // ==================================================
+  // ♡ カードクリック処理を状態によって分岐
+  // ==================================================
+
+  /*
+    ここでは、
+    
+    通常トーナメント
+    ↓
+    敗者復活戦
+    ↓
+    準決勝進出決定戦
+    
+    のどこにいるかを判定して
+    正しい勝者処理を行う。
+  */
+
+  function handleLeftChoice() {
+
+    if (!leftIdol || !rightIdol) return;
+
+
+    // 敗者復活戦
+    if (
+      revivalRound.length > 0 &&
+      revivalIndex < revivalRound.length &&
+      !playInRound.length
+    ) {
+
+      chooseRevivalWinner(
+        leftIdol,
+        rightIdol
+      );
+
+      return;
+
+    }
+
+
+    // 準決勝進出決定戦
+    if (
+      playInRound.length > 0 &&
+      playInIndex < playInRound.length
+    ) {
+
+      choosePlayInWinner(
+        leftIdol,
+        rightIdol
+      );
+
+      return;
+
+    }
+
+
+    // 通常トーナメント
+    chooseWinner(
+      leftIdol,
+      rightIdol
+    );
+
+  }
+
+
+  function handleRightChoice() {
+
+    if (!leftIdol || !rightIdol) return;
+
+
+    // 敗者復活戦
+    if (
+      revivalRound.length > 0 &&
+      revivalIndex < revivalRound.length &&
+      !playInRound.length
+    ) {
+
+      chooseRevivalWinner(
+        rightIdol,
+        leftIdol
+      );
+
+      return;
+
+    }
+
+
+    // 準決勝進出決定戦
+    if (
+      playInRound.length > 0 &&
+      playInIndex < playInRound.length
+    ) {
+
+      choosePlayInWinner(
+        rightIdol,
+        leftIdol
+      );
+
+      return;
+
+    }
+
+
+    // 通常トーナメント
+    chooseWinner(
+      rightIdol,
+      leftIdol
+    );
+
+  }
+
+
+  /*
+    もともとのクリックイベントを
+    状態判定付きに変更
+  */
+
+  if (cardLeft) {
+
+    cardLeft.onclick = null;
+
+    cardLeft.addEventListener(
+      "click",
+      handleLeftChoice
+    );
+
+  }
+
+
+  if (cardRight) {
+
+    cardRight.onclick = null;
+
+    cardRight.addEventListener(
+      "click",
+      handleRightChoice
+    );
+
+  }
+
+
+  // ==================================================
+  // ♡ トーナメント終了
+  // ==================================================
 
   function finishTournament(champion) {
 
-    // 優勝者
+    /*
+      優勝者を1位にする。
+
+      その後、
+      実際に脱落した順番を利用して
+      残りのランキングを作る。
+    */
+
     const finalRanking = [
       champion,
       ...[...eliminated].reverse()
@@ -1290,14 +1883,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    // 万一ランキングから漏れたメンバーがいた場合
+    selectedIdols.forEach(idol => {
+
+      if (!uniqueRanking.includes(idol)) {
+
+        uniqueRanking.push(idol);
+
+      }
+
+    });
+
+
     showResult(uniqueRanking);
 
   }
 
 
-  // =========================
-  // 結果表示
-  // =========================
+  // ==================================================
+  // ♡ 結果表示
+  // ==================================================
 
   function showResult(ranking) {
 
@@ -1308,16 +1913,16 @@ document.addEventListener("DOMContentLoaded", () => {
     top9Grid.innerHTML = "";
 
 
-    // 選択されたメンバーだけを表示
     // 最大9人
-
     ranking
       .slice(0, 9)
       .forEach((idol, index) => {
 
-        const item = document.createElement("div");
+        const item =
+          document.createElement("div");
 
         item.className = "top9-item";
+
 
         item.innerHTML = `
 
@@ -1340,6 +1945,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         `;
 
+
         top9Grid.appendChild(item);
 
       });
@@ -1347,9 +1953,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // =========================
-  // RETRY
-  // =========================
+  // ==================================================
+  // ♡ RETRY
+  // ==================================================
 
   if (retryButton) {
 
@@ -1358,7 +1964,31 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedIdols = [];
       currentGroupIndex = 0;
 
+      // トーナメント状態リセット
+      currentRound = [];
+      nextRound = [];
+      currentIndex = 0;
+      roundNumber = 1;
+      eliminated = [];
+
+      quarterFinalWinners = [];
+      quarterFinalLosers = [];
+
+      revivalRound = [];
+      revivalNextRound = [];
+      revivalIndex = 0;
+      revivalWinners = [];
+
+      playInRound = [];
+      playInNextRound = [];
+      playInIndex = 0;
+
+      leftIdol = null;
+      rightIdol = null;
+
+
       selectionRoot.style.display = "none";
+
 
       originalStartChildren.forEach(child => {
 
@@ -1367,7 +1997,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       });
 
+
       startScreen.style.overflow = "";
+
 
       showScreen(startScreen);
 
