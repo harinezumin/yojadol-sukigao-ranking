@@ -395,6 +395,36 @@ const idols = [
   name: "VV",
   group: "Hitgs",
   image: "IMG_1019.jpeg"
+},
+   {
+  name: "Hwayeon",
+  group: "ifeye",
+  image: "IMG_1020.jpeg"
+},
+{
+  name: "Taerin",
+  group: "ifeye",
+  image: "IMG_1021.jpeg"
+},
+{
+  name: "Rahee",
+  group: "ifeye",
+  image: "IMG_1022.jpeg"
+},
+{
+  name: "Kasia",
+  group: "ifeye",
+  image: "IMG_1023.jpeg"
+},
+{
+  name: "Meu",
+  group: "ifeye",
+  image: "IMG_1024.jpeg"
+},
+{
+  name: "Sasha",
+  group: "ifeye",
+  image: "IMG_1025.jpeg"
 }
 ];
 
