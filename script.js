@@ -10,6 +10,36 @@
    ================================================== */
 
 const idols = [
+{
+  name: "Mai",
+  group: "izna",
+  image: "IMG_1031.jpeg"
+},
+{
+  name: "Jeemin",
+  group: "izna",
+  image: "IMG_1032.jpeg"
+},
+{
+  name: "Koko",
+  group: "izna",
+  image: "IMG_1033.jpeg"
+},
+{
+  name: "Sarang",
+  group: "izna",
+  image: "IMG_1034.jpeg"
+},
+{
+  name: "Jungeun",
+  group: "izna",
+  image: "IMG_1035.jpeg"
+},
+{
+  name: "Saebi",
+  group: "izna",
+  image: "IMG_1036.jpeg"
+},
    {
   name: "Leeseol",
   group: "KiiiKiii",
