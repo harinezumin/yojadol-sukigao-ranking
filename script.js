@@ -469,1354 +469,885 @@ const idols = [
 
 ];
 
+document.addEventListener("DOMContentLoaded", () => {
 
-/* ==================================================
-   HTML読み込み後
-   ================================================== */
+  // =========================
+  // 画面・ボタン取得
+  // =========================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function () {
+  const startScreen = document.getElementById("start-screen");
+  const matchScreen = document.getElementById("match-screen");
+  const resultScreen = document.getElementById("result-screen");
 
+  const startButton = document.getElementById("start-button");
+  const retryButton = document.getElementById("retry-button");
 
-    /* ==================================================
-       元々あるHTML要素
-       ================================================== */
+  const cardLeft = document.getElementById("card-left");
+  const cardRight = document.getElementById("card-right");
 
-    const startScreen =
-      document.getElementById("start-screen");
+  const imageLeft = document.getElementById("image-left");
+  const imageRight = document.getElementById("image-right");
 
-    const matchScreen =
-      document.getElementById("match-screen");
+  const nameLeft = document.getElementById("name-left");
+  const nameRight = document.getElementById("name-right");
 
-    const resultScreen =
-      document.getElementById("result-screen");
+  const groupLeft = document.getElementById("group-left");
+  const groupRight = document.getElementById("group-right");
 
-    const startButton =
-      document.getElementById("start-button");
+  const roundText = document.getElementById("round-text");
+  const matchText = document.getElementById("match-text");
 
-    const cardLeft =
-      document.getElementById("card-left");
-
-    const cardRight =
-      document.getElementById("card-right");
-
-    const imageLeft =
-      document.getElementById("image-left");
-
-    const imageRight =
-      document.getElementById("image-right");
-
-    const nameLeft =
-      document.getElementById("name-left");
-
-    const nameRight =
-      document.getElementById("name-right");
-
-    const groupLeft =
-      document.getElementById("group-left");
-
-    const groupRight =
-      document.getElementById("group-right");
-
-    const roundText =
-      document.getElementById("round-text");
-
-    const matchText =
-      document.getElementById("match-text");
-
-    const top9Grid =
-      document.getElementById("top9-grid");
-
-    const retryButton =
-      document.getElementById("retry-button");
+  const top9Grid = document.getElementById("top9-grid");
 
 
-    /* ==================================================
-       ゲーム変数
-       ================================================== */
+  // =========================
+  // 画面切り替え
+  // =========================
 
-    let selectedIdols = [];
+  function showScreen(screen) {
 
-    let groupList = [];
+    [startScreen, matchScreen, resultScreen].forEach(s => {
+      if (s) s.classList.remove("active");
+    });
 
-    let currentGroupIndex = 0;
-
-    let selectedForCurrentGroup = [];
-
-    let currentRound = [];
-
-    let nextRound = [];
-
-    let currentIndex = 0;
-
-    let roundNumber = 1;
-
-    let leftIdol = null;
-
-    let rightIdol = null;
-
-    let eliminated = [];
-
-
-    /* ==================================================
-       画面切り替え
-       ================================================== */
-
-    function showScreen(screen) {
-
-      startScreen.classList.remove("active");
-
-      matchScreen.classList.remove("active");
-
-      resultScreen.classList.remove("active");
-
+    if (screen) {
       screen.classList.add("active");
     }
+  }
 
 
-    /* ==================================================
-       シャッフル
-       ================================================== */
+  // =========================
+  // 並び替え
+  // =========================
 
-    function shuffle(array) {
+  function shuffle(array) {
+    return [...array].sort(() => Math.random() - 0.5);
+  }
 
-      const result = [...array];
 
-      for (
-        let i = result.length - 1;
-        i > 0;
-        i--
-      ) {
+  // =========================
+  // グループ一覧
+  // =========================
 
-        const j =
-          Math.floor(
-            Math.random() * (i + 1)
-          );
+  const groups = [...new Set(idols.map(idol => idol.group))];
 
-        [
-          result[i],
-          result[j]
-        ] =
-        [
-          result[j],
-          result[i]
-        ];
-      }
 
-      return result;
+  // =========================
+  // 選択画面を作る
+  // =========================
+
+  const originalStartChildren = [...startScreen.children];
+
+  const originalStartDisplay = new Map();
+
+  originalStartChildren.forEach(child => {
+    originalStartDisplay.set(child, child.style.display);
+  });
+
+
+  const selectionRoot = document.createElement("div");
+
+  selectionRoot.id = "idol-selection-root";
+
+  selectionRoot.style.display = "none";
+  selectionRoot.style.width = "100%";
+  selectionRoot.style.boxSizing = "border-box";
+  selectionRoot.style.padding = "20px";
+  selectionRoot.style.overflowY = "auto";
+
+
+  startScreen.appendChild(selectionRoot);
+
+
+  // 選択画面用CSS
+
+  const selectionStyle = document.createElement("style");
+
+  selectionStyle.textContent = `
+
+    #idol-selection-root {
+      font-family: inherit;
+      text-align: center;
     }
 
+    .idol-select-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
 
-    /* ==================================================
-       グループ一覧を作成
-       ================================================== */
+    .idol-select-subtitle {
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
 
-    function createGroupList() {
+    .idol-select-progress {
+      font-size: 13px;
+      margin-bottom: 15px;
+      opacity: 0.65;
+    }
 
-      const groups = [];
+    .idol-select-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 24px;
+    }
 
-      idols.forEach(function (idol) {
+    .idol-select-card {
+      position: relative;
+      border: 2px solid #eeeeee;
+      border-radius: 18px;
+      padding: 8px;
+      background: white;
+      cursor: pointer;
+      transition: 0.2s;
+      box-sizing: border-box;
+    }
 
-        if (
-          !groups.includes(idol.group)
-        ) {
+    .idol-select-card:hover {
+      transform: translateY(-2px);
+    }
 
-          groups.push(idol.group);
+    .idol-select-card.selected {
+      border-color: #ff8fb1;
+      box-shadow: 0 0 0 3px rgba(255,143,177,0.15);
+      transform: translateY(-2px);
+    }
+
+    .idol-select-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .idol-select-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 7px;
+    }
+
+    .idol-select-heart {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .idol-select-card.selected .idol-select-heart {
+      background: #ff8fb1;
+      color: white;
+    }
+
+    .idol-select-button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #ff8fb1;
+      color: white;
+      margin: 4px;
+    }
+
+    .idol-select-button.secondary {
+      background: #eeeeee;
+      color: #555555;
+    }
+
+    .idol-summary-list {
+      max-width: 700px;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+    }
+
+    .idol-summary-item {
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .idol-summary-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 5px;
+    }
+
+    .idol-empty {
+      margin: 30px 0;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+  `;
+
+  document.head.appendChild(selectionStyle);
+
+
+  // =========================
+  // 選択状態
+  // =========================
+
+  let selectedIdols = [];
+
+  let currentGroupIndex = 0;
+
+
+  // =========================
+  // START
+  // =========================
+
+  startButton.addEventListener("click", () => {
+
+    selectedIdols = [];
+    currentGroupIndex = 0;
+
+    // 元のSTART画面を隠す
+    originalStartChildren.forEach(child => {
+      child.style.display = "none";
+    });
+
+    selectionRoot.style.display = "block";
+
+    // 念のためスクロール可能にする
+    startScreen.style.overflow = "auto";
+
+    showScreen(startScreen);
+
+    showGroupSelection();
+
+  });
+
+
+  // =========================
+  // グループ選択画面
+  // =========================
+
+  function showGroupSelection() {
+
+    const groupName = groups[currentGroupIndex];
+
+    const members = idols.filter(
+      idol => idol.group === groupName
+    );
+
+    const selectedInThisGroup = new Set();
+
+
+    selectionRoot.innerHTML = `
+
+      <div class="idol-select-title">
+        ${groupName}
+      </div>
+
+      <div class="idol-select-subtitle">
+        好きなメンバーを何人でも選んでね ♡
+      </div>
+
+      <div class="idol-select-progress">
+        ${currentGroupIndex + 1} / ${groups.length} グループ
+      </div>
+
+      <div class="idol-select-grid" id="current-idol-grid"></div>
+
+      <button
+        class="idol-select-button"
+        id="next-group-button"
+      >
+        次へ ♡
+      </button>
+
+      <button
+        class="idol-select-button secondary"
+        id="skip-group-button"
+      >
+        スキップ
+      </button>
+
+    `;
+
+
+    const grid = document.getElementById("current-idol-grid");
+
+
+    // メンバーカード作成
+
+    members.forEach(idol => {
+
+      const card = document.createElement("div");
+
+      card.className = "idol-select-card";
+
+      card.innerHTML = `
+
+        <img src="${idol.image}" alt="${idol.name}">
+
+        <div class="idol-select-heart">
+          ♡
+        </div>
+
+        <div class="idol-select-name">
+          ${idol.name}
+        </div>
+
+      `;
+
+
+      card.addEventListener("click", () => {
+
+        if (selectedInThisGroup.has(idol)) {
+
+          selectedInThisGroup.delete(idol);
+          card.classList.remove("selected");
+
+          card.querySelector(".idol-select-heart").textContent = "♡";
+
+        } else {
+
+          selectedInThisGroup.add(idol);
+          card.classList.add("selected");
+
+          card.querySelector(".idol-select-heart").textContent = "♥";
 
         }
 
       });
 
-      return groups;
-    }
+
+      grid.appendChild(card);
+
+    });
 
 
-    /* ==================================================
-       選抜画面を作る
-       ================================================== */
+    // 次へ
 
-    let selectionScreen =
-      document.createElement("div");
+    document
+      .getElementById("next-group-button")
+      .addEventListener("click", () => {
 
-    selectionScreen.id =
-      "selection-screen";
+        selectedInThisGroup.forEach(idol => {
 
-    selectionScreen.style.display =
-      "none";
-
-    selectionScreen.style.textAlign =
-      "center";
-
-    selectionScreen.style.width =
-      "100%";
-
-    selectionScreen.style.maxWidth =
-      "900px";
-
-    selectionScreen.style.margin =
-      "0 auto";
-
-    startScreen.parentNode.appendChild(
-      selectionScreen
-    );
-
-
-    /* ==================================================
-       選抜画面CSS
-       ================================================== */
-
-    const selectionStyle =
-      document.createElement("style");
-
-    selectionStyle.textContent = `
-
-      #selection-screen {
-        padding: 20px;
-        box-sizing: border-box;
-      }
-
-      .selection-title {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 8px;
-      }
-
-      .selection-subtitle {
-        font-size: 15px;
-        margin-bottom: 20px;
-        opacity: 0.75;
-      }
-
-      .selection-progress {
-        font-size: 14px;
-        margin-bottom: 18px;
-        font-weight: 600;
-      }
-
-      .selection-grid {
-        display: grid;
-        grid-template-columns:
-          repeat(auto-fit, minmax(140px, 1fr));
-        gap: 14px;
-        margin-bottom: 24px;
-      }
-
-      .selection-card {
-        position: relative;
-        border: 2px solid #eee;
-        border-radius: 18px;
-        overflow: hidden;
-        background: white;
-        cursor: pointer;
-        transition:
-          transform 0.15s ease,
-          border-color 0.15s ease;
-      }
-
-      .selection-card:hover {
-        transform: translateY(-2px);
-      }
-
-      .selection-card.selected {
-        border-color: #ff8fbd;
-        box-shadow:
-          0 0 0 3px rgba(255,143,189,0.15);
-      }
-
-      .selection-card img {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        display: block;
-      }
-
-      .selection-name {
-        padding: 9px 5px 11px;
-        font-weight: 600;
-        font-size: 14px;
-      }
-
-      .selection-check {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 17px;
-        box-shadow:
-          0 2px 8px rgba(0,0,0,0.12);
-      }
-
-      .selection-card.selected
-      .selection-check {
-        background: #ff8fbd;
-        color: white;
-      }
-
-      .selection-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .selection-button {
-        border: none;
-        border-radius: 999px;
-        padding: 12px 25px;
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      .selection-next {
-        background: #ff8fbd;
-        color: white;
-      }
-
-      .selection-skip {
-        background: #f3f3f3;
-        color: #555;
-      }
-
-      .selection-count {
-        margin-bottom: 14px;
-        font-size: 14px;
-        font-weight: 600;
-      }
-
-      .chosen-title {
-        font-size: 25px;
-        font-weight: 700;
-        margin-bottom: 8px;
-      }
-
-      .chosen-subtitle {
-        font-size: 14px;
-        opacity: 0.7;
-        margin-bottom: 20px;
-      }
-
-      .chosen-grid {
-        display: grid;
-        grid-template-columns:
-          repeat(auto-fit, minmax(110px, 1fr));
-        gap: 12px;
-        margin-bottom: 25px;
-      }
-
-      .chosen-card {
-        border-radius: 15px;
-        overflow: hidden;
-        background: white;
-        border: 1px solid #eee;
-      }
-
-      .chosen-card img {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        display: block;
-      }
-
-      .chosen-name {
-        padding: 7px 3px;
-        font-size: 13px;
-        font-weight: 600;
-      }
-
-      .chosen-group {
-        font-size: 11px;
-        opacity: 0.6;
-        padding-bottom: 8px;
-      }
-
-      .selection-empty {
-        padding: 25px;
-        border-radius: 18px;
-        background: #f7f7f7;
-        margin-bottom: 20px;
-      }
-
-    `;
-
-    document.head.appendChild(
-      selectionStyle
-    );
-
-
-    /* ==================================================
-       START
-       ================================================== */
-
-    startButton.addEventListener(
-      "click",
-      function () {
-
-        selectedIdols = [];
-
-        currentGroupIndex = 0;
-
-        groupList =
-          createGroupList();
-
-        selectedForCurrentGroup = [];
-
-        startScreen.style.display =
-          "none";
-
-        selectionScreen.style.display =
-          "block";
-
-        showGroupSelection();
-
-      }
-    );
-
-
-    /* ==================================================
-       グループ選択画面
-       ================================================== */
-
-    function showGroupSelection() {
-
-      selectedForCurrentGroup = [];
-
-      const groupName =
-        groupList[currentGroupIndex];
-
-      const members =
-        idols.filter(
-          function (idol) {
-
-            return (
-              idol.group === groupName
-            );
-
+          if (!selectedIdols.includes(idol)) {
+            selectedIdols.push(idol);
           }
-        );
 
+        });
 
-      selectionScreen.innerHTML = "";
+        goToNextGroup();
 
+      });
 
-      /* タイトル */
 
-      const title =
-        document.createElement("div");
+    // スキップ
 
-      title.className =
-        "selection-title";
+    document
+      .getElementById("skip-group-button")
+      .addEventListener("click", () => {
 
-      title.textContent =
-        groupName;
+        goToNextGroup();
 
-      selectionScreen.appendChild(
-        title
-      );
+      });
 
+  }
 
-      /* 説明 */
 
-      const subtitle =
-        document.createElement("div");
+  // =========================
+  // 次のグループ
+  // =========================
 
-      subtitle.className =
-        "selection-subtitle";
+  function goToNextGroup() {
 
-      subtitle.textContent =
-        "このグループで好きなメンバーを選んでね ♡";
+    currentGroupIndex++;
 
-      selectionScreen.appendChild(
-        subtitle
-      );
-
-
-      /* 進捗 */
-
-      const progress =
-        document.createElement("div");
-
-      progress.className =
-        "selection-progress";
-
-      progress.textContent =
-        (
-          currentGroupIndex + 1
-        ) +
-        " / " +
-        groupList.length;
-
-      selectionScreen.appendChild(
-        progress
-      );
-
-
-      /* 選択人数 */
-
-      const count =
-        document.createElement("div");
-
-      count.className =
-        "selection-count";
-
-      count.textContent =
-        "0人選択中";
-
-      selectionScreen.appendChild(
-        count
-      );
-
-
-      /* メンバー */
-
-      const grid =
-        document.createElement("div");
-
-      grid.className =
-        "selection-grid";
-
-
-      members.forEach(
-        function (idol) {
-
-          const card =
-            document.createElement("div");
-
-          card.className =
-            "selection-card";
-
-
-          const image =
-            document.createElement("img");
-
-          image.src =
-            idol.image;
-
-          image.alt =
-            idol.name;
-
-
-          const name =
-            document.createElement("div");
-
-          name.className =
-            "selection-name";
-
-          name.textContent =
-            idol.name;
-
-
-          const check =
-            document.createElement("div");
-
-          check.className =
-            "selection-check";
-
-          check.textContent =
-            "♡";
-
-
-          card.appendChild(
-            image
-          );
-
-          card.appendChild(
-            name
-          );
-
-          card.appendChild(
-            check
-          );
-
-
-          card.addEventListener(
-            "click",
-            function () {
-
-              const index =
-                selectedForCurrentGroup.indexOf(
-                  idol
-                );
-
-
-              if (index === -1) {
-
-                selectedForCurrentGroup.push(
-                  idol
-                );
-
-                card.classList.add(
-                  "selected"
-                );
-
-                check.textContent =
-                  "♥";
-
-              } else {
-
-                selectedForCurrentGroup.splice(
-                  index,
-                  1
-                );
-
-                card.classList.remove(
-                  "selected"
-                );
-
-                check.textContent =
-                  "♡";
-
-              }
-
-
-              count.textContent =
-                selectedForCurrentGroup.length +
-                "人選択中";
-
-            }
-          );
-
-
-          grid.appendChild(
-            card
-          );
-
-        }
-      );
-
-
-      selectionScreen.appendChild(
-        grid
-      );
-
-
-      /* ボタン */
-
-      const buttons =
-        document.createElement("div");
-
-      buttons.className =
-        "selection-buttons";
-
-
-      const skipButton =
-        document.createElement("button");
-
-      skipButton.type =
-        "button";
-
-      skipButton.className =
-        "selection-button selection-skip";
-
-      skipButton.textContent =
-        "このグループはスキップ";
-
-
-      const nextButton =
-        document.createElement("button");
-
-      nextButton.type =
-        "button";
-
-      nextButton.className =
-        "selection-button selection-next";
-
-      nextButton.textContent =
-        currentGroupIndex ===
-        groupList.length - 1
-          ? "選抜メンバーを見る ♡"
-          : "次のグループへ →";
-
-
-      skipButton.addEventListener(
-        "click",
-        function () {
-
-          goToNextGroup();
-
-        }
-      );
-
-
-      nextButton.addEventListener(
-        "click",
-        function () {
-
-          selectedIdols.push(
-            ...selectedForCurrentGroup
-          );
-
-          goToNextGroup();
-
-        }
-      );
-
-
-      buttons.appendChild(
-        skipButton
-      );
-
-      buttons.appendChild(
-        nextButton
-      );
-
-      selectionScreen.appendChild(
-        buttons
-      );
-
-    }
-
-
-    /* ==================================================
-       次のグループ
-       ================================================== */
-
-    function goToNextGroup() {
-
-      currentGroupIndex++;
-
-
-      if (
-        currentGroupIndex >=
-        groupList.length
-      ) {
-
-        showSelectedIdols();
-
-        return;
-
-      }
-
+    if (currentGroupIndex < groups.length) {
 
       showGroupSelection();
 
+    } else {
+
+      showSelectionSummary();
+
+    }
+
+  }
+
+
+  // =========================
+  // 選択メンバー確認
+  // =========================
+
+  function showSelectionSummary() {
+
+    if (selectedIdols.length === 0) {
+
+      selectionRoot.innerHTML = `
+
+        <div class="idol-select-title">
+          まだ選んだメンバーがいないよ ♡
+        </div>
+
+        <div class="idol-empty">
+          少なくとも1人選んでからトーナメントを始めてね！
+        </div>
+
+        <button
+          class="idol-select-button"
+          id="back-to-selection"
+        >
+          もう一度選ぶ
+        </button>
+
+      `;
+
+
+      document
+        .getElementById("back-to-selection")
+        .addEventListener("click", () => {
+
+          currentGroupIndex = 0;
+          selectedIdols = [];
+
+          showGroupSelection();
+
+        });
+
+      return;
     }
 
 
-    /* ==================================================
-       選抜メンバー確認
-       ================================================== */
+    selectionRoot.innerHTML = `
 
-    function showSelectedIdols() {
+      <div class="idol-select-title">
+        選んだメンバー ♡
+      </div>
 
-      selectionScreen.innerHTML = "";
+      <div class="idol-select-subtitle">
+        ${selectedIdols.length}人がトーナメントに参加します
+      </div>
 
+      <div class="idol-summary-list" id="idol-summary-list"></div>
 
-      const title =
-        document.createElement("div");
+      <button
+        class="idol-select-button"
+        id="start-tournament-button"
+      >
+        トーナメント開始 ♡
+      </button>
 
-      title.className =
-        "chosen-title";
+      <br>
 
-      title.textContent =
-        "あなたが選んだメンバー ♡";
+      <button
+        class="idol-select-button secondary"
+        id="redo-selection-button"
+      >
+        選び直す
+      </button>
 
-      selectionScreen.appendChild(
-        title
-      );
-
-
-      const subtitle =
-        document.createElement("div");
-
-      subtitle.className =
-        "chosen-subtitle";
-
-      subtitle.textContent =
-        selectedIdols.length +
-        "人がトーナメントに進出します！";
-
-      selectionScreen.appendChild(
-        subtitle
-      );
+    `;
 
 
-      if (
-        selectedIdols.length === 0
-      ) {
-
-        const empty =
-          document.createElement("div");
-
-        empty.className =
-          "selection-empty";
-
-        empty.textContent =
-          "まだメンバーが選ばれていないよ。戻って好きな子を選んでね ♡";
-
-        selectionScreen.appendChild(
-          empty
-        );
+    const summaryList =
+      document.getElementById("idol-summary-list");
 
 
-        const backButton =
-          document.createElement("button");
+    selectedIdols.forEach(idol => {
 
-        backButton.type =
-          "button";
+      const item = document.createElement("div");
 
-        backButton.className =
-          "selection-button selection-next";
+      item.className = "idol-summary-item";
 
-        backButton.textContent =
-          "最初から選び直す";
+      item.innerHTML = `
 
-        backButton.addEventListener(
-          "click",
-          function () {
+        <img src="${idol.image}" alt="${idol.name}">
 
-            selectionScreen.style.display =
-              "none";
+        <div>
+          ${idol.name}
+        </div>
 
-            startScreen.style.display =
-              "block";
+      `;
 
-          }
-        );
+      summaryList.appendChild(item);
 
-        selectionScreen.appendChild(
-          backButton
-        );
+    });
+
+
+    // トーナメント開始
+
+    document
+      .getElementById("start-tournament-button")
+      .addEventListener("click", () => {
+
+        startTournament();
+
+      });
+
+
+    // 選び直す
+
+    document
+      .getElementById("redo-selection-button")
+      .addEventListener("click", () => {
+
+        selectedIdols = [];
+        currentGroupIndex = 0;
+
+        showGroupSelection();
+
+      });
+
+  }
+
+
+  // =========================
+  // トーナメント
+  // =========================
+
+  let currentRound = [];
+  let nextRound = [];
+  let currentIndex = 0;
+  let roundNumber = 1;
+
+  let eliminated = [];
+
+  let leftIdol = null;
+  let rightIdol = null;
+
+
+  function startTournament() {
+
+    // 選択画面を隠す
+    selectionRoot.style.display = "none";
+
+    // START画面を元に戻す
+    originalStartChildren.forEach(child => {
+      child.style.display =
+        originalStartDisplay.get(child) || "";
+    });
+
+    startScreen.style.overflow = "";
+
+    // 選んだメンバーだけで開始
+    currentRound = shuffle(selectedIdols);
+
+    nextRound = [];
+    currentIndex = 0;
+    roundNumber = 1;
+    eliminated = [];
+
+    showScreen(matchScreen);
+
+    prepareRound();
+
+  }
+
+
+  // =========================
+  // ラウンド準備
+  // =========================
+
+  function prepareRound() {
+
+    currentRound = shuffle(currentRound);
+
+    nextRound = [];
+    currentIndex = 0;
+
+    if (currentRound.length === 1) {
+
+      finishTournament(currentRound[0]);
+
+      return;
+
+    }
+
+    if (roundText) {
+      roundText.textContent =
+        `ROUND ${roundNumber}`;
+    }
+
+    showNextMatch();
+
+  }
+
+
+  // =========================
+  // 次の対戦
+  // =========================
+
+  function showNextMatch() {
+
+    // 全対戦終了
+    if (currentIndex >= currentRound.length) {
+
+      if (nextRound.length === 1) {
+
+        finishTournament(nextRound[0]);
 
         return;
 
       }
 
+      currentRound = nextRound;
 
-      const grid =
-        document.createElement("div");
-
-      grid.className =
-        "chosen-grid";
-
-
-      selectedIdols.forEach(
-        function (idol) {
-
-          const card =
-            document.createElement("div");
-
-          card.className =
-            "chosen-card";
-
-
-          const image =
-            document.createElement("img");
-
-          image.src =
-            idol.image;
-
-          image.alt =
-            idol.name;
-
-
-          const name =
-            document.createElement("div");
-
-          name.className =
-            "chosen-name";
-
-          name.textContent =
-            idol.name;
-
-
-          const group =
-            document.createElement("div");
-
-          group.className =
-            "chosen-group";
-
-          group.textContent =
-            idol.group;
-
-
-          card.appendChild(
-            image
-          );
-
-          card.appendChild(
-            name
-          );
-
-          card.appendChild(
-            group
-          );
-
-
-          grid.appendChild(
-            card
-          );
-
-        }
-      );
-
-
-      selectionScreen.appendChild(
-        grid
-      );
-
-
-      const startTournament =
-        document.createElement("button");
-
-      startTournament.type =
-        "button";
-
-      startTournament.className =
-        "selection-button selection-next";
-
-      startTournament.textContent =
-        "♡ トーナメント開始 ♡";
-
-
-      startTournament.addEventListener(
-        "click",
-        function () {
-
-          startTournamentGame();
-
-        }
-      );
-
-
-      selectionScreen.appendChild(
-        startTournament
-      );
-
-    }
-
-
-    /* ==================================================
-       トーナメント開始
-       ================================================== */
-
-    function startTournamentGame() {
-
-      currentRound =
-        shuffle(selectedIdols);
-
-      nextRound = [];
-
-      currentIndex = 0;
-
-      roundNumber = 1;
-
-      eliminated = [];
-
-      selectionScreen.style.display =
-        "none";
-
-      showScreen(
-        matchScreen
-      );
+      roundNumber++;
 
       prepareRound();
 
-    }
-
-
-    /* ==================================================
-       ラウンド準備
-       ================================================== */
-
-    function prepareRound() {
-
-      currentIndex = 0;
-
-      nextRound = [];
-
-      currentRound =
-        shuffle(currentRound);
-
-      showNextMatch();
+      return;
 
     }
 
 
-    /* ==================================================
-       次の対戦
-       ================================================== */
-
-    function showNextMatch() {
-
-      /* 優勝者決定 */
-
-      if (
-        currentRound.length === 1
-      ) {
-
-        const champion =
-          currentRound[0];
-
-        createFinalRanking(
-          champion
-        );
-
-        return;
-
-      }
-
-
-      /* ラウンド終了 */
-
-      if (
-        currentIndex >=
-        currentRound.length
-      ) {
-
-        currentRound =
-          nextRound;
-
-        roundNumber++;
-
-        prepareRound();
-
-        return;
-
-      }
-
-
-      /* 奇数の場合は不戦勝 */
-
-      if (
-        currentIndex ===
-        currentRound.length - 1
-      ) {
-
-        nextRound.push(
-          currentRound[currentIndex]
-        );
-
-        currentIndex++;
-
-        showNextMatch();
-
-        return;
-
-      }
-
-
-      /* 対戦 */
-
-      leftIdol =
-        currentRound[
-          currentIndex
-        ];
-
-      rightIdol =
-        currentRound[
-          currentIndex + 1
-        ];
-
-
-      imageLeft.src =
-        leftIdol.image;
-
-      imageRight.src =
-        rightIdol.image;
-
-
-      nameLeft.textContent =
-        leftIdol.name;
-
-      nameRight.textContent =
-        rightIdol.name;
-
-
-      groupLeft.textContent =
-        leftIdol.group;
-
-      groupRight.textContent =
-        rightIdol.group;
-
-
-      roundText.textContent =
-        "ROUND " +
-        roundNumber;
-
-
-      const totalMatches =
-        Math.ceil(
-          currentRound.length / 2
-        );
-
-
-      const currentMatch =
-        Math.floor(
-          currentIndex / 2
-        ) + 1;
-
-
-      matchText.textContent =
-        currentMatch +
-        " / " +
-        totalMatches;
-
-    }
-
-
-    /* ==================================================
-       左を選択
-       ================================================== */
-
-    cardLeft.addEventListener(
-      "click",
-      function () {
-
-        if (
-          !leftIdol ||
-          !rightIdol
-        ) {
-          return;
-        }
-
-        chooseWinner(
-          leftIdol,
-          rightIdol
-        );
-
-      }
-    );
-
-
-    /* ==================================================
-       右を選択
-       ================================================== */
-
-    cardRight.addEventListener(
-      "click",
-      function () {
-
-        if (
-          !leftIdol ||
-          !rightIdol
-        ) {
-          return;
-        }
-
-        chooseWinner(
-          rightIdol,
-          leftIdol
-        );
-
-      }
-    );
-
-
-    /* ==================================================
-       勝者決定
-       ================================================== */
-
-    function chooseWinner(
-      winner,
-      loser
+    // 奇数の場合はシード
+    if (
+      currentIndex === currentRound.length - 1 &&
+      currentRound.length % 2 === 1
     ) {
 
       nextRound.push(
-        winner
+        currentRound[currentIndex]
       );
 
-
-      /*
-        敗者を記録
-        後で結果順位を作る
-      */
-
-      eliminated.push(
-        loser
-      );
-
-
-      currentIndex += 2;
-
-
-      /* 選択状態をリセット */
-
-      leftIdol = null;
-
-      rightIdol = null;
-
+      currentIndex++;
 
       showNextMatch();
 
-    }
-
-
-    /* ==================================================
-       最終ランキング
-       ================================================== */
-
-    function createFinalRanking(
-      champion
-    ) {
-
-      /*
-        優勝者を1位にする。
-
-        その後はトーナメントで
-        早く敗退した順に並べる。
-      */
-
-      const ranking =
-        [
-          champion,
-          ...eliminated
-        ];
-
-
-      const unique = [];
-
-
-      ranking.forEach(
-        function (idol) {
-
-          const exists =
-            unique.some(
-              function (item) {
-
-                return (
-                  item.name === idol.name &&
-                  item.group === idol.group
-                );
-
-              }
-            );
-
-
-          if (!exists) {
-
-            unique.push(
-              idol
-            );
-
-          }
-
-        }
-      );
-
-
-      showResult(
-        unique.slice(0, 9)
-      );
+      return;
 
     }
 
 
-    /* ==================================================
-       結果表示
-       ================================================== */
+    leftIdol = currentRound[currentIndex];
+    rightIdol = currentRound[currentIndex + 1];
 
-    function showResult(
-      top9
-    ) {
-
-      showScreen(
-        resultScreen
-      );
-
-
-      top9Grid.innerHTML =
-        "";
-
-
-      top9.forEach(
-        function (idol, index) {
-
-          const item =
-            document.createElement(
-              "div"
-            );
-
-          item.className =
-            "top9-item";
-
-
-          const image =
-            document.createElement(
-              "img"
-            );
-
-          image.src =
-            idol.image;
-
-          image.alt =
-            idol.name;
-
-
-          const rank =
-            document.createElement(
-              "div"
-            );
-
-          rank.className =
-            "rank";
-
-          rank.textContent =
-            "#" +
-            (index + 1);
-
-
-          item.appendChild(
-            image
-          );
-
-          item.appendChild(
-            rank
-          );
-
-
-          top9Grid.appendChild(
-            item
-          );
-
-        }
-      );
-
+    if (imageLeft) {
+      imageLeft.src = leftIdol.image;
     }
 
+    if (imageRight) {
+      imageRight.src = rightIdol.image;
+    }
 
-    /* ==================================================
-       もう一度遊ぶ
-       ================================================== */
+    if (nameLeft) {
+      nameLeft.textContent = leftIdol.name;
+    }
 
-    retryButton.addEventListener(
-      "click",
-      function () {
+    if (nameRight) {
+      nameRight.textContent = rightIdol.name;
+    }
 
-        selectionScreen.style.display =
-          "none";
+    if (groupLeft) {
+      groupLeft.textContent = leftIdol.group;
+    }
 
-        startScreen.style.display =
-          "block";
+    if (groupRight) {
+      groupRight.textContent = rightIdol.group;
+    }
 
-        showScreen(
-          startScreen
-        );
+    if (matchText) {
 
-        selectedIdols = [];
+      const matchNumber =
+        Math.floor(currentIndex / 2) + 1;
 
-        currentGroupIndex = 0;
+      const totalMatches =
+        Math.floor(currentRound.length / 2);
 
-        currentRound = [];
+      matchText.textContent =
+        `MATCH ${matchNumber} / ${totalMatches}`;
 
-        nextRound = [];
-
-        eliminated = [];
-
-        leftIdol = null;
-
-        rightIdol = null;
-
-      }
-    );
-
+    }
 
   }
-);
+
+
+  // =========================
+  // 左右カードクリック
+  // =========================
+
+  if (cardLeft) {
+
+    cardLeft.addEventListener("click", () => {
+
+      if (!leftIdol || !rightIdol) return;
+
+      chooseWinner(leftIdol, rightIdol);
+
+    });
+
+  }
+
+
+  if (cardRight) {
+
+    cardRight.addEventListener("click", () => {
+
+      if (!leftIdol || !rightIdol) return;
+
+      chooseWinner(rightIdol, leftIdol);
+
+    });
+
+  }
+
+
+  // =========================
+  // 勝者決定
+  // =========================
+
+  function chooseWinner(winner, loser) {
+
+    // 二重クリック防止
+    const savedWinner = winner;
+    const savedLoser = loser;
+
+    leftIdol = null;
+    rightIdol = null;
+
+    nextRound.push(savedWinner);
+
+    eliminated.push(savedLoser);
+
+    currentIndex += 2;
+
+    setTimeout(() => {
+
+      showNextMatch();
+
+    }, 150);
+
+  }
+
+
+  // =========================
+  // トーナメント終了
+  // =========================
+
+  function finishTournament(champion) {
+
+    // 優勝者
+    const finalRanking = [
+      champion,
+      ...[...eliminated].reverse()
+    ];
+
+
+    // 重複削除
+    const uniqueRanking = [];
+
+    finalRanking.forEach(idol => {
+
+      if (
+        idol &&
+        !uniqueRanking.includes(idol)
+      ) {
+
+        uniqueRanking.push(idol);
+
+      }
+
+    });
+
+
+    showResult(uniqueRanking);
+
+  }
+
+
+  // =========================
+  // 結果表示
+  // =========================
+
+  function showResult(ranking) {
+
+    showScreen(resultScreen);
+
+    if (!top9Grid) return;
+
+    top9Grid.innerHTML = "";
+
+
+    // 選択されたメンバーだけを表示
+    // 最大9人
+
+    ranking
+      .slice(0, 9)
+      .forEach((idol, index) => {
+
+        const item = document.createElement("div");
+
+        item.className = "top9-item";
+
+        item.innerHTML = `
+
+          <div class="rank">
+            ${index + 1}
+          </div>
+
+          <img
+            src="${idol.image}"
+            alt="${idol.name}"
+          >
+
+          <div class="name">
+            ${idol.name}
+          </div>
+
+          <div class="group">
+            ${idol.group}
+          </div>
+
+        `;
+
+        top9Grid.appendChild(item);
+
+      });
+
+  }
+
+
+  // =========================
+  // RETRY
+  // =========================
+
+  if (retryButton) {
+
+    retryButton.addEventListener("click", () => {
+
+      selectedIdols = [];
+      currentGroupIndex = 0;
+
+      selectionRoot.style.display = "none";
+
+      originalStartChildren.forEach(child => {
+
+        child.style.display =
+          originalStartDisplay.get(child) || "";
+
+      });
+
+      startScreen.style.overflow = "";
+
+      showScreen(startScreen);
+
+    });
+
+  }
+
+});
