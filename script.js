@@ -1070,49 +1070,50 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // =========================
-  // トーナメント
-  // =========================
+  // ==================================================
+  // ♡ トーナメント
+  // ==================================================
 
   let currentRound = [];
   let nextRound = [];
   let currentIndex = 0;
-  let roundNumber = 1;
 
   let eliminated = [];
 
   let leftIdol = null;
   let rightIdol = null;
 
+  // 現在のステージ
+  let stage = "normal";
 
-  // =========================
-  // 敗者復活戦用
-  // =========================
+  // 8人になった時点でのメンバー
+  let finalEight = [];
 
-  let quarterFinalWinners = [];
-  let quarterFinalLosers = [];
+  // 8人になるまでに負けたメンバー
+  let previousLosers = [];
 
-  let revivalRound = [];
-  let revivalNextRound = [];
-  let revivalIndex = 0;
+  // 8人から復活させたメンバー
+  let revivedFour = [];
 
-  let revivalWinners = [];
+  // 12人になった後の1回戦の勝者・敗者
+  let twelveWinners = [];
+  let twelveLosers = [];
 
-  let playInRound = [];
-  let playInNextRound = [];
-  let playInIndex = 0;
+  // 12人→9人にするための復活メンバー
+  let revivedThree = [];
+
+  // 最終9人
+  let finalNine = [];
 
 
-  // =========================
-  // トーナメント開始
-  // =========================
+  // ==================================================
+  // ♡ トーナメント開始
+  // ==================================================
 
   function startTournament() {
 
-    // 選択画面を隠す
     selectionRoot.style.display = "none";
 
-    // START画面を元に戻す
     originalStartChildren.forEach(child => {
       child.style.display =
         originalStartDisplay.get(child) || "";
@@ -1120,151 +1121,109 @@ document.addEventListener("DOMContentLoaded", () => {
 
     startScreen.style.overflow = "";
 
-    // 選んだメンバーだけで開始
     currentRound = shuffle(selectedIdols);
 
     nextRound = [];
     currentIndex = 0;
-    roundNumber = 1;
+
     eliminated = [];
 
-    // 敗者復活関連もリセット
-    quarterFinalWinners = [];
-    quarterFinalLosers = [];
+    finalEight = [];
+    previousLosers = [];
 
-    revivalRound = [];
-    revivalNextRound = [];
-    revivalIndex = 0;
+    revivedFour = [];
 
-    revivalWinners = [];
+    twelveWinners = [];
+    twelveLosers = [];
 
-    playInRound = [];
-    playInNextRound = [];
-    playInIndex = 0;
+    revivedThree = [];
+
+    finalNine = [];
 
     leftIdol = null;
     rightIdol = null;
 
+    stage = "normal";
+
     showScreen(matchScreen);
 
-    prepareRound();
+    prepareNormalRound();
 
   }
 
 
-  // =========================
-  // 通常ラウンド準備
-  // =========================
+  // ==================================================
+  // ♡ 通常トーナメント
+  // 8人になるまで進める
+  // ==================================================
 
-  function prepareRound() {
+  function prepareNormalRound() {
 
     currentRound = shuffle(currentRound);
 
     nextRound = [];
     currentIndex = 0;
 
-    // 1人になったら優勝
-    if (currentRound.length === 1) {
-
-      finishTournament(currentRound[0]);
-
-      return;
-
-    }
-
-
-    // ---------------------------------
-    // 8人になったら「準々決勝」
-    // ---------------------------------
+    // ------------------------------------------
+    // 8人になったら敗者復活メンバー選択へ
+    // ------------------------------------------
 
     if (currentRound.length === 8) {
 
-      if (roundText) {
-        roundText.textContent = "準々決勝";
-      }
+      finalEight = [...currentRound];
 
-    } else if (currentRound.length === 4) {
+      stage = "revival-four";
 
-      if (roundText) {
-        roundText.textContent = "準決勝";
-      }
+      showRevivalFourSelection();
 
-    } else if (currentRound.length === 2) {
-
-      if (roundText) {
-        roundText.textContent = "決勝";
-      }
-
-    } else {
-
-      if (roundText) {
-        roundText.textContent =
-          `ROUND ${roundNumber}`;
-      }
-
+      return;
     }
 
 
-    showNextMatch();
+    // ------------------------------------------
+    // 1人なら終了
+    // ------------------------------------------
+
+    if (currentRound.length === 1) {
+
+      finalNine = [...currentRound];
+
+      showFinalRankingSelection();
+
+      return;
+    }
+
+
+    stage = "normal";
+
+    if (roundText) {
+      roundText.textContent =
+        `トーナメント`;
+    }
+
+    showNextNormalMatch();
 
   }
 
 
-  // =========================
-  // 次の通常対戦
-  // =========================
+  // ==================================================
+  // ♡ 通常対戦表示
+  // ==================================================
 
-  function showNextMatch() {
+  function showNextNormalMatch() {
 
-    // ---------------------------------
-    // 全対戦終了
-    // ---------------------------------
-
+    // 全試合終了
     if (currentIndex >= currentRound.length) {
 
-      // ---------------------------------
-      // 8人 → 準々決勝終了
-      // ---------------------------------
+      currentRound = [...nextRound];
 
-      if (currentRound.length === 8) {
-
-        quarterFinalWinners = [...nextRound];
-
-        startLosersRevival();
-
-        return;
-
-      }
-
-
-      // ---------------------------------
-      // 通常ラウンド終了
-      // ---------------------------------
-
-      if (nextRound.length === 1) {
-
-        finishTournament(nextRound[0]);
-
-        return;
-
-      }
-
-
-      currentRound = nextRound;
-
-      roundNumber++;
-
-      prepareRound();
+      prepareNormalRound();
 
       return;
-
     }
 
 
-    // ---------------------------------
-    // 奇数の場合はシード
-    // ---------------------------------
-
+    // 奇数の場合
     if (
       currentIndex === currentRound.length - 1 &&
       currentRound.length % 2 === 1
@@ -1276,40 +1235,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       currentIndex++;
 
-      showNextMatch();
+      showNextNormalMatch();
 
       return;
-
     }
 
 
-    leftIdol = currentRound[currentIndex];
-    rightIdol = currentRound[currentIndex + 1];
+    leftIdol =
+      currentRound[currentIndex];
+
+    rightIdol =
+      currentRound[currentIndex + 1];
 
 
-    if (imageLeft) {
-      imageLeft.src = leftIdol.image;
-    }
-
-    if (imageRight) {
-      imageRight.src = rightIdol.image;
-    }
-
-    if (nameLeft) {
-      nameLeft.textContent = leftIdol.name;
-    }
-
-    if (nameRight) {
-      nameRight.textContent = rightIdol.name;
-    }
-
-    if (groupLeft) {
-      groupLeft.textContent = leftIdol.group;
-    }
-
-    if (groupRight) {
-      groupRight.textContent = rightIdol.group;
-    }
+    updateMatchDisplay(
+      leftIdol,
+      rightIdol
+    );
 
 
     if (matchText) {
@@ -1328,47 +1270,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // =========================
-  // 左カードクリック
-  // =========================
+  // ==================================================
+  // ♡ 対戦カード表示
+  // ==================================================
 
-  if (cardLeft) {
+  function updateMatchDisplay(left, right) {
 
-    cardLeft.addEventListener("click", () => {
+    if (imageLeft) {
+      imageLeft.src = left.image;
+    }
 
-      if (!leftIdol || !rightIdol) return;
+    if (imageRight) {
+      imageRight.src = right.image;
+    }
 
-      chooseWinner(leftIdol, rightIdol);
+    if (nameLeft) {
+      nameLeft.textContent = left.name;
+    }
 
-    });
+    if (nameRight) {
+      nameRight.textContent = right.name;
+    }
+
+    if (groupLeft) {
+      groupLeft.textContent = left.group;
+    }
+
+    if (groupRight) {
+      groupRight.textContent = right.group;
+    }
 
   }
 
 
-  // =========================
-  // 右カードクリック
-  // =========================
+  // ==================================================
+  // ♡ 通常対戦の勝者
+  // ==================================================
 
-  if (cardRight) {
+  function chooseNormalWinner(winner, loser) {
 
-    cardRight.addEventListener("click", () => {
+    if (!leftIdol || !rightIdol) return;
 
-      if (!leftIdol || !rightIdol) return;
-
-      chooseWinner(rightIdol, leftIdol);
-
-    });
-
-  }
-
-
-  // =========================
-  // 通常トーナメントの勝者決定
-  // =========================
-
-  function chooseWinner(winner, loser) {
-
-    // 二重クリック防止
     const savedWinner = winner;
     const savedLoser = loser;
 
@@ -1377,21 +1319,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     nextRound.push(savedWinner);
 
+    // 8人になるまでに負けた人を記録
+    previousLosers.push(savedLoser);
+
     eliminated.push(savedLoser);
-
-    // 準々決勝の敗者を保存
-    if (currentRound.length === 8) {
-
-      quarterFinalLosers.push(savedLoser);
-
-    }
 
     currentIndex += 2;
 
 
     setTimeout(() => {
 
-      showNextMatch();
+      showNextNormalMatch();
 
     }, 150);
 
@@ -1399,116 +1337,755 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // ==================================================
-  // ♡ 敗者復活戦
+  // ♡ 8人時点
+  // 敗者復活4人を選択
   // ==================================================
 
-  function startLosersRevival() {
+  function showRevivalFourSelection() {
 
-    // 準々決勝敗者4人をシャッフル
-    revivalRound = shuffle(quarterFinalLosers);
+    showScreen(startScreen);
 
-    revivalNextRound = [];
-    revivalIndex = 0;
+    originalStartChildren.forEach(child => {
+      child.style.display = "none";
+    });
 
-    if (roundText) {
-      roundText.textContent = "敗者復活戦 ♡";
-    }
+    selectionRoot.style.display = "block";
+    selectionRoot.innerHTML = "";
 
-    showRevivalMatch();
+
+    const availableLosers =
+      previousLosers.filter(
+        idol => !finalEight.includes(idol)
+      );
+
+
+    selectionRoot.innerHTML = `
+
+      <div class="idol-select-title">
+        敗者復活戦 ♡
+      </div>
+
+      <div class="idol-select-subtitle">
+        8人まで勝ち残ったよ！
+        <br>
+        これまでに負けたメンバーから
+        復活させたい子を選んでね
+      </div>
+
+      <div class="idol-select-progress">
+        最大4人まで選択できます
+      </div>
+
+      <div
+        class="idol-select-grid"
+        id="revival-four-grid"
+      ></div>
+
+      <button
+        class="idol-select-button"
+        id="revival-four-next"
+      >
+        選択完了 ♡
+      </button>
+
+    `;
+
+
+    const grid =
+      document.getElementById(
+        "revival-four-grid"
+      );
+
+
+    const selected = new Set();
+
+
+    availableLosers.forEach(idol => {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "idol-select-card";
+
+
+      card.innerHTML = `
+
+        <img
+          src="${idol.image}"
+          alt="${idol.name}"
+        >
+
+        <div class="idol-select-heart">
+          ♡
+        </div>
+
+        <div class="idol-select-name">
+          ${idol.name}
+        </div>
+
+      `;
+
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          // すでに選択している
+          if (selected.has(idol)) {
+
+            selected.delete(idol);
+
+            card.classList.remove(
+              "selected"
+            );
+
+            card.querySelector(
+              ".idol-select-heart"
+            ).textContent = "♡";
+
+            return;
+          }
+
+
+          // 4人以上は選べない
+          if (selected.size >= 4) {
+
+            return;
+
+          }
+
+
+          selected.add(idol);
+
+          card.classList.add(
+            "selected"
+          );
+
+          card.querySelector(
+            ".idol-select-heart"
+          ).textContent = "♥";
+
+        }
+      );
+
+
+      grid.appendChild(card);
+
+    });
+
+
+    document
+      .getElementById(
+        "revival-four-next"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          revivedFour =
+            [...selected];
+
+
+          // --------------------------------
+          // 4人選べた場合
+          // 8 + 4 = 12人
+          // --------------------------------
+
+          if (revivedFour.length === 4) {
+
+            currentRound = shuffle([
+              ...finalEight,
+              ...revivedFour
+            ]);
+
+            startTwelvePersonRound();
+
+            return;
+          }
+
+
+          // --------------------------------
+          // 4人未満
+          // → 8人のまま
+          // --------------------------------
+
+          currentRound =
+            shuffle(finalEight);
+
+          startEightPersonFinalRound();
+
+        }
+      );
 
   }
 
 
-  // =========================
-  // 敗者復活戦の対戦表示
-  // =========================
+  // ==================================================
+  // ♡ 4人復活 → 12人
+  // ==================================================
 
-  function showRevivalMatch() {
+  function startTwelvePersonRound() {
 
-    // 全対戦終了
-    if (revivalIndex >= revivalRound.length) {
+    nextRound = [];
+    currentIndex = 0;
 
-      // 2人残ったら次へ
-      if (revivalNextRound.length === 2) {
+    twelveWinners = [];
+    twelveLosers = [];
 
-        revivalWinners = [...revivalNextRound];
+    stage = "twelve";
 
-        startPlayIn();
+    showScreen(matchScreen);
 
-        return;
+    if (roundText) {
+      roundText.textContent =
+        "敗者復活後・12人戦";
+    }
 
-      }
+    showNextTwelveMatch();
+
+  }
 
 
-      // 念のため
-      if (revivalNextRound.length === 1) {
+  // ==================================================
+  // ♡ 12人戦
+  // 12 → 勝者6 / 敗者6
+  // ==================================================
 
-        revivalWinners = [revivalNextRound[0]];
+  function showNextTwelveMatch() {
 
-        startPlayIn();
+    // 全試合終了
+    if (currentIndex >= currentRound.length) {
 
-        return;
+      // 6人勝者・6人敗者
+      startRevivalThreeSelection();
 
-      }
-
+      return;
     }
 
 
-    // 奇数になった場合のシード
-    if (
-      revivalIndex === revivalRound.length - 1 &&
-      revivalRound.length % 2 === 1
-    ) {
+    leftIdol =
+      currentRound[currentIndex];
 
-      revivalNextRound.push(
-        revivalRound[revivalIndex]
+    rightIdol =
+      currentRound[currentIndex + 1];
+
+
+    updateMatchDisplay(
+      leftIdol,
+      rightIdol
+    );
+
+
+    if (matchText) {
+
+      const matchNumber =
+        Math.floor(currentIndex / 2) + 1;
+
+      matchText.textContent =
+        `MATCH ${matchNumber} / 6`;
+
+    }
+
+  }
+
+
+  // ==================================================
+  // ♡ 12人戦の勝者
+  // ==================================================
+
+  function chooseTwelveWinner(
+    winner,
+    loser
+  ) {
+
+    if (!leftIdol || !rightIdol) return;
+
+    twelveWinners.push(winner);
+    twelveLosers.push(loser);
+
+    eliminated.push(loser);
+
+    leftIdol = null;
+    rightIdol = null;
+
+    currentIndex += 2;
+
+
+    setTimeout(() => {
+
+      showNextTwelveMatch();
+
+    }, 150);
+
+  }
+
+
+  // ==================================================
+  // ♡ 6人の敗者から3人選択
+  // ==================================================
+
+  function startRevivalThreeSelection() {
+
+    stage = "revival-three";
+
+    showScreen(startScreen);
+
+    originalStartChildren.forEach(child => {
+      child.style.display = "none";
+    });
+
+    selectionRoot.style.display = "block";
+
+    selectionRoot.innerHTML = `
+
+      <div class="idol-select-title">
+        もう一度、敗者復活戦 ♡
+      </div>
+
+      <div class="idol-select-subtitle">
+        12人の対戦が終わったよ！
+        <br>
+        負けた6人の中から
+        3人を選んでね
+      </div>
+
+      <div class="idol-select-progress">
+        3人選択してください
+      </div>
+
+      <div
+        class="idol-select-grid"
+        id="revival-three-grid"
+      ></div>
+
+      <button
+        class="idol-select-button"
+        id="revival-three-next"
+      >
+        9人を決定 ♡
+      </button>
+
+    `;
+
+
+    const grid =
+      document.getElementById(
+        "revival-three-grid"
       );
 
-      revivalIndex++;
 
-      showRevivalMatch();
+    const selected =
+      new Set();
+
+
+    twelveLosers.forEach(idol => {
+
+      const card =
+        document.createElement("div");
+
+      card.className =
+        "idol-select-card";
+
+
+      card.innerHTML = `
+
+        <img
+          src="${idol.image}"
+          alt="${idol.name}"
+        >
+
+        <div class="idol-select-heart">
+          ♡
+        </div>
+
+        <div class="idol-select-name">
+          ${idol.name}
+        </div>
+
+      `;
+
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          if (selected.has(idol)) {
+
+            selected.delete(idol);
+
+            card.classList.remove(
+              "selected"
+            );
+
+            card.querySelector(
+              ".idol-select-heart"
+            ).textContent = "♡";
+
+            return;
+          }
+
+
+          if (selected.size >= 3) {
+
+            return;
+
+          }
+
+
+          selected.add(idol);
+
+          card.classList.add(
+            "selected"
+          );
+
+          card.querySelector(
+            ".idol-select-heart"
+          ).textContent = "♥";
+
+        }
+      );
+
+
+      grid.appendChild(card);
+
+    });
+
+
+    document
+      .getElementById(
+        "revival-three-next"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (selected.size !== 3) {
+
+            return;
+
+          }
+
+
+          revivedThree =
+            [...selected];
+
+
+          finalNine = [
+            ...twelveWinners,
+            ...revivedThree
+          ];
+
+
+          showFinalRankingSelection();
+
+        }
+      );
+
+  }
+
+
+  // ==================================================
+  // ♡ 8人ルート
+  // ==================================================
+
+  function startEightPersonFinalRound() {
+
+    finalNine =
+      [...finalEight];
+
+    showFinalRankingSelection();
+
+  }
+
+
+  // ==================================================
+  // ♡ 最終9人
+  // 順番決定
+  // ==================================================
+
+  function showFinalRankingSelection() {
+
+    /*
+      ここでは最終メンバーを確認して、
+      その後1位〜9位を決定する。
+    */
+
+    showScreen(startScreen);
+
+    originalStartChildren.forEach(child => {
+      child.style.display = "none";
+    });
+
+    selectionRoot.style.display = "block";
+
+
+    selectionRoot.innerHTML = `
+
+      <div class="idol-select-title">
+        最終メンバー決定 ♡
+      </div>
+
+      <div class="idol-select-subtitle">
+        ここから最終順位を決めるよ！
+      </div>
+
+      <div
+        class="idol-summary-list"
+        id="final-nine-list"
+      ></div>
+
+      <button
+        class="idol-select-button"
+        id="start-final-ranking"
+      >
+        順位決定スタート ♡
+      </button>
+
+    `;
+
+
+    const list =
+      document.getElementById(
+        "final-nine-list"
+      );
+
+
+    finalNine.forEach(idol => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "idol-summary-item";
+
+
+      item.innerHTML = `
+
+        <img
+          src="${idol.image}"
+          alt="${idol.name}"
+        >
+
+        <div>
+          ${idol.name}
+        </div>
+
+        <div style="opacity:0.6;font-size:12px;">
+          ${idol.group}
+        </div>
+
+      `;
+
+
+      list.appendChild(item);
+
+    });
+
+
+    document
+      .getElementById(
+        "start-final-ranking"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          startFinalRanking();
+
+        }
+      );
+
+  }
+
+
+  // ==================================================
+  // ♡ 最終9人の順位決定
+  // ==================================================
+
+  let rankingPool = [];
+  let rankingResult = [];
+
+
+  function startFinalRanking() {
+
+    rankingPool =
+      shuffle(finalNine);
+
+    rankingResult = [];
+
+    startRankingRound();
+
+  }
+
+
+  // ==================================================
+  // ♡ 順位決定
+  // ==================================================
+
+  function startRankingRound() {
+
+    /*
+      1位から順番に決めていく。
+
+      残っているメンバーの中から
+      1人を選ぶトーナメントを行い、
+      勝者を順位として確定する。
+
+      9人
+      ↓
+      1位決定
+      ↓
+      残り8人
+      ↓
+      2位決定
+      ↓
+      …
+    */
+
+    if (rankingPool.length === 0) {
+
+      showResult(rankingResult);
 
       return;
 
     }
 
 
-    leftIdol = revivalRound[revivalIndex];
-    rightIdol = revivalRound[revivalIndex + 1];
+    // 1人だけならそのまま
+    if (rankingPool.length === 1) {
 
+      rankingResult.push(
+        rankingPool[0]
+      );
 
-    if (imageLeft) {
-      imageLeft.src = leftIdol.image;
+      rankingPool = [];
+
+      showResult(rankingResult);
+
+      return;
+
     }
 
-    if (imageRight) {
-      imageRight.src = rightIdol.image;
+
+    currentRound =
+      shuffle(rankingPool);
+
+    nextRound = [];
+    currentIndex = 0;
+
+    stage = "ranking";
+
+
+    if (roundText) {
+      roundText.textContent =
+        `${rankingResult.length + 1}位決定戦`;
     }
 
-    if (nameLeft) {
-      nameLeft.textContent = leftIdol.name;
+
+    showNextRankingMatch();
+
+  }
+
+
+  // ==================================================
+  // ♡ 順位決定用対戦
+  // ==================================================
+
+  function showNextRankingMatch() {
+
+    // ----------------------------------
+    // すべての試合終了
+    // ----------------------------------
+
+    if (currentIndex >= currentRound.length) {
+
+      // 1人になったら
+      // 今回の順位確定
+      if (nextRound.length === 1) {
+
+        const winner =
+          nextRound[0];
+
+
+        rankingResult.push(
+          winner
+        );
+
+
+        rankingPool =
+          rankingPool.filter(
+            idol => idol !== winner
+          );
+
+
+        setTimeout(() => {
+
+          startRankingRound();
+
+        }, 200);
+
+        return;
+
+      }
+
+
+      currentRound =
+        [...nextRound];
+
+      nextRound = [];
+      currentIndex = 0;
+
+      showNextRankingMatch();
+
+      return;
+
     }
 
-    if (nameRight) {
-      nameRight.textContent = rightIdol.name;
+
+    // ----------------------------------
+    // 奇数の場合
+    // ----------------------------------
+
+    if (
+      currentIndex ===
+      currentRound.length - 1 &&
+      currentRound.length % 2 === 1
+    ) {
+
+      nextRound.push(
+        currentRound[currentIndex]
+      );
+
+      currentIndex++;
+
+      showNextRankingMatch();
+
+      return;
+
     }
 
-    if (groupLeft) {
-      groupLeft.textContent = leftIdol.group;
-    }
 
-    if (groupRight) {
-      groupRight.textContent = rightIdol.group;
-    }
+    leftIdol =
+      currentRound[currentIndex];
+
+    rightIdol =
+      currentRound[currentIndex + 1];
+
+
+    updateMatchDisplay(
+      leftIdol,
+      rightIdol
+    );
 
 
     if (matchText) {
 
       const matchNumber =
-        Math.floor(revivalIndex / 2) + 1;
+        Math.floor(currentIndex / 2) + 1;
 
       const totalMatches =
-        Math.floor(revivalRound.length / 2);
+        Math.floor(currentRound.length / 2);
 
       matchText.textContent =
         `MATCH ${matchNumber} / ${totalMatches}`;
@@ -1518,43 +2095,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // =========================
-  // 敗者復活戦の勝者決定
-  // =========================
+  // ==================================================
+  // ♡ 順位決定の勝者
+  // ==================================================
 
-  function chooseRevivalWinner(winner, loser) {
+  function chooseRankingWinner(
+    winner,
+    loser
+  ) {
 
-    const savedWinner = winner;
-    const savedLoser = loser;
+    if (!leftIdol || !rightIdol) return;
+
+    nextRound.push(winner);
 
     leftIdol = null;
     rightIdol = null;
 
-    revivalNextRound.push(savedWinner);
-
-    // 敗者復活戦でも負けた人は脱落
-    eliminated.push(savedLoser);
-
-    revivalIndex += 2;
+    currentIndex += 2;
 
 
     setTimeout(() => {
 
-      // 4人 → 2人になったら終了
-      if (
-        revivalIndex >= revivalRound.length &&
-        revivalNextRound.length === 2
-      ) {
-
-        revivalWinners = [...revivalNextRound];
-
-        startPlayIn();
-
-        return;
-
-      }
-
-      showRevivalMatch();
+      showNextRankingMatch();
 
     }, 150);
 
@@ -1562,210 +2124,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // ==================================================
-  // ♡ 準決勝進出決定戦
+  // ♡ カードクリック
+  // ステージによって処理を分ける
   // ==================================================
-
-  function startPlayIn() {
-
-    /*
-      準々決勝勝者4人のうち2人
-      VS
-      敗者復活者2人
-
-      勝った2人が準決勝へ。
-
-      残りの準々決勝勝者2人は
-      そのまま準決勝へ進出。
-    */
-
-
-    const winners = shuffle(quarterFinalWinners);
-
-    const directSemifinalists = winners.slice(2, 4);
-
-    const challengedWinners = winners.slice(0, 2);
-
-
-    // 復活者と準々決勝勝者を1対1で組み合わせる
-    playInRound = [];
-
-    for (let i = 0; i < 2; i++) {
-
-      playInRound.push({
-        qfWinner: challengedWinners[i],
-        revivalWinner: revivalWinners[i]
-      });
-
-    }
-
-
-    // 準決勝へ直接進む2人を保存
-    playInNextRound = [...directSemifinalists];
-
-    playInIndex = 0;
-
-
-    if (roundText) {
-      roundText.textContent =
-        "準決勝進出決定戦";
-    }
-
-
-    showPlayInMatch();
-
-  }
-
-
-  // =========================
-  // 準決勝進出決定戦の表示
-  // =========================
-
-  function showPlayInMatch() {
-
-    // 全対戦終了
-    if (playInIndex >= playInRound.length) {
-
-      // 直接進出2人
-      // ＋
-      // 進出決定戦の勝者2人
-      // ＝4人
-      currentRound = [...playInNextRound];
-
-      roundNumber++;
-
-      prepareSemifinal();
-
-      return;
-
-    }
-
-
-    const match =
-      playInRound[playInIndex];
-
-
-    /*
-      左：準々決勝勝者
-      右：敗者復活戦勝者
-    */
-
-    leftIdol = match.qfWinner;
-    rightIdol = match.revivalWinner;
-
-
-    if (imageLeft) {
-      imageLeft.src = leftIdol.image;
-    }
-
-    if (imageRight) {
-      imageRight.src = rightIdol.image;
-    }
-
-    if (nameLeft) {
-      nameLeft.textContent = leftIdol.name;
-    }
-
-    if (nameRight) {
-      nameRight.textContent = rightIdol.name;
-    }
-
-    if (groupLeft) {
-      groupLeft.textContent = leftIdol.group;
-    }
-
-    if (groupRight) {
-      groupRight.textContent = rightIdol.group;
-    }
-
-
-    if (matchText) {
-
-      matchText.textContent =
-        `MATCH ${playInIndex + 1} / 2`;
-
-    }
-
-  }
-
-
-  // =========================
-  // 準決勝進出決定戦の勝者
-  // =========================
-
-  function choosePlayInWinner(winner, loser) {
-
-    const savedWinner = winner;
-    const savedLoser = loser;
-
-    leftIdol = null;
-    rightIdol = null;
-
-    playInNextRound.push(savedWinner);
-
-    eliminated.push(savedLoser);
-
-    playInIndex++;
-
-
-    setTimeout(() => {
-
-      showPlayInMatch();
-
-    }, 150);
-
-  }
-
-
-  // ==================================================
-  // ♡ 準決勝
-  // ==================================================
-
-  function prepareSemifinal() {
-
-    currentRound = shuffle(currentRound);
-
-    nextRound = [];
-    currentIndex = 0;
-
-    if (roundText) {
-      roundText.textContent = "準決勝";
-    }
-
-    showNextMatch();
-
-  }
-
-
-  // ==================================================
-  // ♡ カードクリック処理を状態によって分岐
-  // ==================================================
-
-  /*
-    ここでは、
-    
-    通常トーナメント
-    ↓
-    敗者復活戦
-    ↓
-    準決勝進出決定戦
-    
-    のどこにいるかを判定して
-    正しい勝者処理を行う。
-  */
 
   function handleLeftChoice() {
 
     if (!leftIdol || !rightIdol) return;
 
 
-    // 敗者復活戦
-    if (
-      revivalRound.length > 0 &&
-      revivalIndex < revivalRound.length &&
-      !playInRound.length
-    ) {
+    if (stage === "normal") {
 
-      chooseRevivalWinner(
+      chooseNormalWinner(
         leftIdol,
         rightIdol
       );
@@ -1775,13 +2145,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 準決勝進出決定戦
-    if (
-      playInRound.length > 0 &&
-      playInIndex < playInRound.length
-    ) {
+    if (stage === "twelve") {
 
-      choosePlayInWinner(
+      chooseTwelveWinner(
         leftIdol,
         rightIdol
       );
@@ -1791,11 +2157,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 通常トーナメント
-    chooseWinner(
-      leftIdol,
-      rightIdol
-    );
+    if (stage === "ranking") {
+
+      chooseRankingWinner(
+        leftIdol,
+        rightIdol
+      );
+
+      return;
+
+    }
 
   }
 
@@ -1805,14 +2176,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!leftIdol || !rightIdol) return;
 
 
-    // 敗者復活戦
-    if (
-      revivalRound.length > 0 &&
-      revivalIndex < revivalRound.length &&
-      !playInRound.length
-    ) {
+    if (stage === "normal") {
 
-      chooseRevivalWinner(
+      chooseNormalWinner(
         rightIdol,
         leftIdol
       );
@@ -1822,13 +2188,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 準決勝進出決定戦
-    if (
-      playInRound.length > 0 &&
-      playInIndex < playInRound.length
-    ) {
+    if (stage === "twelve") {
 
-      choosePlayInWinner(
+      chooseTwelveWinner(
         rightIdol,
         leftIdol
       );
@@ -1838,23 +2200,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 通常トーナメント
-    chooseWinner(
-      rightIdol,
-      leftIdol
-    );
+    if (stage === "ranking") {
+
+      chooseRankingWinner(
+        rightIdol,
+        leftIdol
+      );
+
+      return;
+
+    }
 
   }
 
 
-  /*
-    もともとのクリックイベントを
-    状態判定付きに変更
-  */
+  // ==================================================
+  // ♡ カードクリックイベント
+  // ==================================================
 
   if (cardLeft) {
-
-    cardLeft.onclick = null;
 
     cardLeft.addEventListener(
       "click",
@@ -1866,66 +2230,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (cardRight) {
 
-    cardRight.onclick = null;
-
     cardRight.addEventListener(
       "click",
       handleRightChoice
     );
-
-  }
-
-
-  // ==================================================
-  // ♡ トーナメント終了
-  // ==================================================
-
-  function finishTournament(champion) {
-
-    /*
-      優勝者を1位にする。
-
-      その後、
-      実際に脱落した順番を利用して
-      残りのランキングを作る。
-    */
-
-    const finalRanking = [
-      champion,
-      ...[...eliminated].reverse()
-    ];
-
-
-    // 重複削除
-    const uniqueRanking = [];
-
-    finalRanking.forEach(idol => {
-
-      if (
-        idol &&
-        !uniqueRanking.includes(idol)
-      ) {
-
-        uniqueRanking.push(idol);
-
-      }
-
-    });
-
-
-    // 万一ランキングから漏れたメンバーがいた場合
-    selectedIdols.forEach(idol => {
-
-      if (!uniqueRanking.includes(idol)) {
-
-        uniqueRanking.push(idol);
-
-      }
-
-    });
-
-
-    showResult(uniqueRanking);
 
   }
 
@@ -1943,7 +2251,6 @@ document.addEventListener("DOMContentLoaded", () => {
     top9Grid.innerHTML = "";
 
 
-    // 最大9人
     ranking
       .slice(0, 9)
       .forEach((idol, index) => {
@@ -1951,7 +2258,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const item =
           document.createElement("div");
 
-        item.className = "top9-item";
+        item.className =
+          "top9-item";
 
 
         item.innerHTML = `
@@ -1989,51 +2297,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (retryButton) {
 
-    retryButton.addEventListener("click", () => {
+    retryButton.addEventListener(
+      "click",
+      () => {
 
-      selectedIdols = [];
-      currentGroupIndex = 0;
+        selectedIdols = [];
+        currentGroupIndex = 0;
 
-      // トーナメント状態リセット
-      currentRound = [];
-      nextRound = [];
-      currentIndex = 0;
-      roundNumber = 1;
-      eliminated = [];
+        currentRound = [];
+        nextRound = [];
+        currentIndex = 0;
 
-      quarterFinalWinners = [];
-      quarterFinalLosers = [];
+        eliminated = [];
 
-      revivalRound = [];
-      revivalNextRound = [];
-      revivalIndex = 0;
-      revivalWinners = [];
+        finalEight = [];
+        previousLosers = [];
 
-      playInRound = [];
-      playInNextRound = [];
-      playInIndex = 0;
+        revivedFour = [];
 
-      leftIdol = null;
-      rightIdol = null;
+        twelveWinners = [];
+        twelveLosers = [];
 
+        revivedThree = [];
 
-      selectionRoot.style.display = "none";
+        finalNine = [];
 
+        rankingPool = [];
+        rankingResult = [];
 
-      originalStartChildren.forEach(child => {
+        leftIdol = null;
+        rightIdol = null;
 
-        child.style.display =
-          originalStartDisplay.get(child) || "";
-
-      });
+        stage = "normal";
 
 
-      startScreen.style.overflow = "";
+        selectionRoot.style.display =
+          "none";
 
 
-      showScreen(startScreen);
+        originalStartChildren.forEach(
+          child => {
 
-    });
+            child.style.display =
+              originalStartDisplay.get(child)
+              || "";
+
+          }
+        );
+
+
+        startScreen.style.overflow = "";
+
+        showScreen(startScreen);
+
+      }
+    );
 
   }
 
