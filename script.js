@@ -354,24 +354,48 @@ const idols = [
    {
   name: "Yihyun",
   group: "Baby Don't Cry",
-  image: "IMG_1015.jpeg"
+  image: "IMG_1011.jpeg"
 },
 {
   name: "Kumi",
   group: "Baby Don't Cry",
-  image: "IMG_1016.jpeg"
+  image: "IMG_1012.jpeg"
 },
 {
   name: "Mia",
   group: "Baby Don't Cry",
-  image: "IMG_1017.jpeg"
+  image: "IMG_1013.jpeg"
 },
 {
   name: "Beni",
   group: "Baby Don't Cry",
+  image: "IMG_1014.jpeg"
+},
+{
+  name: "Hyerin",
+  group: "Hitgs",
+  image: "IMG_1015.jpeg"
+},
+{
+  name: "Seohee",
+  group: "Hitgs",
+  image: "IMG_1016.jpeg"
+},
+{
+  name: "Iyoo",
+  group: "Hitgs",
+  image: "IMG_1017.jpeg"
+},
+{
+  name: "Seojin",
+  group: "Hitgs",
   image: "IMG_1018.jpeg"
+},
+{
+  name: "VV",
+  group: "Hitgs",
+  image: "IMG_1019.jpeg"
 }
-
 ];
 
 
